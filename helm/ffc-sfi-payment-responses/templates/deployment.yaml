@@ -1,0 +1,8 @@
+{{- include "ffc-helm-library.deployment" (list . "ffc-sfi-payment-responses.deployment") -}}
+{{- define "ffc-sfi-payment-responses.deployment" -}}
+spec:
+  template:
+    spec:
+      containers:
+      - {{ include "ffc-helm-library.container" (list . "ffc-sfi-payment-responses.container") }}
+{{- end -}}
