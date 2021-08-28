@@ -42,11 +42,6 @@ const getInboundFileList = async () => {
   return fileList
 }
 
-const getInboundFileDetails = async (filename) => {
-  const blob = await getBlob(inboundContainer, filename)
-  return blob.getProperties()
-}
-
 const downloadPaymentFile = async (filename) => {
   const blob = await getBlob(inboundContainer, filename)
   return blob.downloadToBuffer()
@@ -76,7 +71,6 @@ const quarantinePaymentFile = (filename, quarantineFilename) => {
 
 module.exports = {
   getInboundFileList,
-  getInboundFileDetails,
   downloadPaymentFile,
   archivePaymentFile,
   quarantinePaymentFile,
