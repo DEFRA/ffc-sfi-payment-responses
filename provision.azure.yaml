@@ -1,0 +1,4 @@
+resources:
+  topics:
+    - name: acknowledgement
+    - name: return

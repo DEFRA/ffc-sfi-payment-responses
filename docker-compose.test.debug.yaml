@@ -3,6 +3,6 @@ services:
   ffc-sfi-payment-responses:
     command: npm run test:debug
     ports:
-      - "9229:9229"
+      - "9243:9229"
     volumes:
       - ./app:/home/node/app
