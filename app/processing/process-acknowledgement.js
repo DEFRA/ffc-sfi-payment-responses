@@ -1,15 +1,16 @@
+const { sendAcknowledgementMessages } = require('../messaging')
 const blobStorage = require('../storage')
 const parseAcknowledgementFile = require('./parse-acknowledgement-file')
 
 const processAcknowledgement = async (filename) => {
   console.info(`Processing ${filename}`)
   const buffer = await blobStorage.downloadPaymentFile(filename)
-  const parseSuccess = await parseAcknowledgementFile(buffer)
-
-  if (parseSuccess) {
+  try {
+    const messages = await parseAcknowledgementFile(buffer)
+    await sendAcknowledgementMessages(messages)
     await blobStorage.archivePaymentFile(filename, filename)
-  } else {
-    console.log(`Quarantining ${filename}, failed to parse file`)
+  } catch (err) {
+    console.error(`Quarantining ${filename}, failed to parse file`, err)
     await blobStorage.quarantinePaymentFile(filename, filename)
   }
 }
