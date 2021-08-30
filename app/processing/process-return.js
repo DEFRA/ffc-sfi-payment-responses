@@ -4,9 +4,9 @@ const parseReturnFile = require('./parse-return-file')
 
 const processReturn = async (filename) => {
   console.info(`Processing ${filename}`)
-  const buffer = await blobStorage.downloadFile(filename)
+  const content = await blobStorage.downloadFile(filename)
   try {
-    const messages = await parseReturnFile(buffer)
+    const messages = await parseReturnFile(content)
     if (messages.length) {
       await sendReturnMessages(messages)
     }

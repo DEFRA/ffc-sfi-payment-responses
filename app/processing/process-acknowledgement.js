@@ -4,9 +4,9 @@ const parseAcknowledgementFile = require('./parse-acknowledgement-file')
 
 const processAcknowledgement = async (filename) => {
   console.info(`Processing ${filename}`)
-  const buffer = await blobStorage.downloadFile(filename)
+  const content = await blobStorage.downloadFile(filename)
   try {
-    const messages = await parseAcknowledgementFile(buffer)
+    const messages = await parseAcknowledgementFile(content)
     if (messages.length) {
       await sendAcknowledgementMessages(messages)
     }
