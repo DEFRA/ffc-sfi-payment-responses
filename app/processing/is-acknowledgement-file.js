@@ -1,5 +1,5 @@
 const isAcknowledgementFile = (filename) => {
-  return true
+  return /^.*Ack\.xml$/.test(filename)
 }
 
 module.exports = isAcknowledgementFile

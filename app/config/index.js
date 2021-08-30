@@ -5,7 +5,7 @@ const storageConfig = require('./storage-config')
 // Define config schema
 const schema = Joi.object({
   env: Joi.string().valid('development', 'test', 'production').default('development'),
-  processingInterval: Joi.number().default(1000)
+  processingInterval: Joi.number().default(10000)
 })
 
 // Build config
