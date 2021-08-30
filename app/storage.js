@@ -42,7 +42,7 @@ const getInboundFileList = async () => {
   return fileList
 }
 
-const downloadPaymentFile = async (filename) => {
+const downloadFile = async (filename) => {
   const blob = await getBlob(inboundContainer, filename)
   return blob.downloadToBuffer()
 }
@@ -61,18 +61,18 @@ const moveFile = async (sourceContainer, destinationContainer, sourceFilename, d
   return false
 }
 
-const archivePaymentFile = (filename, archiveFilename) => {
+const archiveFile = (filename, archiveFilename) => {
   return moveFile(inboundContainer, archiveContainer, filename, archiveFilename)
 }
 
-const quarantinePaymentFile = (filename, quarantineFilename) => {
+const quarantineFile = (filename, quarantineFilename) => {
   return moveFile(inboundContainer, quarantineContainer, filename, quarantineFilename)
 }
 
 module.exports = {
   getInboundFileList,
-  downloadPaymentFile,
-  archivePaymentFile,
-  quarantinePaymentFile,
+  downloadFile,
+  archiveFile,
+  quarantineFile,
   blobServiceClient
 }
