@@ -7,6 +7,7 @@ const processReturn = async (filename) => {
   const content = await blobStorage.downloadFile(filename)
   try {
     const messages = await parseReturnFile(content)
+    console.log(messages)
     if (messages.length) {
       await sendReturnMessages(messages)
     }
