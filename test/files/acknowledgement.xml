@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Envelope>
+  <Header>
+    <FileName>MOCK_0001_AP_20210826105023 (SITI).csv</FileName>
+    <Count>4</Count>
+    <Succeeded>4</Succeeded>
+    <Failed>0</Failed>
+    <JournalNum>JN12345678</JournalNum>
+    <Posting>N/A</Posting>
+    <Validation>PASS</Validation>
+  </Header>
+  <Lines>
+    <Line>
+      <SupplierID>1234567890</SupplierID>
+      <MessageId>{CF6BCCF9-B7E8-49E2-B78B-5A2D2652BF56}</MessageId>
+      <Success>TRUE</Success>
+      <Invoice>S123456789A123456V001</Invoice>
+    </Line>
+    <Line>
+      <SupplierID>1234567891</SupplierID>
+      <MessageId>{E37B1710-E84A-40D2-BAB2-8AF580512049}</MessageId>
+      <Success>TRUE</Success>
+      <Invoice>S123456789B123456V001</Invoice>
+    </Line>
+    <Line>
+      <SupplierID>1234567892</SupplierID>
+      <MessageId>{62BB6313-4155-475B-A14A-B268AB1DA517}</MessageId>
+      <Success>TRUE</Success>
+      <Invoice>S123456789C123456V001</Invoice>
+    </Line>
+    <Line>
+      <SupplierID>1234567893</SupplierID>
+      <MessageId>{37BD48E3-C94E-4617-8A0F-E9542AF48A82}</MessageId>
+      <Success>TRUE</Success>
+      <Invoice>S123456789D123456V001</Invoice>
+    </Line>
+  </Lines>
+</Envelope>
