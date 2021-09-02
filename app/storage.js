@@ -44,22 +44,8 @@ const getInboundFileList = async () => {
 
 const downloadFile = async (filename) => {
   const blob = await getBlob(inboundContainer, filename)
-  const downloadResponse = await blob.download()
-  const downloaded = await streamToBuffer(downloadResponse.readableStreamBody)
+  const downloaded = await blob.downloadToBuffer()
   return downloaded.toString()
-}
-
-const streamToBuffer = async (readableStream) => {
-  return new Promise((resolve, reject) => {
-    const chunks = []
-    readableStream.on('data', (data) => {
-      chunks.push(data instanceof Buffer ? data : Buffer.from(data))
-    })
-    readableStream.on('end', () => {
-      resolve(Buffer.concat(chunks))
-    })
-    readableStream.on('error', reject)
-  })
 }
 
 // Copies blob from one container to another container and deletes blob from original container
