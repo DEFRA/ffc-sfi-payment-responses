@@ -35,9 +35,9 @@ container:
   azureStorageAccountName: sfipayments
   azureStorageConnectionString: dummy
   azureStorageUseConnectionString: false
-  inboundContainer: ffc-sfi-payment-responses-inbound
-  archiveContainer: ffc-sfi-payment-submission-archive
-  quarantineContainer: ffc-sfi-payment-submission-quarantine
+  inboundContainer: payment-responses-inbound
+  archiveContainer: payment-responses-archive
+  quarantineContainer: payment-responses-quarantine
 
 aadPodIdentity: true
 
