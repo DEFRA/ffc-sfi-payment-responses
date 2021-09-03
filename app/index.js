@@ -1,13 +1,6 @@
-const server = require('./server')
+require('./insights').setup()
+const processing = require('./processing')
 
-const init = async () => {
-  await server.start()
-  console.log('Server running on %s', server.info.uri)
-}
-
-process.on('unhandledRejection', (err) => {
-  console.log(err)
-  process.exit(1)
-})
-
-init()
+module.exports = (async function startService () {
+  await processing.start()
+}())

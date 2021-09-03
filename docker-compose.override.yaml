@@ -10,8 +10,18 @@ services:
     image: ffc-sfi-payment-responses-development
     container_name: ffc-sfi-payment-responses-development
     ports:
-      - "3000:3000"
-      - "9229:9229"
+      - "9243:9229"
     volumes:
       - ./app/:/home/node/app/
       - ./package.json:/home/node/package.json
+    environment:
+      AZURE_STORAGE_CONNECTION_STRING: DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://ffc-sfi-payment-responses-azurite:10000/devstoreaccount1;
+
+  ffc-sfi-payment-responses-azurite:
+    volumes:
+      - azurite_data:/data
+    ports:
+      - "10002:10000"
+
+volumes:
+  azurite_data:
