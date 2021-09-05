@@ -10,7 +10,7 @@ services:
     image: ffc-sfi-payment-responses-development
     container_name: ffc-sfi-payment-responses-development
     ports:
-      - "9243:9229"
+      - "9244:9229"
     volumes:
       - ./app/:/home/node/app/
       - ./package.json:/home/node/package.json
