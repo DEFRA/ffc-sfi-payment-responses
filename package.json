@@ -1,6 +1,6 @@
 {
   "name": "ffc-sfi-payment-responses",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "FFC SFI payment response processing",
   "homepage": "https://github.com/DEFRA/ffc-sfi-payment-responses",
   "main": "app/index.js",
