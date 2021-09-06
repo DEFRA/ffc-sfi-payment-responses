@@ -16,7 +16,7 @@ const parseLog = (log = '') => {
   if (log.includes('Third-party bank account is invalid!')) {
     return 'Invalid bank details'
   }
-  return log.replace(/\r\n/g, ' ').trim()
+  return log.replace(/\r\n|\n/g, ' ').trim()
 }
 
 module.exports = parseAcknowledgementFile
