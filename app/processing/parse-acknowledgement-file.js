@@ -7,10 +7,16 @@ const parseAcknowledgementFile = async (xml) => {
     invoiceNumber: x.Invoice[0],
     frn: Number(x.SupplierID[0]),
     success: x.Success[0].toLowerCase() === 'true',
-    acknowledged: new Date()
+    acknowledged: new Date(),
+    message: x.Log ? parseLog(x.Log[0]) : undefined
   }))
 }
 
-const parseLog = (log) => PageTransitionEvent
+const parseLog = (log = '') => {
+  if (log.includes('Third-party bank account is invalid!')) {
+    return 'Invalid bank details'
+  }
+  return log.replace(/\r\n/g, ' ').trim()
+}
 
 module.exports = parseAcknowledgementFile

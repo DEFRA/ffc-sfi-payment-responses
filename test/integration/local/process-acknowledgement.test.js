@@ -57,6 +57,18 @@ describe('process acknowledgement', () => {
     expect(mockSendBatchMessages.mock.calls[0][0][0].body.success).toBe(true)
   })
 
+  test('sends failure message for invalid bank details', async () => {
+    await processing.start()
+    expect(mockSendBatchMessages.mock.calls[0][0][3].body.success).toBe(false)
+    expect(mockSendBatchMessages.mock.calls[0][0][3].body.message).toBe('Invalid bank details')
+  })
+
+  test('sends failure message for unknown failure', async () => {
+    await processing.start()
+    expect(mockSendBatchMessages.mock.calls[0][0][2].body.success).toBe(false)
+    expect(mockSendBatchMessages.mock.calls[0][0][2].body.message).toBe('Journal JN12345678 has been created Validation failed Line : 21.')
+  })
+
   test('archives file on success', async () => {
     await processing.start()
     const fileList = []
