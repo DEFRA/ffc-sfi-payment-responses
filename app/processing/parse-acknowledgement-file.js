@@ -11,4 +11,6 @@ const parseAcknowledgementFile = async (xml) => {
   }))
 }
 
+const parseLog = (log) => PageTransitionEvent
+
 module.exports = parseAcknowledgementFile
