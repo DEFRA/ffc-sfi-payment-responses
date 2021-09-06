@@ -5,11 +5,8 @@ let blobServiceClient
 let containersInitialised
 
 if (config.useConnectionStr) {
-  console.log('Using connection string for BlobServiceClient')
-  console.log(config.connectionStr)
   blobServiceClient = BlobServiceClient.fromConnectionString(config.connectionStr)
 } else {
-  console.log('Using DefaultAzureCredential for BlobServiceClient')
   const uri = `https://${config.storageAccount}.blob.core.windows.net`
   blobServiceClient = new BlobServiceClient(uri, new DefaultAzureCredential())
 }
@@ -19,7 +16,6 @@ const archiveContainer = blobServiceClient.getContainerClient(config.archiveCont
 const quarantineContainer = blobServiceClient.getContainerClient(config.quarantineContainer)
 
 const initialiseContainers = async () => {
-  console.log('Making sure blob containers exist')
   await inboundContainer.createIfNotExists()
   await archiveContainer.createIfNotExists()
   await quarantineContainer.createIfNotExists()
