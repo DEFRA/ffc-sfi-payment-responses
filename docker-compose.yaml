@@ -7,7 +7,7 @@ services:
       target: production
     image: ffc-sfi-payment-responses
     container_name: ffc-sfi-payment-responses
-    depends_on: 
+    depends_on:
       - ffc-sfi-payment-responses-azurite
     environment:
       APPINSIGHTS_CLOUDROLE: ffc-sfi-payment-responses-local
