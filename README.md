@@ -13,7 +13,7 @@ Optional:
 - Kubernetes
 - Helm
 
-### Azure Service Bus
+## Azure Service Bus
 
 This service depends on a valid Azure Service Bus connection string for
 asynchronous communication.  The following environment variables need to be set
@@ -34,6 +34,48 @@ and
 | MESSAGE_QUEUE_PASSWORD | Azure Service Bus SAS policy key |
 | MESSAGE_QUEUE_USER     | Azure Service Bus SAS policy name, e.g. `RootManageSharedAccessKey` |
 | PAYMENT_TOPIC_ADDRESS |  |
+
+### Example messages
+#### Acknowledgment
+
+##### Success
+
+```
+{
+  "invoiceNumber": "SFI12345678",
+  "frn": 1234567890,
+  "success": "true",
+  "acknowledged": "Fri Jan 21 2022 10:38:44 GMT+0000 (Greenwich Mean Time)"
+}
+```
+
+##### Failure
+
+```
+{
+  "invoiceNumber": "S123456789A123456V001",
+  "frn": 1234567890,
+  "success": "false",
+  "acknowledged": "Fri Jan 21 2022 10:38:44 GMT+0000 (Greenwich Mean Time)",
+  "message": "Journal JN12345678 has been created Validation failed Line : 21."
+}
+```
+
+#### Return
+
+```
+{
+  "sourceSystem": "SITIAgri",
+  "invoiceNumber": "S123456789A123456V001",
+  "frn": 1234567890,
+  "postedDate": "Fri Jan 21 2022 10:38:44 GMT+0000 (Greenwich Mean Time)",
+  "currency": row[5] === 'S' ? 'GBP' : row[5],
+  "value": 10000,
+  "settlementDate": "Fri Jan 21 2022 10:38:44 GMT+0000 (Greenwich Mean Time)",
+  "reference": PY1234567,
+  "settled": true
+}
+```
 
 ## Running the application
 
