@@ -1,8 +1,8 @@
 environment: development
-name: ffc-sfi-payment-responses
-namespace: ffc-sfi
-workstream: ffc-sfi
-image: ffc-sfi-payment-responses
+name: ffc-pay-responses
+namespace: ffc-pay
+workstream: ffc-pay
+image: ffc-pay-responses
 
 labels:
   component: service
@@ -11,10 +11,10 @@ appInsights:
   key:
 
 containerConfigMap:
-  name: ffc-sfi-payment-responses-config-map
+  name: ffc-pay-responses-config-map
 
 containerSecret:
-  name: ffc-sfi-payment-responses-container-secret
+  name: ffc-pay-responses-container-secret
   type: Opaque
 
 deployment:
@@ -30,9 +30,9 @@ container:
   limitMemory: 180Mi
   limitCpu: 120m
   messageQueueHost: namespace.servicebus.windows.net
-  acknowledgementTopicAddress: ffc-sfi-payment-acknowledgement
-  returnTopicAddress: ffc-sfi-payment-return
-  azureStorageAccountName: sfipayments
+  acknowledgementTopicAddress: ffc-pay-acknowledge
+  returnTopicAddress: ffc-pay-return
+  azureStorageAccountName: ffcpay
   azureStorageConnectionString: dummy
   azureStorageUseConnectionString: false
   inboundContainer: payment-responses-inbound

@@ -1,25 +1,25 @@
 version: '3.8'
 
 services:
-  ffc-sfi-payment-responses:
+  ffc-pay-responses:
     build:
       context: .
       target: production
-    image: ffc-sfi-payment-responses
-    container_name: ffc-sfi-payment-responses
+    image: ffc-pay-responses
+    container_name: ffc-pay-responses
     depends_on:
-      - ffc-sfi-payment-responses-azurite
+      - ffc-pay-responses-azurite
     environment:
-      APPINSIGHTS_CLOUDROLE: ffc-sfi-payment-responses-local
+      APPINSIGHTS_CLOUDROLE: ffc-pay-responses-local
       APPINSIGHTS_INSTRUMENTATIONKEY: ${APPINSIGHTS_INSTRUMENTATIONKEY}
-      MESSAGE_QUEUE_HOST: ${MESSAGE_QUEUE_HOST:-notset}
-      MESSAGE_QUEUE_PASSWORD: ${MESSAGE_QUEUE_PASSWORD:-notset}
-      MESSAGE_QUEUE_USER: ${MESSAGE_QUEUE_USER:-notset}
-      ACKNOWLEDGEMENT_TOPIC_ADDRESS: ${ACKNOWLEDGEMENT_TOPIC_ADDRESS:-notset}
-      RETURN_TOPIC_ADDRESS: ${RETURN_TOPIC_ADDRESS:-notset}
+      MESSAGE_QUEUE_HOST: ${MESSAGE_QUEUE_HOST}
+      MESSAGE_QUEUE_PASSWORD: ${MESSAGE_QUEUE_PASSWORD}
+      MESSAGE_QUEUE_USER: ${MESSAGE_QUEUE_USER}
+      ACKNOWLEDGEMENT_TOPIC_ADDRESS: ${ACKNOWLEDGEMENT_TOPIC_ADDRESS:-ffc-pay-acknowledge}${MESSAGE_QUEUE_SUFFIX}
+      RETURN_TOPIC_ADDRESS: ${RETURN_TOPIC_ADDRESS:-ffc-pay-return}${MESSAGE_QUEUE_SUFFIX}
       AZURE_STORAGE_ACCOUNT_NAME: ${AZURE_STORAGE_ACCOUNT_NAME:-devstoreaccount1}
       AZURE_STORAGE_USE_CONNECTION_STRING: "true"
 
-  ffc-sfi-payment-responses-azurite:
+  ffc-pay-responses-azurite:
     image: mcr.microsoft.com/azure-storage/azurite
     command: "azurite-blob --skipApiVersionCheck --loose --blobHost 0.0.0.0"

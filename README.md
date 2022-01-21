@@ -13,7 +13,7 @@ Optional:
 - Kubernetes
 - Helm
 
-### Azure Service Bus
+## Azure Service Bus
 
 This service depends on a valid Azure Service Bus connection string for
 asynchronous communication.  The following environment variables need to be set
@@ -24,16 +24,58 @@ When deployed into an appropriately configured AKS
 cluster (where [AAD Pod Identity](https://github.com/Azure/aad-pod-identity) is
 configured) the microservice will use AAD Pod Identity through the manifests
 for
-[azure-identity](./helm/ffc-sfi-payment-responses/templates/azure-identity.yaml)
+[azure-identity](./helm/ffc-pay-responses/templates/azure-identity.yaml)
 and
-[azure-identity-binding](./helm/ffc-sfi-payment-responses/templates/azure-identity-binding.yaml).
+[azure-identity-binding](./helm/ffc-pay-responses/templates/azure-identity-binding.yaml).
 
 | Name | Description |
 | ---| --- |
 | MESSAGE_QUEUE_HOST | Azure Service Bus hostname, e.g. `myservicebus.servicebus.windows.net` |
 | MESSAGE_QUEUE_PASSWORD | Azure Service Bus SAS policy key |
 | MESSAGE_QUEUE_USER     | Azure Service Bus SAS policy name, e.g. `RootManageSharedAccessKey` |
-| PAYMENT_TOPIC_ADDRESS |  |
+| MESSAGE_QUEUE_SUFFIX | Developer initials |
+
+### Example messages
+#### Acknowledgment
+
+##### Success
+
+```
+{
+  "invoiceNumber": "SFI12345678",
+  "frn": 1234567890,
+  "success": "true",
+  "acknowledged": "Fri Jan 21 2022 10:38:44 GMT+0000 (Greenwich Mean Time)"
+}
+```
+
+##### Failure
+
+```
+{
+  "invoiceNumber": "S123456789A123456V001",
+  "frn": 1234567890,
+  "success": "false",
+  "acknowledged": "Fri Jan 21 2022 10:38:44 GMT+0000 (Greenwich Mean Time)",
+  "message": "Journal JN12345678 has been created Validation failed Line : 21."
+}
+```
+
+#### Return
+
+```
+{
+  "sourceSystem": "SITIAgri",
+  "invoiceNumber": "S123456789A123456V001",
+  "frn": 1234567890,
+  "postedDate": "Fri Jan 21 2022 10:38:44 GMT+0000 (Greenwich Mean Time)",
+  "currency": row[5] === 'S' ? 'GBP' : row[5],
+  "value": 10000,
+  "settlementDate": "Fri Jan 21 2022 10:38:44 GMT+0000 (Greenwich Mean Time)",
+  "reference": PY1234567,
+  "settled": true
+}
+```
 
 ## Running the application
 
