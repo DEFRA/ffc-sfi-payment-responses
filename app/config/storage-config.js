@@ -4,9 +4,9 @@ const Joi = require('joi')
 const schema = Joi.object({
   connectionStr: Joi.string().when('useConnectionStr', { is: true, then: Joi.required(), otherwise: Joi.allow('').optional() }),
   storageAccount: Joi.string().required(),
-  inboundContainer: Joi.string().default('payment-responses-inbound'),
-  archiveContainer: Joi.string().default('payment-responses-archive'),
-  quarantineContainer: Joi.string().default('payment-responses-quarantine'),
+  inboundContainer: Joi.string().default('dax-inbound'),
+  archiveContainer: Joi.string().default('dax-archive'),
+  quarantineContainer: Joi.string().default('dax-quarantine'),
   useConnectionStr: Joi.boolean().default(false)
 })
 
