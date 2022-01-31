@@ -38,8 +38,8 @@ const getInboundFileList = async () => {
   containersInitialised ?? await initialiseContainers()
 
   const fileList = []
-  for await (const item of container.listBlobsFlat({ prefix: config.inboundFolder })) {
-    fileList.push(item.name)
+  for await (const file of container.listBlobsFlat({ prefix: config.inboundFolder })) {
+    fileList.push(file.name.replace(`${config.inboundFolder}/`, ''))
   }
 
   return fileList

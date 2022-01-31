@@ -15,25 +15,17 @@ const { BlobServiceClient } = require('@azure/storage-blob')
 const config = require('../../../app/config')
 const path = require('path')
 let blobServiceClient
-let inboundContainer
-let archiveContainer
-let quarantineContainer
+let container
 const TEST_FILE = path.resolve(__dirname, '../../files/acknowledgement.xml')
 const TEST_INVALID_FILE = path.resolve(__dirname, '../../files/broken-acknowledgement.xml')
 
 describe('process acknowledgement', () => {
   beforeAll(async () => {
     blobServiceClient = BlobServiceClient.fromConnectionString(config.storageConfig.connectionStr)
-    inboundContainer = blobServiceClient.getContainerClient(config.storageConfig.inboundContainer)
-    archiveContainer = blobServiceClient.getContainerClient(config.storageConfig.archiveContainer)
-    quarantineContainer = blobServiceClient.getContainerClient(config.storageConfig.quarantineContainer)
-    await inboundContainer.deleteIfExists()
-    await archiveContainer.deleteIfExists()
-    await quarantineContainer.deleteIfExists()
-    await inboundContainer.createIfNotExists()
-    await archiveContainer.createIfNotExists()
-    await quarantineContainer.createIfNotExists()
-    const blockBlobClient = inboundContainer.getBlockBlobClient('mock_0001_Ack.xml')
+    container = blobServiceClient.getContainerClient(config.storageConfig.container)
+    await container.deleteIfExists()
+    await container.createIfNotExists()
+    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/mock_0001_Ack.xml`)
     await blockBlobClient.uploadFile(TEST_FILE)
   })
 
@@ -72,31 +64,31 @@ describe('process acknowledgement', () => {
   test('archives file on success', async () => {
     await processing.start()
     const fileList = []
-    for await (const item of archiveContainer.listBlobsFlat()) {
+    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.archiveFolder })) {
       fileList.push(item.name)
     }
-    expect(fileList.filter(x => x === 'mock_0001_Ack.xml').length).toBe(1)
+    expect(fileList.filter(x => x === `${config.storageConfig.archiveFolder}/mock_0001_Ack.xml`).length).toBe(1)
   })
 
   test('ignores unrelated file', async () => {
-    const blockBlobClient = inboundContainer.getBlockBlobClient('ignore me.xml')
+    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/ignore me.xml`)
     await blockBlobClient.uploadFile(TEST_FILE)
     await processing.start()
     const fileList = []
-    for await (const item of inboundContainer.listBlobsFlat()) {
+    for await (const item of container.listBlobsFlat()) {
       fileList.push(item.name)
     }
-    expect(fileList.filter(x => x === 'ignore me.xml').length).toBe(1)
+    expect(fileList.filter(x => x === `${config.storageConfig.inboundFolder}/ignore me.xml`).length).toBe(1)
   })
 
   test('quarantines invalid file', async () => {
-    const blockBlobClient = inboundContainer.getBlockBlobClient('mock_0001_Ack.xml')
+    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/mock_0001_Ack.xml`)
     await blockBlobClient.uploadFile(TEST_INVALID_FILE)
     await processing.start()
     const fileList = []
-    for await (const item of quarantineContainer.listBlobsFlat()) {
+    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.quarantineFolder })) {
       fileList.push(item.name)
     }
-    expect(fileList.filter(x => x === 'mock_0001_Ack.xml').length).toBe(1)
+    expect(fileList.filter(x => x === `${config.storageConfig.quarantineFolder}/mock_0001_Ack.xml`).length).toBe(1)
   })
 })
