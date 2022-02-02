@@ -101,6 +101,16 @@ through the Docker Compose
 docker-compose build
 ```
 
+## Azure Storage
+
+This repository polls for files from Azure Blob Storage within a `dax` container.
+
+The following directories are automatically created within this container:
+
+- `inbound` - polling location
+- `archive` - successfully processed files
+- `quarantine` - unsuccessfully processed files
+
 ### Start
 
 Use Docker Compose to run service locally.

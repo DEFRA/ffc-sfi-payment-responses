@@ -35,9 +35,10 @@ container:
   azureStorageAccountName: ffcpay
   azureStorageConnectionString: dummy
   azureStorageUseConnectionString: false
-  inboundContainer: payment-responses-inbound
-  archiveContainer: payment-responses-archive
-  quarantineContainer: payment-responses-quarantine
+  storageContainer: dax
+  inboundFolder: inbound
+  archiveFolder: archive
+  quarantineFolder: quarantine
 
 aadPodIdentity: true
 

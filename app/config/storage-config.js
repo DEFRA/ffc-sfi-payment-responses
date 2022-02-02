@@ -4,9 +4,10 @@ const Joi = require('joi')
 const schema = Joi.object({
   connectionStr: Joi.string().when('useConnectionStr', { is: true, then: Joi.required(), otherwise: Joi.allow('').optional() }),
   storageAccount: Joi.string().required(),
-  inboundContainer: Joi.string().default('payment-responses-inbound'),
-  archiveContainer: Joi.string().default('payment-responses-archive'),
-  quarantineContainer: Joi.string().default('payment-responses-quarantine'),
+  container: Joi.string().default('dax'),
+  inboundFolder: Joi.string().default('inbound'),
+  archiveFolder: Joi.string().default('archive'),
+  quarantineFolder: Joi.string().default('quarantine'),
   useConnectionStr: Joi.boolean().default(false)
 })
 
@@ -14,9 +15,10 @@ const schema = Joi.object({
 const config = {
   connectionStr: process.env.AZURE_STORAGE_CONNECTION_STRING,
   storageAccount: process.env.AZURE_STORAGE_ACCOUNT_NAME,
-  inboundContainer: process.env.AZURE_STORAGE_INBOUND,
-  archiveContainer: process.env.AZURE_STORAGE_ARCHIVE,
-  quarantineContainer: process.env.AZURE_STORAGE_QUARANTINE,
+  container: process.env.AZURE_STORAGE_CONTAINER,
+  inboundFolder: process.env.AZURE_STORAGE_INBOUND,
+  archiveFolder: process.env.AZURE_STORAGE_ARCHIVE,
+  quarantineFolder: process.env.AZURE_STORAGE_QUARANTINE,
   useConnectionStr: process.env.AZURE_STORAGE_USE_CONNECTION_STRING === 'true'
 }
 

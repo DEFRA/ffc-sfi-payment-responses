@@ -9,7 +9,8 @@ data:
   AZURE_STORAGE_ACCOUNT_NAME: {{ quote .Values.container.azureStorageAccountName }}
   AZURE_STORAGE_CONNECTION_STRING: {{ quote .Values.container.azureStorageConnectionString }}
   AZURE_STORAGE_USE_CONNECTION_STRING: {{ quote .Values.container.azureStorageUseConnectionString }}
-  AZURE_STORAGE_INBOUND: {{ quote .Values.container.inboundContainer }}
-  AZURE_STORAGE_ARCHIVE: {{ quote .Values.container.archiveContainer }}
-  AZURE_STORAGE_QUARANTINE: {{ quote .Values.container.quarantineContainer }}
+  AZURE_STORAGE_CONTAINER: {{ quote .Values.container.storageContainer }}
+  AZURE_STORAGE_INBOUND: {{ quote .Values.container.inboundFolder }}
+  AZURE_STORAGE_ARCHIVE: {{ quote .Values.container.archiveFolder }}
+  AZURE_STORAGE_QUARANTINE: {{ quote .Values.container.quarantineFolder }}
 {{- end -}}
