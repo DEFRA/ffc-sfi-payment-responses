@@ -29,7 +29,7 @@ components:
             type: boolean
             description: Whether request was successfully loaded by DAX
           acknowledged:
-            type: date
+            type: string
             description: Date acknowledged in DAX
           message:
             type: string
@@ -49,7 +49,7 @@ components:
             type: number
             description: Firm Reference Number
           postedDate:
-            type: date
+            type: string
             description: Date posted in DAX
           currency:
             type: string
