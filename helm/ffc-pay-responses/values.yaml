@@ -34,7 +34,8 @@ container:
   returnTopicAddress: ffc-pay-return
   azureStorageAccountName: ffcpay
   azureStorageConnectionString: dummy
-  azureStorageUseConnectionString: false
+  azureStorageUseConnectionString: false  
+  azureStorageCreateContainers: false
   storageContainer: dax
   inboundFolder: inbound
   archiveFolder: archive
