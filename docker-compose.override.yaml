@@ -17,11 +17,15 @@ services:
     environment:
       AZURE_STORAGE_CONNECTION_STRING: DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://ffc-pay-responses-azurite:10000/devstoreaccount1;
 
-  ffc-pay-responses-azurite:
+  ffc-pay-azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    command: "azurite --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0 --loose"
     volumes:
       - azurite_data:/data
     ports:
-      - "10002:10000"
+      - "10000:10000"
+      - "10001:10001"
+      - "10002:10002"
 
 volumes:
   azurite_data:
