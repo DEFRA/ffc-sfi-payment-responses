@@ -68,7 +68,6 @@ and
   "sourceSystem": "SITIAgri",
   "invoiceNumber": "S123456789A123456V001",
   "frn": 1234567890,
-  "postedDate": "Fri Jan 21 2022 10:38:44 GMT+0000 (Greenwich Mean Time)",
   "currency": "GBP",
   "value": 10000,
   "settlementDate": "Fri Jan 21 2022 10:38:44 GMT+0000 (Greenwich Mean Time)",
