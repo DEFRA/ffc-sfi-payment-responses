@@ -48,9 +48,6 @@ components:
           frn:
             type: number
             description: Firm Reference Number
-          postedDate:
-            type: string
-            description: Date posted in DAX
           currency:
             type: string
             description: Currency request settled in
