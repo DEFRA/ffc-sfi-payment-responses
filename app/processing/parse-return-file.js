@@ -2,7 +2,7 @@ const { convertToPence } = require('../currency-convert')
 const moment = require('moment')
 
 const parseReturnFile = async (content) => {
-  const csv = content.trim().split('\r\n')
+  const csv = content.trim().split(/\r?\n/)
   return csv.map(x => {
     const row = x.split(',')
     return {
