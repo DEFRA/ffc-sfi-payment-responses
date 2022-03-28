@@ -31,7 +31,7 @@ describe('process acknowledgement', () => {
 
   test('sends all returns', async () => {
     await processing.start()
-    expect(mockSendBatchMessages.mock.calls[0][0].length).toBe(4)
+    expect(mockSendBatchMessages.mock.calls[0][0].length).toBe(6)
   })
 
   test('sends invoice number', async () => {
@@ -39,9 +39,19 @@ describe('process acknowledgement', () => {
     expect(mockSendBatchMessages.mock.calls[0][0][0].body.invoiceNumber).toBe('S123456789A123456V001')
   })
 
-  test('sends settled', async () => {
+  test('sends settled if D', async () => {
     await processing.start()
     expect(mockSendBatchMessages.mock.calls[0][0][0].body.settled).toBe(true)
+  })
+
+  test('sends settled if E with reference', async () => {
+    await processing.start()
+    expect(mockSendBatchMessages.mock.calls[0][0][4].body.settled).toBe(true)
+  })
+
+  test('sends unsettled if E without reference', async () => {
+    await processing.start()
+    expect(mockSendBatchMessages.mock.calls[0][0][5].body.settled).toBe(false)
   })
 
   test('archives file on success', async () => {
