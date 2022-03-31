@@ -34,5 +34,6 @@ value.isProd = value.env === 'production'
 value.acknowledgementTopic = mqConfig.acknowledgementTopic
 value.returnTopic = mqConfig.returnTopic
 value.storageConfig = storageConfig
+value.eventTopic = mqConfig.eventTopic
 
 module.exports = value

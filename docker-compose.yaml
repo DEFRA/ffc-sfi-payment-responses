@@ -20,6 +20,7 @@ services:
       AZURE_STORAGE_ACCOUNT_NAME: ${AZURE_STORAGE_ACCOUNT_NAME:-devstoreaccount1}
       AZURE_STORAGE_USE_CONNECTION_STRING: "true"
       AZURE_STORAGE_CREATE_CONTAINERS: "true"
+      EVENT_TOPIC_ADDRESS: ${EVENT_TOPIC_ADDRESS:-ffc-pay-event}${MESSAGE_QUEUE_SUFFIX}
 
   ffc-pay-responses-azurite:
     image: mcr.microsoft.com/azure-storage/azurite
