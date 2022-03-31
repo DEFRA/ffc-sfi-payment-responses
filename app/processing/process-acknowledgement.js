@@ -2,6 +2,7 @@ const { sendAcknowledgementMessages } = require('../messaging')
 const blobStorage = require('../storage')
 const parseAcknowledgementFile = require('./parse-acknowledgement-file')
 const util = require('util')
+const { sendProcessAckowledgementEvent } = require('../event')
 
 const processAcknowledgement = async (filename) => {
   console.info(`Processing ${filename}`)
@@ -13,6 +14,7 @@ const processAcknowledgement = async (filename) => {
       console.log('Acknowledgements published:', util.inspect(messages, false, null, true))
     }
     await blobStorage.archiveFile(filename, filename)
+    await sendProcessAckowledgementEvent()
   } catch (err) {
     console.error(`Quarantining ${filename}, failed to parse file`, err)
     await blobStorage.quarantineFile(filename, filename)
