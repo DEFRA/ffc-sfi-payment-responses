@@ -22,5 +22,5 @@ services:
       AZURE_STORAGE_CREATE_CONTAINERS: "true"
 
   ffc-pay-responses-azurite:
-    image: mcr.microsoft.com/azure-storage/azurite
+    image: mcr.microsoft.com/azure-storage/azurite:3.17.1
     command: "azurite-blob --skipApiVersionCheck --loose --blobHost 0.0.0.0"
