@@ -5,6 +5,7 @@ const processPaymentFile = async (filename) => {
   console.info(`Processing ${filename}`)
   try {
     await blobStorage.deleteFile(filename)
+    console.log('Payment File sent from DAX, has been deleted :', filename)
   } catch (err) {
     console.error(`Failed to delete payment file: ${filename}`, err)
   }
