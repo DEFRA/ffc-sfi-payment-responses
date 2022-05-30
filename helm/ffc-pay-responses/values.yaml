@@ -31,7 +31,7 @@ container:
   limitMemory: 180Mi
   limitCpu: 120m
   messageQueueHost: namespace.servicebus.windows.net
-  acknowledgementTopicAddress: ffc-pay-acknowledge
+  acknowledgementTopicAddress: ffc-pay-acknowledgement
   returnTopicAddress: ffc-pay-return
   azureStorageAccountName: ffcpay
   azureStorageConnectionString: dummy
