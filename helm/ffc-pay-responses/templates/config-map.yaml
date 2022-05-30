@@ -5,8 +5,8 @@ data:
   APPINSIGHTS_CLOUDROLE: {{ quote .Values.name }}
   MESSAGE_QUEUE_HOST: {{ quote .Values.container.messageQueueHost }}
   {{- if and (.Values.environmentCode) (not .Values.pr) }}
-  ACKNOWLEDGEMENT_TOPIC_ADDRESS: {{ quote .Values.container.acknowledgementTopicAddress }}-{{ .Values.environmentCode }}
-  RETURN_TOPIC_ADDRESS: {{ quote .Values.container.returnTopicAddress }}-{{ .Values.environmentCode }}
+  ACKNOWLEDGEMENT_TOPIC_ADDRESS: {{ .Values.container.acknowledgementTopicAddress }}-{{ .Values.environmentCode }}
+  RETURN_TOPIC_ADDRESS: {{ .Values.container.returnTopicAddress }}-{{ .Values.environmentCode }}
   {{ else }}
   ACKNOWLEDGEMENT_TOPIC_ADDRESS: {{ quote .Values.container.acknowledgementTopicAddress }}
   RETURN_TOPIC_ADDRESS: {{ quote .Values.container.returnTopicAddress }}
