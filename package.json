@@ -16,7 +16,8 @@
   "author": "Defra",
   "contributors": [
     "John Watson john.watson2@rpa.gov.uk",
-    "Steve Dickinson steve.dickinson@defra.gov.uk"
+    "Steve Dickinson steve.dickinson@defra.gov.uk",
+    "Marc Templeton m.templeton@kainos.com"
   ],
   "license": "OGL-UK-3.0",
   "dependencies": {
@@ -24,6 +25,7 @@
     "@azure/storage-blob": "^12.8.0",
     "applicationinsights": "^1.8.2",
     "ffc-messaging": "^2.4.2",
+    "ffc-pay-event-publisher": "^1.1.4",
     "log-timestamp": "^0.3.0",
     "moment": "^2.29.1",
     "xml2js": "^0.4.23"
