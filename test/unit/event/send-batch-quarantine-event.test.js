@@ -8,6 +8,7 @@ const sendResponsesQuarantineEvent = require('../../../app/event/send-responses-
 
 const filename = 'SITIELM0001_AP_20210812105407541.dat'
 const message = `Quarantined ${filename}`
+const error = 'sommmit'
 
 let event
 
@@ -26,12 +27,12 @@ describe('Sending event for quarantined SITI payment file', () => {
   })
 
   test('should call uuidv4 when a filename is received', async () => {
-    await sendResponsesQuarantineEvent(filename)
+    await sendResponsesQuarantineEvent(filename, error)
     expect(uuidv4).toHaveBeenCalled()
   })
 
   test('should call raiseEvent when a filename is received', async () => {
-    await sendResponsesQuarantineEvent(filename)
+    await sendResponsesQuarantineEvent(filename, error)
     expect(raiseEvent).toHaveBeenCalled()
   })
 
@@ -40,10 +41,13 @@ describe('Sending event for quarantined SITI payment file', () => {
       ...event,
       id: uuidv4(),
       message,
-      data: { filename }
+      data: {
+        filename,
+        error
+      }
     }
 
-    await sendResponsesQuarantineEvent(filename)
+    await sendResponsesQuarantineEvent(filename, error)
     expect(raiseEvent).toHaveBeenCalledWith(event, 'error')
   })
 })

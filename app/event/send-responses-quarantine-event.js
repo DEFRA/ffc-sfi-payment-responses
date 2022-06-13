@@ -1,13 +1,16 @@
 const { v4: uuidv4 } = require('uuid')
 const raiseEvent = require('./raise-event')
 
-const sendResponsesQuarantineEvent = async (filename) => {
+const sendResponsesQuarantineEvent = async (filename, error) => {
   const event = {
     id: uuidv4(),
     name: 'responses-processing-quarantine-error',
     type: 'error',
     message: `Quarantined ${filename}`,
-    data: { filename }
+    data: {
+      filename,
+      error
+    }
   }
   await raiseEvent(event, 'error')
 }
