@@ -30,17 +30,17 @@ describe('Sending event for quarantined DAX response file', () => {
     jest.resetAllMocks()
   })
 
-  test('should call uuidv4 when a filename is received', async () => {
+  test('should call uuidv4 when a filename and error are received', async () => {
     await sendResponsesQuarantineEvent(filename, error)
     expect(uuidv4).toHaveBeenCalled()
   })
 
-  test('should call raiseEvent when a filename is received', async () => {
+  test('should call raiseEvent when a filename and error are received', async () => {
     await sendResponsesQuarantineEvent(filename, error)
     expect(raiseEvent).toHaveBeenCalled()
   })
 
-  test('should call raiseEvent with event and "error" when a filename is received', async () => {
+  test('should call raiseEvent with event and "error" when a filename and error are received', async () => {
     event = {
       ...event,
       id: uuidv4()

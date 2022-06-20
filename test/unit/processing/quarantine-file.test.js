@@ -24,7 +24,7 @@ describe('quarantine file', () => {
     expect(blobStorage.quarantineFile).toHaveBeenCalledTimes(1)
   })
 
-  test('should call blobStorage.quarantineFile with filename and filename when a filename is received', async () => {
+  test('should call blobStorage.quarantineFile with filename and filename when a filename and error are received', async () => {
     await quarantineFile(filename, error)
     expect(blobStorage.quarantineFile).toHaveBeenCalledWith(filename, filename)
   })
@@ -39,7 +39,7 @@ describe('quarantine file', () => {
     expect(sendResponsesQuarantineEvent).toHaveBeenCalledTimes(1)
   })
 
-  test('should call sendResponsesQuarantineEvent with filename and error when a filename is received', async () => {
+  test('should call sendResponsesQuarantineEvent with filename and error when a filename and error are received', async () => {
     await quarantineFile(filename, error)
     expect(sendResponsesQuarantineEvent).toHaveBeenCalledWith(filename, error)
   })
