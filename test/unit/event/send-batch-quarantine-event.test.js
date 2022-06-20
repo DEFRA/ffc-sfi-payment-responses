@@ -7,7 +7,7 @@ const raiseEvent = require('../../../app/event/raise-event')
 const sendResponsesQuarantineEvent = require('../../../app/event/send-responses-quarantine-event')
 
 const filename = 'SITIELM0001_AP_20210812105407541.dat'
-const error = 'sommmit'
+const error = 'Error: Unclosed root tag'
 
 let event
 
