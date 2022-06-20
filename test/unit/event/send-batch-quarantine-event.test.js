@@ -7,18 +7,22 @@ const raiseEvent = require('../../../app/event/raise-event')
 const sendResponsesQuarantineEvent = require('../../../app/event/send-responses-quarantine-event')
 
 const filename = 'SITIELM0001_AP_20210812105407541.dat'
-const message = `Quarantined ${filename}`
 const error = 'sommmit'
 
 let event
 
-describe('Sending event for quarantined SITI payment file', () => {
+describe('Sending event for quarantined DAX response file', () => {
   beforeEach(async () => {
     uuidv4.mockImplementation(() => { '70cb0f07-e0cf-449c-86e8-0344f2c6cc6c' })
 
     event = {
       name: 'responses-processing-quarantine-error',
-      type: 'error'
+      type: 'error',
+      message: `Quarantined ${filename}`,
+      data: {
+        filename,
+        error
+      }
     }
   })
 
@@ -39,12 +43,7 @@ describe('Sending event for quarantined SITI payment file', () => {
   test('should call raiseEvent with event and "error" when a filename is received', async () => {
     event = {
       ...event,
-      id: uuidv4(),
-      message,
-      data: {
-        filename,
-        error
-      }
+      id: uuidv4()
     }
 
     await sendResponsesQuarantineEvent(filename, error)
