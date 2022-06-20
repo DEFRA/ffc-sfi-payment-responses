@@ -33,6 +33,7 @@ container:
   messageQueueHost: namespace.servicebus.windows.net
   acknowledgementTopicAddress: ffc-pay-acknowledgement
   returnTopicAddress: ffc-pay-return
+  eventTopicAddress: ffc-pay-event
   azureStorageAccountName: ffcpay
   azureStorageConnectionString: dummy
   azureStorageUseConnectionString: false  
