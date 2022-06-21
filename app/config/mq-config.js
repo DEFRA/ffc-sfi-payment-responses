@@ -52,8 +52,10 @@ if (mqResult.error) {
 
 const acknowledgementTopic = { ...mqResult.value.messageQueue, ...mqResult.value.acknowledgementTopic }
 const returnTopic = { ...mqResult.value.messageQueue, ...mqResult.value.returnTopic }
+const eventTopic = { ...mqResult.value.messageQueue, ...mqResult.value.eventTopic }
 
 module.exports = {
   acknowledgementTopic,
-  returnTopic
+  returnTopic,
+  eventTopic
 }
