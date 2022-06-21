@@ -29,6 +29,21 @@ describe('quarantine file', () => {
     expect(blobStorage.quarantineFile).toHaveBeenCalledWith(filename, filename)
   })
 
+  test('should call blobStorage.quarantineFile when a filename and no error are received', async () => {
+    await quarantineFile(filename, '')
+    expect(blobStorage.quarantineFile).toHaveBeenCalled()
+  })
+
+  test('should call blobStorage.quarantineFile once when a filename and no error are received', async () => {
+    await quarantineFile(filename, '')
+    expect(blobStorage.quarantineFile).toHaveBeenCalledTimes(1)
+  })
+
+  test('should call blobStorage.quarantineFile with filename and filename when a filename and no error are received', async () => {
+    await quarantineFile(filename, '')
+    expect(blobStorage.quarantineFile).toHaveBeenCalledWith(filename, filename)
+  })
+
   test('should call sendResponsesQuarantineEvent when a filename and error are received', async () => {
     await quarantineFile(filename, error)
     expect(sendResponsesQuarantineEvent).toHaveBeenCalled()
@@ -42,5 +57,32 @@ describe('quarantine file', () => {
   test('should call sendResponsesQuarantineEvent with filename and error when a filename and error are received', async () => {
     await quarantineFile(filename, error)
     expect(sendResponsesQuarantineEvent).toHaveBeenCalledWith(filename, error)
+  })
+
+  test('should call sendResponsesQuarantineEvent when a filename and no error are received', async () => {
+    await quarantineFile(filename, '')
+    expect(sendResponsesQuarantineEvent).toHaveBeenCalled()
+  })
+
+  test('should call sendResponsesQuarantineEvent once when a filename and no error are received', async () => {
+    await quarantineFile(filename, '')
+    expect(sendResponsesQuarantineEvent).toHaveBeenCalledTimes(1)
+  })
+
+  test('should call sendResponsesQuarantineEvent with filename and error when a filename and no error are received', async () => {
+    await quarantineFile(filename, '')
+    expect(sendResponsesQuarantineEvent).toHaveBeenCalledWith(filename, '')
+  })
+
+  test('should return true when blobStorage.quarantineFile returns true', async () => {
+    blobStorage.quarantineFile.mockReturnValue(true)
+    const result = await quarantineFile(filename, error)
+    expect(result).toBe(true)
+  })
+
+  test('should return false when blobStorage.quarantineFile returns false', async () => {
+    blobStorage.quarantineFile.mockReturnValue(false)
+    const result = await quarantineFile(filename, error)
+    expect(result).toBe(false)
   })
 })

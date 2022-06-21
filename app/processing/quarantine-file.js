@@ -3,8 +3,8 @@ const sendResponsesQuarantineEvent = require('../event/send-responses-quarantine
 
 const quarantineFile = async (filename, error) => {
   console.error(`Quarantining ${filename}, failed to parse file`, error)
-  await blobStorage.quarantineFile(filename, filename)
   await sendResponsesQuarantineEvent(filename, error)
+  return blobStorage.quarantineFile(filename, filename)
 }
 
 module.exports = quarantineFile
