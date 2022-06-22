@@ -15,7 +15,7 @@ const processReturn = async (filename) => {
     }
     await blobStorage.archiveFile(filename, filename)
   } catch (err) {
-    await quarantineFile(filename, err)
+    await quarantineFile(filename)
   }
 }
 

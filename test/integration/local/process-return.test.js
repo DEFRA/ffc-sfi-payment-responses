@@ -105,12 +105,30 @@ describe('process acknowledgement', () => {
     expect(fileList.filter(x => x === `${config.storageConfig.quarantineFolder}/mock_0001_Ack.xml`).length).toBe(1)
   })
 
-  test('sends off event for invalid file', async () => {
+  test('calls PublishEvent.sendEvent once when an invalid file is given', async () => {
     const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/mock_0001_Ack.xml`)
     await blockBlobClient.uploadFile(TEST_INVALID_FILE)
 
     await processing.start()
 
     expect(mockSendEvent.mock.calls.length).toBe(1)
+  })
+
+  test('calls PublishEvent.sendEvent with event.name "responses-processing-quarantine-error" when an invalid file is given', async () => {
+    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/mock_0001_Ack.xml`)
+    await blockBlobClient.uploadFile(TEST_INVALID_FILE)
+
+    await processing.start()
+
+    expect(mockSendEvent.mock.calls[0][0].name).toBe('responses-processing-quarantine-error')
+  })
+
+  test('calls PublishEvent.sendEvent with event.properties.status "error" when an invalid file is given', async () => {
+    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/mock_0001_Ack.xml`)
+    await blockBlobClient.uploadFile(TEST_INVALID_FILE)
+
+    await processing.start()
+
+    expect(mockSendEvent.mock.calls[0][0].properties.status).toBe('error')
   })
 })
