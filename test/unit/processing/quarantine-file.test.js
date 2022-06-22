@@ -6,7 +6,7 @@ const sendResponsesQuarantineEvent = require('../../../app/event/send-responses-
 
 const quarantineFile = require('../../../app/processing/quarantine-file')
 
-const filename = 'SITIELM0001_AP_20210812105407541.dat'
+const filename = 'acknowledgement.xml'
 
 describe('quarantine file', () => {
   afterEach(async () => {

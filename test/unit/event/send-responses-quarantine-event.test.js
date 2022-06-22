@@ -13,7 +13,7 @@ describe('Sending event for quarantined DAX response file', () => {
   beforeEach(async () => {
     uuidv4.mockImplementation(() => { '70cb0f07-e0cf-449c-86e8-0344f2c6cc6c' })
 
-    filename = 'SITIELM0001_AP_20210812105407541.dat'
+    filename = 'acknowledgement.xml'
 
     event = {
       name: 'responses-processing-quarantine-error',
