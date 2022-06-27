@@ -1,6 +1,7 @@
 const { sendAcknowledgementMessages } = require('../messaging')
 const blobStorage = require('../storage')
 const parseAcknowledgementFile = require('./parse-acknowledgement-file')
+const quarantineFile = require('./quarantine-file')
 const util = require('util')
 
 const processAcknowledgement = async (filename) => {
@@ -14,8 +15,7 @@ const processAcknowledgement = async (filename) => {
     }
     await blobStorage.archiveFile(filename, filename)
   } catch (err) {
-    console.error(`Quarantining ${filename}, failed to parse file`, err)
-    await blobStorage.quarantineFile(filename, filename)
+    await quarantineFile(filename)
   }
 }
 

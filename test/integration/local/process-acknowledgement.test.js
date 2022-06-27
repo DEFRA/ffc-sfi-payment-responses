@@ -1,3 +1,5 @@
+jest.useFakeTimers()
+
 const mockSendBatchMessages = jest.fn()
 jest.mock('ffc-messaging', () => {
   return {
@@ -9,24 +11,42 @@ jest.mock('ffc-messaging', () => {
     })
   }
 })
-jest.useFakeTimers()
-const processing = require('../../../app/processing')
+
+const mockSendEvent = jest.fn()
+jest.mock('ffc-pay-event-publisher', () => {
+  return {
+    PublishEvent: jest.fn().mockImplementation(() => {
+      return {
+        sendEvent: mockSendEvent
+      }
+    })
+  }
+})
+
 const { BlobServiceClient } = require('@azure/storage-blob')
-const config = require('../../../app/config')
 const path = require('path')
+
+const config = require('../../../app/config')
+const processing = require('../../../app/processing')
+
 let blobServiceClient
 let container
+
 const TEST_FILE = path.resolve(__dirname, '../../files/acknowledgement.xml')
 const TEST_INVALID_FILE = path.resolve(__dirname, '../../files/broken-acknowledgement.xml')
 
 describe('process acknowledgement', () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
     blobServiceClient = BlobServiceClient.fromConnectionString(config.storageConfig.connectionStr)
     container = blobServiceClient.getContainerClient(config.storageConfig.container)
     await container.deleteIfExists()
     await container.createIfNotExists()
     const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/mock_0001_Ack.xml`)
     await blockBlobClient.uploadFile(TEST_FILE)
+  })
+
+  afterEach(async () => {
+    jest.clearAllMocks()
   })
 
   test('sends all acknowledgements', async () => {
@@ -90,5 +110,32 @@ describe('process acknowledgement', () => {
       fileList.push(item.name)
     }
     expect(fileList.filter(x => x === `${config.storageConfig.quarantineFolder}/mock_0001_Ack.xml`).length).toBe(1)
+  })
+
+  test('calls PublishEvent.sendEvent once when an invalid file is given', async () => {
+    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/mock_0001_Ack.xml`)
+    await blockBlobClient.uploadFile(TEST_INVALID_FILE)
+
+    await processing.start()
+
+    expect(mockSendEvent.mock.calls.length).toBe(1)
+  })
+
+  test('calls PublishEvent.sendEvent with event.name "responses-processing-quarantine-error" when an invalid file is given', async () => {
+    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/mock_0001_Ack.xml`)
+    await blockBlobClient.uploadFile(TEST_INVALID_FILE)
+
+    await processing.start()
+
+    expect(mockSendEvent.mock.calls[0][0].name).toBe('responses-processing-quarantine-error')
+  })
+
+  test('calls PublishEvent.sendEvent with event.properties.status "error" when an invalid file is given', async () => {
+    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/mock_0001_Ack.xml`)
+    await blockBlobClient.uploadFile(TEST_INVALID_FILE)
+
+    await processing.start()
+
+    expect(mockSendEvent.mock.calls[0][0].properties.status).toBe('error')
   })
 })

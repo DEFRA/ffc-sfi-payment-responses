@@ -1,44 +1,4 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.22.0
-# ignores vulnerabilities until expiry date; change duration by modifying expiry date
-ignore:
-  SNYK-JS-AXIOS-1579269:
-    - '@azure/identity > axios':
-        reason: No fix
-        expires: '2021-10-02T17:49:09.783Z'
-    - '@azure/identity > @azure/msal-node > axios':
-        reason: No fix
-        expires: '2021-10-02T17:49:09.783Z'
-    - ffc-messaging > @azure/identity > axios:
-        reason: No fix
-        expires: '2021-10-02T17:49:09.783Z'
-    - ffc-messaging > @azure/identity > @azure/msal-node > axios:
-        reason: No fix
-        expires: '2021-10-02T17:49:09.784Z'
-  SNYK-JS-ANSIREGEX-1583908:
-    - '@azure/identity > keytar > prebuild-install > npmlog > gauge > strip-ansi > ansi-regex':
-        reason: No fix
-        expires: '2022-06-17T09:41:02.949Z'
-      '@azure/identity > keytar > prebuild-install > npmlog > gauge > wide-align > string-width > strip-ansi > ansi-regex':
-        reason: No fix
-        expires: '2022-06-17T09:46:08.340Z'
-    - '@azure/identity > keytar > prebuild-install > npmlog > gauge > string-width > strip-ansi > ansi-regex':
-        reason: No fix
-        expires: '2022-06-17T09:41:02.949Z'
-    - ffc-messaging > @azure/identity > keytar > prebuild-install > npmlog > gauge > strip-ansi > ansi-regex:
-        reason: No fix
-        expires: '2021-10-22T16:15:10.359Z'
-    - ffc-messaging > @azure/identity > keytar > prebuild-install > npmlog > gauge > string-width > strip-ansi > ansi-regex:
-        reason: No fix
-        expires: '2021-10-22T16:15:10.359Z'
-    - '@azure/identity > keytar > prebuild-install > npmlog > gauge > wide-align > string-width > strip-ansi > ansi-regex':
-        reason: No fix
-        expires: '2021-10-22T16:15:10.359Z'
-    - ffc-messaging > @azure/identity > keytar > prebuild-install > npmlog > gauge > wide-align > string-width > strip-ansi > ansi-regex:
-        reason: No fix
-        expires: '2021-10-22T16:15:10.359Z'
-  SNYK-JS-SIMPLEGET-2361683:
-    - '@azure/identity > keytar > prebuild-install > simple-get':
-        reason: No fix
-        expires: '2022-02-28T19:12:01.503Z'
+version: v1.22.1
+ignore: {}
 patch: {}
