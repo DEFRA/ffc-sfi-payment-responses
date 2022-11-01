@@ -110,9 +110,13 @@ The file name must match one of the following patterns:
 | Acknowledgement | `*Ack.xml` |
 | Return | `*Return File*.csv` |
 
-The contents of the file must match the schema for the file type.
+The contents of the file must match the schema below for each file type.
 
-### Acknowledgement
+Once the file is processed it will be moved to the `archive` directory if successful or `quarantine` if not.
+
+Each acknowledgment or settlement in the file will be published as a message to the Azure Service Bus topic.
+
+### Acknowledgement input file
 
 The file must be a valid XML file.
 
@@ -171,7 +175,9 @@ Line : 21.
 
 The output will be a message per acknowledgment sent to Azure Service Bus topic, `ffc-pay-acknowledgements`.
 
-### Return
+The message schema is documented in the [AsyncAPI specification](docs/asyncapi.yaml) as `ffc-pay-acknowledgement`.
+
+### Return input file
 
 The file must be a valid CSV file.
 
@@ -190,6 +196,8 @@ The file must be a valid CSV file.
 | Message | Reason for failure, error |
 
 The output will be a message per settlement sent to Azure Service Bus topic, `ffc-pay-returns`.
+
+The message schema is documented in the [AsyncAPI specification](docs/asyncapi.yaml) as `ffc-pay-return`.
 
 ## Stop the service
 
