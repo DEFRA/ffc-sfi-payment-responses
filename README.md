@@ -19,7 +19,7 @@ ffc-pay-responses ==> topicReturn
 
 ## Prerequisites
 ### Software required
-- [Azure Service Bus](https://docs.microsoft.com/en-us/azure/service-bus-messaging/).
+- [Azure Service Bus](https://docs.microsoft.com/en-us/azure/service-bus-messaging/)
 - [Docker](https://www.docker.com/)
 - Either:
   - [Docker Compose](https://docs.docker.com/compose/install/linux/#install-the-plugin-manually)
