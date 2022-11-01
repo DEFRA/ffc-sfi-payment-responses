@@ -5,7 +5,7 @@ Microservice to process payment acknowledgements and return files from Dynamics 
 This service is part of the [Strategic Payment Service](https://github.com/DEFRA/ffc-pay-core).
 
 ```mermaid
-flowchartLR
+flowchart LR
 
 ffc-pay-responses(Kubernetes - ffc-pay-responses)
 storageDAX[Azure Blob Storage - DAX]
