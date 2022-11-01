@@ -82,7 +82,7 @@ components:
       example: Fri Jan 21 2022 10:38:44 GMT+0000 (Greenwich Mean Time)
     Message:
       type: string
-      description: Reason for DAX load failure, optional
+      description: Reason for DAX load failure
       example: 'Journal JN12345678 has been created Validation failed Line : 21.'
     SourceSystem:
       type: string
@@ -106,5 +106,5 @@ components:
       example: true
     Detail:
       type: string
-      description: Additional settlement information from DAX, optional
+      description: Additional settlement information from DAX
       example: Rejected by RPA
