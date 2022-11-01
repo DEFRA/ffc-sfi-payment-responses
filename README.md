@@ -67,6 +67,9 @@ The following directories are automatically created within the `dax` container:
 ## Setup
 ### Configuration
 
+These configuration values should be set in the [docker-compose.yaml](docker-compose.yaml) file 
+or Helm [values file](./helm/ffc-pay-responses/values.yaml) if running Kubernetes.
+
 | Name | Description |
 | ---| --- |
 | `APPINSIGHTS_CLOUDROLE` | Azure App Insights cloud role |
@@ -81,7 +84,7 @@ Docker Compose can be used to build the container image.
 docker-compose build
 ```
 
-The service will file watching application and test files so no need to rebuild the container unless a change to an npm package is made.
+The service will file watch application and test files so no need to rebuild the container unless a change to an npm package is made.
 
 ## Start the service
 
