@@ -17,6 +17,11 @@ components:
     Acknowledgement:
       contentType: application/json
       payload:
+        required:
+        - invoiceNumber
+        - frn
+        - success
+        - acknowledged
         type: object
         properties:
           invoiceNumber:
@@ -33,6 +38,14 @@ components:
       contentType: application/json
       payload:
         type: object
+        required:
+        - sourceSystem
+        - invoiceNumber
+        - frn
+        - currency
+        - value
+        - reference
+        - settled
         properties:
           sourceSystem:
             $ref: '#/components/schemas/SourceSystem'
