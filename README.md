@@ -44,48 +44,12 @@ The service will publish messages to the following topics:
 | ---| --- |
 | `ffc-pay-return` | Payment settlements parsed from return files |
 | `ffc-pay-acknowledgement` | Payment acknowledgements parsed from acknowledgement files |
+| `ffc-pay-event` | Events raised from file parsing |
 
 
-### Example messages
-#### Acknowledgment
+## Message schemas
 
-##### Success
-
-```
-{
-  "invoiceNumber": "SFI12345678",
-  "frn": 1234567890,
-  "success": "true",
-  "acknowledged": "Fri Jan 21 2022 10:38:44 GMT+0000 (Greenwich Mean Time)"
-}
-```
-
-##### Failure
-
-```
-{
-  "invoiceNumber": "S123456789A123456V001",
-  "frn": 1234567890,
-  "success": "false",
-  "acknowledged": "Fri Jan 21 2022 10:38:44 GMT+0000 (Greenwich Mean Time)",
-  "message": "Journal JN12345678 has been created Validation failed Line : 21."
-}
-```
-
-#### Return
-
-```
-{
-  "sourceSystem": "SITIAgri",
-  "invoiceNumber": "S123456789A123456V001",
-  "frn": 1234567890,
-  "currency": "GBP",
-  "value": 10000,
-  "settlementDate": "Fri Jan 21 2022 10:38:44 GMT+0000 (Greenwich Mean Time)",
-  "reference": PY1234567,
-  "settled": true
-}
-```
+All message schemas are fully documented in an [AsyncAPI specification](docs/asyncapi.yaml).
 
 ## Azure Storage
 
@@ -98,6 +62,16 @@ The following directories are automatically created within this container:
 - `inbound` - polling location
 - `archive` - successfully processed files
 - `quarantine` - unsuccessfully processed files
+
+### Processing files
+
+The service will poll for files in the `inbound` directory every `10` seconds.
+This value can be configured by changing the `PROCESSING_INTERVAL` environment variable.
+The value should be set in milliseconds.
+
+When a file is found it will be processed and moved to the `archive` directory if successful.
+
+If the file cannot be processed it will be moved to the `quarantine` directory.
 
 ## Running the application
 
@@ -113,8 +87,6 @@ Container images are built using Docker Compose, with the same images used to ru
 # Build container images
 docker-compose build
 ```
-
-
 
 ### Start
 
