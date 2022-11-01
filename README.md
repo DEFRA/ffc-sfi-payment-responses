@@ -8,13 +8,13 @@ This service is part of the [Strategic Payment Service](https://github.com/DEFRA
 flowchart LR
 
 ffc-pay-responses(Kubernetes - ffc-pay-responses)
-storageDAX[Azure Blob Storage - DAX]
-topicReturn[Azure Service Bus Topic - ffc-pay-return]
-topicAck[Azure Service Bus Topic - ffc-pay-acknowledgement]
+storage-dax[Azure Blob Storage - DAX]
+topic-return[Azure Service Bus Topic - ffc-pay-return]
+topic-ack[Azure Service Bus Topic - ffc-pay-acknowledgement]
 
-storageDAX ==> ffc-pay-responses
-ffc-pay-responses ==> topicAck
-ffc-pay-responses ==> topicReturn
+storage-dax ==> ffc-pay-responses
+ffc-pay-responses ==> topic-ack
+ffc-pay-responses ==> topic-return
 ```
 
 ## Prerequisites
@@ -86,7 +86,7 @@ docker-compose build
 
 The service will file watch application and test files so no need to rebuild the container unless a change to an npm package is made.
 
-## Start the service
+## How to start the service
 
 The service can be run using the [start](./scripts/start) script.
 
@@ -199,7 +199,7 @@ The output will be a message per settlement sent to Azure Service Bus topic, `ff
 
 The message schema is documented in the [AsyncAPI specification](docs/asyncapi.yaml) as `ffc-pay-return`.
 
-## Stop the service
+## How to stop the service
 
 The service can be stopped using the [stop](./scripts/stop) script.
 
