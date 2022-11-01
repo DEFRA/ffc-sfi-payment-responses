@@ -20,47 +20,78 @@ components:
         type: object
         properties:
           invoiceNumber:
-            type: string
-            description: Unique request for payment
+            $ref: '#/components/schemas/InvoiceNumber'
           frn:
-            type: number
-            description: Firm Reference Number
+            $ref: '#/components/schemas/FRN'
           success:
-            type: boolean
-            description: Whether request was successfully loaded by DAX
+            $ref: '#/components/schemas/Success'
           acknowledged:
-            type: string
-            description: Date acknowledged in DAX
+            $ref: '#/components/schemas/Acknowledged'
           message:
-            type: string
-            description: Reason for DAX load failure, optional
+            $ref: '#/components/schemas/Message'
     Return:
       contentType: application/json
       payload:
         type: object
         properties:
           sourceSystem:
-            type: string
-            description: System identifier request originates from
+            $ref: '#/components/schemas/SourceSystem'
           invoiceNumber:
-            type: string
-            description: Unique request for payment
+            $ref: '#/components/schemas/InvoiceNumber'
           frn:
-            type: number
-            description: Firm Reference Number
+            $ref: '#/components/schemas/FRN'
           currency:
-            type: string
-            description: Currency request settled in
+            $ref: '#/components/schemas/Currency'
           value:
-            type: number
-            description: Integer value of settlement
+            $ref: '#/components/schemas/Value'
           reference:
-            type: string
-            description: DAX reference for settlement
+            $ref: '#/components/schemas/Reference'
           settled:
-            type: boolean
-            description: Whether request was successfully settled
+            $ref: '#/components/schemas/Settled'
           detail:
-            type: string
-            description: Additional settlement information from DAX, optional
-
+            $ref: '#/components/schemas/Detail'
+  schemas:
+    InvoiceNumber:
+      type: string
+      description: Unique reference for payment
+      example: S1234567C1234567V001
+    FRN:
+      type: number
+      description: Firm Reference Number
+      example: 1234567890
+    Success:
+      type: boolean
+      description: Whether request was successfully loaded by DAX
+      example: true
+    Acknowledged:
+      type: string
+      description: Date acknowledged in DAX
+      example: Fri Jan 21 2022 10:38:44 GMT+0000 (Greenwich Mean Time)
+    Message:
+      type: string
+      description: Reason for DAX load failure, optional
+      example: 'Journal JN12345678 has been created Validation failed Line : 21.'
+    SourceSystem:
+      type: string
+      description: System identifier request originates from  
+      example: 'SITIAgri'
+    Currency:
+      type: string
+      description: Currency request settled in
+      example: GBP
+    Value:
+      type: number
+      description: Integer value of settlement
+      example: 10000
+    Reference:
+      type: string
+      description: DAX reference for settlement
+      example: 'PY1234567'
+    Settled:
+      type: boolean
+      description: Whether request was successfully settled
+      example: true
+    Detail:
+      type: string
+      description: Additional settlement information from DAX, optional
+      example: Rejected by RPA
