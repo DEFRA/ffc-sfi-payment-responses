@@ -17,7 +17,7 @@ containerSecret:
   name: ffc-pay-responses-container-secret
   type: Opaque
 
-deployment:
+deployment: {}
 
 container:
   requestMemory: 10Mi
