@@ -13,11 +13,11 @@ const processAcknowledgement = async (filename) => {
   } catch (err) {
     await quarantineFile(filename)
   }
-  if (messages.length) {
+  if (messages?.length) {
     await sendAcknowledgementMessages(messages)
     console.log('Acknowledgements published:', util.inspect(messages, false, null, true))
+    await blobStorage.archiveFile(filename, filename)
   }
-  await blobStorage.archiveFile(filename, filename)
 }
 
 module.exports = processAcknowledgement

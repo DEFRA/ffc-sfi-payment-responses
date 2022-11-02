@@ -13,11 +13,11 @@ const processReturn = async (filename) => {
   } catch (err) {
     await quarantineFile(filename)
   }
-  if (messages.length) {
+  if (messages?.length) {
     await sendReturnMessages(messages)
     console.log('Returns published:', util.inspect(messages, false, null, true))
+    await blobStorage.archiveFile(filename, filename)
   }
-  await blobStorage.archiveFile(filename, filename)
 }
 
 module.exports = processReturn
