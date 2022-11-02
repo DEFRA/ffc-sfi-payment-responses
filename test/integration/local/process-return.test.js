@@ -52,32 +52,32 @@ describe('process acknowledgement', () => {
     jest.clearAllMocks()
   })
 
-  test('sends all returns', async () => {
+  test('sends all returns if file valid', async () => {
     await processing.start()
     expect(mockSendBatchMessages.mock.calls[0][0].length).toBe(6)
   })
 
-  test('sends invoice number', async () => {
+  test('sends invoice number if file valid', async () => {
     await processing.start()
     expect(mockSendBatchMessages.mock.calls[0][0][0].body.invoiceNumber).toBe('S123456789A123456V001')
   })
 
-  test('sends settled if D', async () => {
+  test('sends settled if D if file valid', async () => {
     await processing.start()
     expect(mockSendBatchMessages.mock.calls[0][0][0].body.settled).toBe(true)
   })
 
-  test('sends settled if E with reference', async () => {
+  test('sends settled if E with reference if file valid', async () => {
     await processing.start()
     expect(mockSendBatchMessages.mock.calls[0][0][4].body.settled).toBe(true)
   })
 
-  test('sends unsettled if E without reference', async () => {
+  test('sends unsettled if E without reference if file valid', async () => {
     await processing.start()
     expect(mockSendBatchMessages.mock.calls[0][0][5].body.settled).toBe(false)
   })
 
-  test('archives file on success', async () => {
+  test('archives file on success if file valid', async () => {
     await processing.start()
     const fileList = []
     for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.archiveFolder })) {

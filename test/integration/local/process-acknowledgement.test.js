@@ -52,39 +52,39 @@ describe('process acknowledgement', () => {
     jest.clearAllMocks()
   })
 
-  test('sends all acknowledgements', async () => {
+  test('sends all acknowledgements if file valid', async () => {
     await processing.start()
     expect(mockSendBatchMessages.mock.calls[0][0].length).toBe(4)
   })
 
-  test('sends invoice number', async () => {
+  test('sends invoice number if file valid', async () => {
     await processing.start()
     expect(mockSendBatchMessages.mock.calls[0][0][0].body.invoiceNumber).toBe('S123456789A123456V001')
   })
 
-  test('sends frn', async () => {
+  test('sends frn if file valid', async () => {
     await processing.start()
     expect(mockSendBatchMessages.mock.calls[0][0][0].body.frn).toBe(1234567890)
   })
 
-  test('sends success', async () => {
+  test('sends success if file valid', async () => {
     await processing.start()
     expect(mockSendBatchMessages.mock.calls[0][0][0].body.success).toBe(true)
   })
 
-  test('sends failure message for invalid bank details', async () => {
+  test('sends failure message for invalid bank details if file valid', async () => {
     await processing.start()
     expect(mockSendBatchMessages.mock.calls[0][0][3].body.success).toBe(false)
     expect(mockSendBatchMessages.mock.calls[0][0][3].body.message).toBe('Invalid bank details')
   })
 
-  test('sends failure message for unknown failure', async () => {
+  test('sends failure message for unknown failure if file valid', async () => {
     await processing.start()
     expect(mockSendBatchMessages.mock.calls[0][0][2].body.success).toBe(false)
     expect(mockSendBatchMessages.mock.calls[0][0][2].body.message).toBe('Journal JN12345678 has been created Validation failed Line : 21.')
   })
 
-  test('archives file on success', async () => {
+  test('archives file on success if file valid', async () => {
     await processing.start()
     const fileList = []
     for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.archiveFolder })) {
