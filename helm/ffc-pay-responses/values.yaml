@@ -1,4 +1,4 @@
-environment: development
+environment: production
 environmentCode:
 name: ffc-pay-responses
 namespace: ffc-pay
@@ -18,14 +18,9 @@ containerSecret:
   name: ffc-pay-responses-container-secret
   type: Opaque
 
-deployment:
-  restartPolicy: Always
-  priorityClassName: default
-  replicas: 1
-  minReadySeconds: 0
+deployment: {}
 
 container:
-  imagePullPolicy: Always
   requestMemory: 10Mi
   requestCpu: 10m
   limitMemory: 180Mi
