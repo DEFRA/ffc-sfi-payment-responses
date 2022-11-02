@@ -35,13 +35,16 @@ let container
 const TEST_FILE = path.resolve(__dirname, '../../files/acknowledgement.xml')
 const TEST_INVALID_FILE = path.resolve(__dirname, '../../files/broken-acknowledgement.xml')
 
+const VALID_FILENAME = 'mock_0001_Ack.xml'
+const INVALID_FILENAME = 'ignore me.xml'
+
 describe('process acknowledgement', () => {
   beforeEach(async () => {
     blobServiceClient = BlobServiceClient.fromConnectionString(config.storageConfig.connectionStr)
     container = blobServiceClient.getContainerClient(config.storageConfig.container)
     await container.deleteIfExists()
     await container.createIfNotExists()
-    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/mock_0001_Ack.xml`)
+    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
     await blockBlobClient.uploadFile(TEST_FILE)
   })
 
@@ -87,33 +90,33 @@ describe('process acknowledgement', () => {
     for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.archiveFolder })) {
       fileList.push(item.name)
     }
-    expect(fileList.filter(x => x === `${config.storageConfig.archiveFolder}/mock_0001_Ack.xml`).length).toBe(1)
+    expect(fileList.filter(x => x === `${config.storageConfig.archiveFolder}/${VALID_FILENAME}`).length).toBe(1)
   })
 
   test('ignores unrelated file', async () => {
-    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/ignore me.xml`)
+    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${INVALID_FILENAME}`)
     await blockBlobClient.uploadFile(TEST_FILE)
     await processing.start()
     const fileList = []
     for await (const item of container.listBlobsFlat()) {
       fileList.push(item.name)
     }
-    expect(fileList.filter(x => x === `${config.storageConfig.inboundFolder}/ignore me.xml`).length).toBe(1)
+    expect(fileList.filter(x => x === `${config.storageConfig.inboundFolder}/${INVALID_FILENAME}`).length).toBe(1)
   })
 
   test('quarantines invalid file', async () => {
-    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/mock_0001_Ack.xml`)
+    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
     await blockBlobClient.uploadFile(TEST_INVALID_FILE)
     await processing.start()
     const fileList = []
     for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.quarantineFolder })) {
       fileList.push(item.name)
     }
-    expect(fileList.filter(x => x === `${config.storageConfig.quarantineFolder}/mock_0001_Ack.xml`).length).toBe(1)
+    expect(fileList.filter(x => x === `${config.storageConfig.quarantineFolder}/${VALID_FILENAME}`).length).toBe(1)
   })
 
   test('calls PublishEvent.sendEvent once when an invalid file is given', async () => {
-    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/mock_0001_Ack.xml`)
+    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
     await blockBlobClient.uploadFile(TEST_INVALID_FILE)
 
     await processing.start()
@@ -122,7 +125,7 @@ describe('process acknowledgement', () => {
   })
 
   test('calls PublishEvent.sendEvent with event.name "responses-processing-quarantine-error" when an invalid file is given', async () => {
-    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/mock_0001_Ack.xml`)
+    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
     await blockBlobClient.uploadFile(TEST_INVALID_FILE)
 
     await processing.start()
@@ -131,7 +134,7 @@ describe('process acknowledgement', () => {
   })
 
   test('calls PublishEvent.sendEvent with event.properties.status "error" when an invalid file is given', async () => {
-    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/mock_0001_Ack.xml`)
+    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
     await blockBlobClient.uploadFile(TEST_INVALID_FILE)
 
     await processing.start()
@@ -146,6 +149,6 @@ describe('process acknowledgement', () => {
     for await (const item of container.listBlobsFlat()) {
       fileList.push(item.name)
     }
-    expect(fileList.filter(x => x === `${config.storageConfig.inboundFolder}/mock_0001_Ack.xml`).length).toBe(1)
+    expect(fileList.filter(x => x === `${config.storageConfig.inboundFolder}/${VALID_FILENAME}`).length).toBe(1)
   })
 })
