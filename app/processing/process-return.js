@@ -7,16 +7,17 @@ const util = require('util')
 const processReturn = async (filename) => {
   console.info(`Processing ${filename}`)
   const content = await blobStorage.downloadFile(filename)
+  let messages
   try {
-    const messages = await parseReturnFile(content)
-    if (messages.length) {
-      await sendReturnMessages(messages)
-      console.log('Returns published:', util.inspect(messages, false, null, true))
-    }
-    await blobStorage.archiveFile(filename, filename)
+    messages = await parseReturnFile(content)
   } catch (err) {
     await quarantineFile(filename)
   }
+  if (messages.length) {
+    await sendReturnMessages(messages)
+    console.log('Returns published:', util.inspect(messages, false, null, true))
+  }
+  await blobStorage.archiveFile(filename, filename)
 }
 
 module.exports = processReturn

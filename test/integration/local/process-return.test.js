@@ -131,4 +131,14 @@ describe('process acknowledgement', () => {
 
     expect(mockSendEvent.mock.calls[0][0].properties.status).toBe('error')
   })
+
+  test('does not quarantine file if unable to publish message', async () => {
+    mockSendBatchMessages.mockImplementation(() => { throw new Error('Unable to publish message') })
+    await processing.start()
+    const fileList = []
+    for await (const item of container.listBlobsFlat()) {
+      fileList.push(item.name)
+    }
+    expect(fileList.filter(x => x === `${config.storageConfig.inboundFolder}/mock Return File.csv`).length).toBe(1)
+  })
 })
