@@ -51,97 +51,99 @@ describe('process acknowledgement', () => {
   afterEach(async () => {
     jest.clearAllMocks()
   })
+  describe('for valid files', () => {
+    test('sends all returns', async () => {
+      await processing.start()
+      expect(mockSendBatchMessages.mock.calls[0][0].length).toBe(6)
+    })
 
-  test('sends all returns if file valid', async () => {
-    await processing.start()
-    expect(mockSendBatchMessages.mock.calls[0][0].length).toBe(6)
+    test('sends invoice number', async () => {
+      await processing.start()
+      expect(mockSendBatchMessages.mock.calls[0][0][0].body.invoiceNumber).toBe('S123456789A123456V001')
+    })
+
+    test('sends settled if D', async () => {
+      await processing.start()
+      expect(mockSendBatchMessages.mock.calls[0][0][0].body.settled).toBe(true)
+    })
+
+    test('sends settled if E with reference', async () => {
+      await processing.start()
+      expect(mockSendBatchMessages.mock.calls[0][0][4].body.settled).toBe(true)
+    })
+
+    test('sends unsettled if E without reference', async () => {
+      await processing.start()
+      expect(mockSendBatchMessages.mock.calls[0][0][5].body.settled).toBe(false)
+    })
+
+    test('archives file on success', async () => {
+      await processing.start()
+      const fileList = []
+      for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.archiveFolder })) {
+        fileList.push(item.name)
+      }
+      expect(fileList.filter(x => x === `${config.storageConfig.archiveFolder}/${VALID_FILENAME}`).length).toBe(1)
+    })
+    test('does not quarantine file if unable to publish message', async () => {
+      mockSendBatchMessages.mockImplementation(() => { throw new Error('Unable to publish message') })
+      await processing.start()
+      const fileList = []
+      for await (const item of container.listBlobsFlat()) {
+        fileList.push(item.name)
+      }
+      expect(fileList.filter(x => x === `${config.storageConfig.inboundFolder}/${VALID_FILENAME}`).length).toBe(1)
+    })
   })
 
-  test('sends invoice number if file valid', async () => {
-    await processing.start()
-    expect(mockSendBatchMessages.mock.calls[0][0][0].body.invoiceNumber).toBe('S123456789A123456V001')
-  })
+  describe('for invalid or unrelated files', () => {
+    test('ignores unrelated file', async () => {
+      const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${INVALID_FILENAME}`)
+      await blockBlobClient.uploadFile(TEST_FILE)
+      await processing.start()
+      const fileList = []
+      for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.inboundFolder })) {
+        fileList.push(item.name)
+      }
+      expect(fileList.filter(x => x === `${config.storageConfig.inboundFolder}/${INVALID_FILENAME}`).length).toBe(1)
+    })
 
-  test('sends settled if D if file valid', async () => {
-    await processing.start()
-    expect(mockSendBatchMessages.mock.calls[0][0][0].body.settled).toBe(true)
-  })
+    test('quarantines invalid file', async () => {
+      const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
+      await blockBlobClient.uploadFile(TEST_INVALID_FILE)
+      await processing.start()
+      const fileList = []
+      for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.quarantineFolder })) {
+        fileList.push(item.name)
+      }
+      expect(fileList.filter(x => x === `${config.storageConfig.quarantineFolder}/${VALID_FILENAME}`).length).toBe(1)
+    })
 
-  test('sends settled if E with reference if file valid', async () => {
-    await processing.start()
-    expect(mockSendBatchMessages.mock.calls[0][0][4].body.settled).toBe(true)
-  })
+    test('calls PublishEvent.sendEvent once', async () => {
+      const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
+      await blockBlobClient.uploadFile(TEST_INVALID_FILE)
 
-  test('sends unsettled if E without reference if file valid', async () => {
-    await processing.start()
-    expect(mockSendBatchMessages.mock.calls[0][0][5].body.settled).toBe(false)
-  })
+      await processing.start()
 
-  test('archives file on success if file valid', async () => {
-    await processing.start()
-    const fileList = []
-    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.archiveFolder })) {
-      fileList.push(item.name)
-    }
-    expect(fileList.filter(x => x === `${config.storageConfig.archiveFolder}/${VALID_FILENAME}`).length).toBe(1)
-  })
+      expect(mockSendEvent.mock.calls.length).toBe(1)
+    })
 
-  test('ignores unrelated file', async () => {
-    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${INVALID_FILENAME}`)
-    await blockBlobClient.uploadFile(TEST_FILE)
-    await processing.start()
-    const fileList = []
-    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.inboundFolder })) {
-      fileList.push(item.name)
-    }
-    expect(fileList.filter(x => x === `${config.storageConfig.inboundFolder}/${INVALID_FILENAME}`).length).toBe(1)
-  })
+    test('calls PublishEvent.sendEvent with event.name "responses-processing-quarantine-error"', async () => {
+      const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
+      await blockBlobClient.uploadFile(TEST_INVALID_FILE)
 
-  test('quarantines invalid file', async () => {
-    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
-    await blockBlobClient.uploadFile(TEST_INVALID_FILE)
-    await processing.start()
-    const fileList = []
-    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.quarantineFolder })) {
-      fileList.push(item.name)
-    }
-    expect(fileList.filter(x => x === `${config.storageConfig.quarantineFolder}/${VALID_FILENAME}`).length).toBe(1)
-  })
+      await processing.start()
 
-  test('calls PublishEvent.sendEvent once when an invalid file is given', async () => {
-    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
-    await blockBlobClient.uploadFile(TEST_INVALID_FILE)
+      expect(mockSendEvent.mock.calls[0][0].name).toBe('responses-processing-quarantine-error')
+    })
 
-    await processing.start()
+    test('calls PublishEvent.sendEvent with event.properties.status "error"', async () => {
+      const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
+      await blockBlobClient.uploadFile(TEST_INVALID_FILE)
 
-    expect(mockSendEvent.mock.calls.length).toBe(1)
-  })
+      await processing.start()
 
-  test('calls PublishEvent.sendEvent with event.name "responses-processing-quarantine-error" when an invalid file is given', async () => {
-    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
-    await blockBlobClient.uploadFile(TEST_INVALID_FILE)
-
-    await processing.start()
-
-    expect(mockSendEvent.mock.calls[0][0].name).toBe('responses-processing-quarantine-error')
-  })
-
-  test('calls PublishEvent.sendEvent with event.properties.status "error" when an invalid file is given', async () => {
-    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
-    await blockBlobClient.uploadFile(TEST_INVALID_FILE)
-
-    await processing.start()
-
-    expect(mockSendEvent.mock.calls[0][0].properties.status).toBe('error')
-  })
-
-  test('does not quarantine file if unable to publish valid message', async () => {
-    mockSendBatchMessages.mockImplementation(() => { throw new Error('Unable to publish message') })
-    await processing.start()
-    const fileList = []
-    for await (const item of container.listBlobsFlat()) {
-      fileList.push(item.name)
-    }
-    expect(fileList.filter(x => x === `${config.storageConfig.inboundFolder}/${VALID_FILENAME}`).length).toBe(1)
+      expect(mockSendEvent.mock.calls[0][0].properties.status).toBe('error')
+    })
   })
 })
