@@ -142,7 +142,7 @@ describe('process acknowledgement', () => {
     expect(mockSendEvent.mock.calls[0][0].properties.status).toBe('error')
   })
 
-  test('does not quarantine file if unable to publish message', async () => {
+  test('does not quarantine file if unable to publish valid message', async () => {
     mockSendBatchMessages.mockImplementation(() => { throw new Error('Unable to publish message') })
     await processing.start()
     const fileList = []
