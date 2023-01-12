@@ -1,4 +1,5 @@
-environment: development
+environment: production
+environmentCode:
 name: ffc-pay-responses
 namespace: ffc-pay
 workstream: ffc-pay
@@ -17,21 +18,17 @@ containerSecret:
   name: ffc-pay-responses-container-secret
   type: Opaque
 
-deployment:
-  restartPolicy: Always
-  priorityClassName: default
-  replicas: 1
-  minReadySeconds: 0
+deployment: {}
 
 container:
-  imagePullPolicy: IfNotPresent
   requestMemory: 10Mi
   requestCpu: 10m
   limitMemory: 180Mi
   limitCpu: 120m
   messageQueueHost: namespace.servicebus.windows.net
-  acknowledgementTopicAddress: ffc-pay-acknowledge
+  acknowledgementTopicAddress: ffc-pay-acknowledgement
   returnTopicAddress: ffc-pay-return
+  eventTopicAddress: ffc-pay-event
   azureStorageAccountName: ffcpay
   azureStorageConnectionString: dummy
   azureStorageUseConnectionString: false  

@@ -4,8 +4,15 @@ data:
   NODE_ENV: {{ quote .Values.environment }}
   APPINSIGHTS_CLOUDROLE: {{ quote .Values.name }}
   MESSAGE_QUEUE_HOST: {{ quote .Values.container.messageQueueHost }}
+  {{- if and (.Values.environmentCode) (not .Values.pr) }}
+  ACKNOWLEDGEMENT_TOPIC_ADDRESS: {{ .Values.container.acknowledgementTopicAddress }}-{{ .Values.environmentCode }}
+  RETURN_TOPIC_ADDRESS: {{ .Values.container.returnTopicAddress }}-{{ .Values.environmentCode }}
+  EVENT_TOPIC_ADDRESS: {{ .Values.container.eventTopicAddress }}-{{ .Values.environmentCode }}
+  {{ else }}
   ACKNOWLEDGEMENT_TOPIC_ADDRESS: {{ quote .Values.container.acknowledgementTopicAddress }}
   RETURN_TOPIC_ADDRESS: {{ quote .Values.container.returnTopicAddress }}
+  EVENT_TOPIC_ADDRESS: {{ quote .Values.container.eventTopicAddress }}
+  {{- end }}
   AZURE_STORAGE_ACCOUNT_NAME: {{ quote .Values.container.azureStorageAccountName }}
   AZURE_STORAGE_CONNECTION_STRING: {{ quote .Values.container.azureStorageConnectionString }}
   AZURE_STORAGE_USE_CONNECTION_STRING: {{ quote .Values.container.azureStorageUseConnectionString }}
