@@ -61,7 +61,7 @@ describe('process payment files', () => {
   })
 
   test('Should archive ackowledgement files when there are no payment files.', async () => {
-    await batchFileUploader(mockReturnFileNames, RETURN_TEST_FILE)
+    await batchFileUploader(mockAcknowledgementFileNames, ACK_TEST_FILE)
     await processing.start()
 
     const inboundFileList = []
@@ -74,8 +74,8 @@ describe('process payment files', () => {
       archiveFileList.push(item.name)
     }
 
-    expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/mock Return File1.csv`).length).toBe(1)
-    expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/mock Return File2.csv`).length).toBe(1)
+    expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/mock_0001_Ack.xml`).length).toBe(1)
+    expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/mock_0002_Ack.xml`).length).toBe(1)
   })
 
   test('Should remove all payment files contained within the blob storage container when there is one payment file and no return or acknowledgement files.', async () => {
@@ -136,6 +136,26 @@ describe('process payment files', () => {
   test('Should remove all payment files contained within the blob storage container when there are ackowledgement files in the container.', async () => {
     await batchFileUploader(mockPaymentFileNames, TEST_FILE)
     await batchFileUploader(mockAcknowledgementFileNames, ACK_TEST_FILE)
+    await processing.start()
+
+    const inboundFileList = []
+    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.inboundFolder })) {
+      inboundFileList.push(item.name)
+    }
+
+    const archiveFileList = []
+    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.archiveFolder })) {
+      archiveFileList.push(item.name)
+    }
+
+    expect(inboundFileList.filter(x => x === `${config.storageConfig.inboundFolder}/FFC mock Payment File.csv`).length).toBe(0)
+    expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/FFC mock Payment File.csv`).length).toBe(0)
+  })
+
+  test('Should remove all payment files contained within the blob storage container when there are ackowledgement and return files in the container.', async () => {
+    await batchFileUploader(mockPaymentFileNames, TEST_FILE)
+    await batchFileUploader(mockAcknowledgementFileNames, ACK_TEST_FILE)
+    await batchFileUploader(mockReturnFileNames, RETURN_TEST_FILE)
     await processing.start()
 
     const inboundFileList = []
