@@ -5,9 +5,13 @@ const config = require('../../../app/config')
 const TEST_FILE = path.resolve(__dirname, '../../files/payment-file.csv')
 const RETURN_TEST_FILE = path.resolve(__dirname, '../../files/return.csv')
 const ACK_TEST_FILE = path.resolve(__dirname, '../../files/acknowledgement.xml')
+const mockReturnFileNames = ['mock Return File1.csv', 'mock Return File2.csv']
+const mockPaymentFileNames = ['FFC mock Payment File2.csv', 'FFC mock Payment File3.csv']
+const mockAcknowledgementFileNames = ['mock_0001_Ack.xml', 'mock_0002_Ack.xml']
 const mockSendBatchMessages = jest.fn()
 let container
 let blobServiceClient
+
 jest.mock('ffc-messaging', () => {
   return {
     MessageBatchSender: jest.fn().mockImplementation(() => {
@@ -19,17 +23,63 @@ jest.mock('ffc-messaging', () => {
   }
 })
 
+// helper function to upload files to blob storage
+const batchFileUploader = async (fileNamesToUpload, testFile) => {
+  for await (const file of fileNamesToUpload) {
+    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${file}`)
+    await blockBlobClient.uploadFile(testFile)
+  }
+}
+
 describe('process payment files', () => {
   beforeAll(async () => {
     blobServiceClient = BlobServiceClient.fromConnectionString(config.storageConfig.connectionStr)
     container = blobServiceClient.getContainerClient(config.storageConfig.container)
+  })
+
+  beforeEach(async () => {
     await container.deleteIfExists()
     await container.createIfNotExists()
-    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/FFC mock Payment File.csv`)
-    await blockBlobClient.uploadFile(TEST_FILE)
   })
 
-  test('Should remove all payment files contained within the blob storage container.', async () => {
+  test('Should archive return files when there are no payment files.', async () => {
+    await batchFileUploader(mockReturnFileNames, RETURN_TEST_FILE)
+    await processing.start()
+
+    const inboundFileList = []
+    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.inboundFolder })) {
+      inboundFileList.push(item.name)
+    }
+
+    const archiveFileList = []
+    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.archiveFolder })) {
+      archiveFileList.push(item.name)
+    }
+
+    expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/mock Return File1.csv`).length).toBe(1)
+    expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/mock Return File2.csv`).length).toBe(1)
+  })
+
+  test('Should archive ackowledgement files when there are no payment files.', async () => {
+    await batchFileUploader(mockReturnFileNames, RETURN_TEST_FILE)
+    await processing.start()
+
+    const inboundFileList = []
+    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.inboundFolder })) {
+      inboundFileList.push(item.name)
+    }
+
+    const archiveFileList = []
+    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.archiveFolder })) {
+      archiveFileList.push(item.name)
+    }
+
+    expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/mock Return File1.csv`).length).toBe(1)
+    expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/mock Return File2.csv`).length).toBe(1)
+  })
+
+  test('Should remove all payment files contained within the blob storage container when there is one payment file and no return or acknowledgement files.', async () => {
+    await batchFileUploader(['FFC mock Payment File2.csv'], TEST_FILE)
     await processing.start()
 
     const inboundFileList = []
@@ -46,9 +96,8 @@ describe('process payment files', () => {
     expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/FFC mock Payment File.csv`).length).toBe(0)
   })
 
-  test('Should remove all payment files contained within the blob storage container and archive the return file.', async () => {
-    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/mock Return File.csv`)
-    await blockBlobClient.uploadFile(RETURN_TEST_FILE)
+  test('Should remove all payment files contained within the blob storage container when there are multiple payment files and no return or acknowledgement files.', async () => {
+    await batchFileUploader(mockPaymentFileNames, TEST_FILE)
     await processing.start()
 
     const inboundFileList = []
@@ -63,12 +112,11 @@ describe('process payment files', () => {
 
     expect(inboundFileList.filter(x => x === `${config.storageConfig.inboundFolder}/FFC mock Payment File.csv`).length).toBe(0)
     expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/FFC mock Payment File.csv`).length).toBe(0)
-    expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/mock Return File.csv`).length).toBe(1)
   })
 
-  test('Should remove all payment files contained within the blob storage container and archive the ackowledgement file.', async () => {
-    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/mock_0001_Ack.xml`)
-    await blockBlobClient.uploadFile(ACK_TEST_FILE)
+  test('Should remove all payment files contained within the blob storage container when there are return files in the container.', async () => {
+    await batchFileUploader(mockPaymentFileNames, TEST_FILE)
+    await batchFileUploader(mockReturnFileNames, RETURN_TEST_FILE)
     await processing.start()
 
     const inboundFileList = []
@@ -83,6 +131,62 @@ describe('process payment files', () => {
 
     expect(inboundFileList.filter(x => x === `${config.storageConfig.inboundFolder}/FFC mock Payment File.csv`).length).toBe(0)
     expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/FFC mock Payment File.csv`).length).toBe(0)
+  })
+
+  test('Should remove all payment files contained within the blob storage container when there are ackowledgement files in the container.', async () => {
+    await batchFileUploader(mockPaymentFileNames, TEST_FILE)
+    await batchFileUploader(mockAcknowledgementFileNames, ACK_TEST_FILE)
+    await processing.start()
+
+    const inboundFileList = []
+    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.inboundFolder })) {
+      inboundFileList.push(item.name)
+    }
+
+    const archiveFileList = []
+    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.archiveFolder })) {
+      archiveFileList.push(item.name)
+    }
+
+    expect(inboundFileList.filter(x => x === `${config.storageConfig.inboundFolder}/FFC mock Payment File.csv`).length).toBe(0)
+    expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/FFC mock Payment File.csv`).length).toBe(0)
+  })
+
+  test('Should archive all return files when there are multiple payment files in the container.', async () => {
+    await batchFileUploader(mockPaymentFileNames, TEST_FILE)
+    await batchFileUploader(mockReturnFileNames, RETURN_TEST_FILE)
+    await processing.start()
+
+    const inboundFileList = []
+    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.inboundFolder })) {
+      inboundFileList.push(item.name)
+    }
+
+    const archiveFileList = []
+    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.archiveFolder })) {
+      archiveFileList.push(item.name)
+    }
+
+    expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/mock Return File1.csv`).length).toBe(1)
+    expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/mock Return File2.csv`).length).toBe(1)
+  })
+
+  test('Should archive all acknowledgement files when there are multiple payment files in the container.', async () => {
+    await batchFileUploader(mockPaymentFileNames, TEST_FILE)
+    await batchFileUploader(mockAcknowledgementFileNames, ACK_TEST_FILE)
+    await processing.start()
+
+    const inboundFileList = []
+    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.inboundFolder })) {
+      inboundFileList.push(item.name)
+    }
+
+    const archiveFileList = []
+    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.archiveFolder })) {
+      archiveFileList.push(item.name)
+    }
+
     expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/mock_0001_Ack.xml`).length).toBe(1)
+    expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/mock_0002_Ack.xml`).length).toBe(1)
   })
 })
