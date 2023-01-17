@@ -35,12 +35,12 @@ describe('process payment file', () => {
     expect(console.log).toHaveBeenCalled()
   })
 
-  test('Should log message when blobStorage.deleteFile is called', async () => {
+  test('Should log one message when blobStorage.deleteFile is called', async () => {
     await processPaymentFile(filename)
     expect(console.log).toHaveBeenCalledTimes(1)
   })
 
-  test('Should log message when blobStorage.deleteFile is called', async () => {
+  test('Should log message including filename when blobStorage.deleteFile is called', async () => {
     await processPaymentFile(filename)
     expect(console.log).toHaveBeenCalledWith('Payment File sent from DAX, has been deleted :', filename)
   })
