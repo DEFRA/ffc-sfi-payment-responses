@@ -5,7 +5,7 @@ const acknowledgementFile = 'FFC_001_Ack.xml'
 
 let filename
 
-describe('is payment file', () => {
+describe('is acknowledgement file', () => {
   test('Should return false when filename is undefined', async () => {
     filename = undefined
     const result = isAcknowledgementFile(filename)
