@@ -11,7 +11,7 @@ const processReturn = async (filename) => {
   try {
     messages = await parseReturnFile(content)
   } catch (err) {
-    await quarantineFile(filename)
+    await quarantineFile(filename, err)
   }
   if (messages?.length) {
     await sendReturnMessages(messages)

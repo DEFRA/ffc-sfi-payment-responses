@@ -29,6 +29,7 @@ container:
   acknowledgementTopicAddress: ffc-pay-acknowledgement
   returnTopicAddress: ffc-pay-return
   eventTopicAddress: ffc-pay-event
+  eventsTopicAddress: ffc-pay-events
   azureStorageAccountName: ffcpay
   azureStorageConnectionString: dummy
   azureStorageUseConnectionString: false  
@@ -37,6 +38,8 @@ container:
   inboundFolder: inbound
   archiveFolder: archive
   quarantineFolder: quarantine
+  useV1Events: true
+  useV2Events: true
 
 aadPodIdentity: true
 
