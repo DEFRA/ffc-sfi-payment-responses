@@ -25,7 +25,7 @@
     "@azure/storage-blob": "12.8.0",
     "applicationinsights": "1.8.2",
     "ffc-messaging": "2.4.2",
-    "ffc-pay-event-publisher": "1.1.4",
+    "ffc-pay-event-publisher": "1.2.0-alpha.4",
     "log-timestamp": "0.3.0",
     "moment": "2.29.4",
     "xml2js": "0.4.23"
