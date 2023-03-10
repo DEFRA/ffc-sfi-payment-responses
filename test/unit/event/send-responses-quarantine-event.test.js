@@ -1,242 +1,122 @@
-jest.mock('uuid')
-const { v4: uuidv4 } = require('uuid')
-
-jest.mock('../../../app/event/raise-event')
-const raiseEvent = require('../../../app/event/raise-event')
-
+const mockSendEvent = jest.fn()
+const mockPublishEvent = jest.fn()
+const MockPublishEvent = jest.fn().mockImplementation(() => {
+  return {
+    sendEvent: mockSendEvent
+  }
+})
+const MockEventPublisher = jest.fn().mockImplementation(() => {
+  return {
+    publishEvent: mockPublishEvent
+  }
+})
+jest.mock('ffc-pay-event-publisher', () => {
+  return {
+    PublishEvent: MockPublishEvent,
+    EventPublisher: MockEventPublisher
+  }
+})
+jest.mock('../../../app/config')
+const config = require('../../../app/config')
+const { RESPONSE_REJECTED } = require('../../../app/constants/events')
+const { SOURCE } = require('../../../app/constants/source')
 const sendResponsesQuarantineEvent = require('../../../app/event/send-responses-quarantine-event')
 
-let filename
-let event
+const filename = 'test.csv'
+const error = {
+  message: 'test error'
+}
 
-describe('Sending event for quarantined DAX response file', () => {
-  beforeEach(async () => {
-    uuidv4.mockImplementation(() => { '70cb0f07-e0cf-449c-86e8-0344f2c6cc6c' })
+beforeEach(() => {
+  config.useV1Events = true
+  config.useV2Events = true
+  config.eventTopic = 'v1-events'
+  config.eventsTopic = 'v2-events'
+})
 
-    filename = 'acknowledgement.xml'
+afterEach(() => {
+  jest.clearAllMocks()
+})
 
-    event = {
-      name: 'responses-processing-quarantine-error',
-      type: 'error',
-      message: `Quarantined ${filename}`,
-      data: {
-        filename
-      }
-    }
+describe('V1 ack event', () => {
+  test('should send V1 event if V1 events enabled', async () => {
+    config.useV1Events = true
+    await sendResponsesQuarantineEvent(filename, error)
+    expect(mockSendEvent).toHaveBeenCalled()
   })
 
-  afterEach(async () => {
-    jest.resetAllMocks()
+  test('should not send V1 event if V1 events disabled', async () => {
+    config.useV1Events = false
+    await sendResponsesQuarantineEvent(filename, error)
+    expect(mockSendEvent).not.toHaveBeenCalled()
   })
 
-  test('should call uuidv4 when a filename is received', async () => {
-    await sendResponsesQuarantineEvent(filename)
-    expect(uuidv4).toHaveBeenCalled()
+  test('should send event to V1 topic', async () => {
+    await sendResponsesQuarantineEvent(filename, error)
+    expect(MockPublishEvent.mock.calls[0][0]).toBe(config.eventTopic)
   })
 
-  test('should call uuidv4 once when a filename is received', async () => {
-    await sendResponsesQuarantineEvent(filename)
-    expect(uuidv4).toHaveBeenCalledTimes(1)
+  test('should generate a new uuid as Id', async () => {
+    await sendResponsesQuarantineEvent(filename, error)
+    expect(mockSendEvent.mock.calls[0][0].properties.id).toMatch(/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i)
   })
 
-  test('should call uuidv4 when an empty string is received', async () => {
-    await sendResponsesQuarantineEvent('')
-    expect(uuidv4).toHaveBeenCalled()
+  test('should raise responses-processing-quarantine-error event name', async () => {
+    await sendResponsesQuarantineEvent(filename, error)
+    expect(mockSendEvent.mock.calls[0][0].name).toBe('responses-processing-quarantine-error')
   })
 
-  test('should call uuidv4 once when an empty string is received', async () => {
-    await sendResponsesQuarantineEvent('')
-    expect(uuidv4).toHaveBeenCalledTimes(1)
+  test('should raise error status event', async () => {
+    await sendResponsesQuarantineEvent(filename, error)
+    expect(mockSendEvent.mock.calls[0][0].properties.status).toBe('error')
   })
 
-  test('should call uuidv4 when an object is received', async () => {
-    await sendResponsesQuarantineEvent({})
-    expect(uuidv4).toHaveBeenCalled()
+  test('should raise error event type', async () => {
+    await sendResponsesQuarantineEvent(filename, error)
+    expect(mockSendEvent.mock.calls[0][0].properties.action.type).toBe('error')
   })
 
-  test('should call uuidv4 once when an object is received', async () => {
-    await sendResponsesQuarantineEvent({})
-    expect(uuidv4).toHaveBeenCalledTimes(1)
+  test('should include message in event', async () => {
+    await sendResponsesQuarantineEvent(filename, error)
+    expect(mockSendEvent.mock.calls[0][0].properties.action.message).toBe('Quarantined test.csv')
   })
 
-  test('should call uuidv4 when an array is received', async () => {
-    await sendResponsesQuarantineEvent([])
-    expect(uuidv4).toHaveBeenCalled()
+  test('should include filename in event', async () => {
+    await sendResponsesQuarantineEvent(filename, error)
+    expect(mockSendEvent.mock.calls[0][0].properties.action.data.filename).toBe(filename)
+  })
+})
+
+describe('V2 ack event', () => {
+  test('should send V2 event if V2 events enabled', async () => {
+    config.useV2Events = true
+    await sendResponsesQuarantineEvent(filename, error)
+    expect(mockPublishEvent).toHaveBeenCalled()
   })
 
-  test('should call uuidv4 once when an array is received', async () => {
-    await sendResponsesQuarantineEvent([])
-    expect(uuidv4).toHaveBeenCalledTimes(1)
+  test('should not send V2 event if V2 events disabled', async () => {
+    config.useV2Events = false
+    await sendResponsesQuarantineEvent(filename, error)
+    expect(mockPublishEvent).not.toHaveBeenCalled()
   })
 
-  test('should call uuidv4 when undefined is received', async () => {
-    await sendResponsesQuarantineEvent(undefined)
-    expect(uuidv4).toHaveBeenCalled()
+  test('should send event to V2 topic', async () => {
+    await sendResponsesQuarantineEvent(filename, error)
+    expect(MockEventPublisher.mock.calls[0][0]).toBe(config.eventsTopic)
   })
 
-  test('should call uuidv4 once when undefined is received', async () => {
-    await sendResponsesQuarantineEvent(undefined)
-    expect(uuidv4).toHaveBeenCalledTimes(1)
+  test('should raise an event with processing source', async () => {
+    await sendResponsesQuarantineEvent(filename, error)
+    expect(mockPublishEvent.mock.calls[0][0].source).toBe(SOURCE)
   })
 
-  test('should call uuidv4 when null is received', async () => {
-    await sendResponsesQuarantineEvent(null)
-    expect(uuidv4).toHaveBeenCalled()
+  test('should raise acknowledged payment event type', async () => {
+    await sendResponsesQuarantineEvent(filename, error)
+    expect(mockPublishEvent.mock.calls[0][0].type).toBe(RESPONSE_REJECTED)
   })
 
-  test('should call uuidv4 once when null is received', async () => {
-    await sendResponsesQuarantineEvent(null)
-    expect(uuidv4).toHaveBeenCalledTimes(1)
-  })
-
-  test('should call raiseEvent when a filename is received', async () => {
-    await sendResponsesQuarantineEvent(filename)
-    expect(raiseEvent).toHaveBeenCalled()
-  })
-
-  test('should call raiseEvent once when a filename is received', async () => {
-    await sendResponsesQuarantineEvent(filename)
-    expect(raiseEvent).toHaveBeenCalledTimes(1)
-  })
-
-  test('should call raiseEvent with event and "error" when a filename is received', async () => {
-    event = {
-      ...event,
-      id: uuidv4()
-    }
-
-    await sendResponsesQuarantineEvent(filename)
-
-    expect(raiseEvent).toHaveBeenCalledWith(event, 'error')
-  })
-
-  test('should call raiseEvent when an empty string is received', async () => {
-    await sendResponsesQuarantineEvent('')
-    expect(raiseEvent).toHaveBeenCalled()
-  })
-
-  test('should call raiseEvent once when an empty string is received', async () => {
-    await sendResponsesQuarantineEvent('')
-    expect(raiseEvent).toHaveBeenCalledTimes(1)
-  })
-
-  test('should call raiseEvent with event and "error" when an empty string is received', async () => {
-    filename = ''
-    event = {
-      ...event,
-      id: uuidv4(),
-      message: `Quarantined ${filename}`,
-      data: {
-        filename
-      }
-    }
-
-    await sendResponsesQuarantineEvent(filename)
-
-    expect(raiseEvent).toHaveBeenCalledWith(event, 'error')
-  })
-
-  test('should call raiseEvent when an object is received', async () => {
-    await sendResponsesQuarantineEvent({})
-    expect(raiseEvent).toHaveBeenCalled()
-  })
-
-  test('should call raiseEvent once when an object is received', async () => {
-    await sendResponsesQuarantineEvent({})
-    expect(raiseEvent).toHaveBeenCalledTimes(1)
-  })
-
-  test('should call raiseEvent with event and "error" when an object is received', async () => {
-    filename = {}
-    event = {
-      ...event,
-      id: uuidv4(),
-      message: `Quarantined ${filename}`,
-      data: {
-        filename
-      }
-    }
-
-    await sendResponsesQuarantineEvent(filename)
-
-    expect(raiseEvent).toHaveBeenCalledWith(event, 'error')
-  })
-
-  test('should call raiseEvent when an array is received', async () => {
-    await sendResponsesQuarantineEvent([])
-    expect(raiseEvent).toHaveBeenCalled()
-  })
-
-  test('should call raiseEvent once when an array is received', async () => {
-    await sendResponsesQuarantineEvent([])
-    expect(raiseEvent).toHaveBeenCalledTimes(1)
-  })
-
-  test('should call raiseEvent with event and "error" when an array is received', async () => {
-    filename = []
-    event = {
-      ...event,
-      id: uuidv4(),
-      message: `Quarantined ${filename}`,
-      data: {
-        filename
-      }
-    }
-
-    await sendResponsesQuarantineEvent(filename)
-
-    expect(raiseEvent).toHaveBeenCalledWith(event, 'error')
-  })
-
-  test('should call raiseEvent when undefined is received', async () => {
-    await sendResponsesQuarantineEvent(undefined)
-    expect(raiseEvent).toHaveBeenCalled()
-  })
-
-  test('should call raiseEvent once when undefined is received', async () => {
-    await sendResponsesQuarantineEvent(undefined)
-    expect(raiseEvent).toHaveBeenCalledTimes(1)
-  })
-
-  test('should call raiseEvent with event and "error" when undefined is received', async () => {
-    filename = undefined
-    event = {
-      ...event,
-      id: uuidv4(),
-      message: `Quarantined ${filename}`,
-      data: {
-        filename
-      }
-    }
-
-    await sendResponsesQuarantineEvent(filename)
-
-    expect(raiseEvent).toHaveBeenCalledWith(event, 'error')
-  })
-
-  test('should call raiseEvent when null is received', async () => {
-    await sendResponsesQuarantineEvent(null)
-    expect(raiseEvent).toHaveBeenCalled()
-  })
-
-  test('should call raiseEvent once when null is received', async () => {
-    await sendResponsesQuarantineEvent(null)
-    expect(raiseEvent).toHaveBeenCalledTimes(1)
-  })
-
-  test('should call raiseEvent with event and "error" when null is received', async () => {
-    filename = null
-    event = {
-      ...event,
-      id: uuidv4(),
-      message: `Quarantined ${filename}`,
-      data: {
-        filename
-      }
-    }
-
-    await sendResponsesQuarantineEvent(filename)
-
-    expect(raiseEvent).toHaveBeenCalledWith(event, 'error')
+  test('should include error message in event data', async () => {
+    await sendResponsesQuarantineEvent(filename, error)
+    expect(mockPublishEvent.mock.calls[0][0].data.message).toBe(error.message)
   })
 })
