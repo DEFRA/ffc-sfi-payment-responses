@@ -6,10 +6,8 @@ const sendResponsesQuarantineEvent = require('../../../app/event/send-responses-
 
 const quarantineFile = require('../../../app/processing/quarantine-file')
 
-const filename = 'acknowledgement.xml'
-const error = {
-  message: 'test error'
-}
+const filename = require('../../mocks/filename')
+const error = require('../../mocks/error')
 
 describe('quarantine file', () => {
   afterEach(async () => {
