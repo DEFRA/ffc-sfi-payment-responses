@@ -8,10 +8,12 @@ data:
   ACKNOWLEDGEMENT_TOPIC_ADDRESS: {{ .Values.container.acknowledgementTopicAddress }}-{{ .Values.environmentCode }}
   RETURN_TOPIC_ADDRESS: {{ .Values.container.returnTopicAddress }}-{{ .Values.environmentCode }}
   EVENT_TOPIC_ADDRESS: {{ .Values.container.eventTopicAddress }}-{{ .Values.environmentCode }}
+  EVENTS_TOPIC_ADDRESS: {{ .Values.container.eventsTopicAddress }}-{{ .Values.environmentCode }}
   {{ else }}
   ACKNOWLEDGEMENT_TOPIC_ADDRESS: {{ quote .Values.container.acknowledgementTopicAddress }}
   RETURN_TOPIC_ADDRESS: {{ quote .Values.container.returnTopicAddress }}
   EVENT_TOPIC_ADDRESS: {{ quote .Values.container.eventTopicAddress }}
+  EVENTS_TOPIC_ADDRESS: {{ quote .Values.container.eventsTopicAddress }}
   {{- end }}
   AZURE_STORAGE_ACCOUNT_NAME: {{ quote .Values.container.azureStorageAccountName }}
   AZURE_STORAGE_CONNECTION_STRING: {{ quote .Values.container.azureStorageConnectionString }}
@@ -21,4 +23,6 @@ data:
   AZURE_STORAGE_INBOUND: {{ quote .Values.container.inboundFolder }}
   AZURE_STORAGE_ARCHIVE: {{ quote .Values.container.archiveFolder }}
   AZURE_STORAGE_QUARANTINE: {{ quote .Values.container.quarantineFolder }}
+  USE_V1_EVENTS: {{ quote .Values.container.useV1Events }}
+  USE_V2_EVENTS: {{ quote .Values.container.useV2Events }}
 {{- end -}}

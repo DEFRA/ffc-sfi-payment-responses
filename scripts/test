@@ -50,8 +50,10 @@ compose() {
 
 (
   cd "${projectRoot}"
+  # Ensure test-output directory exists
+  mkdir -p test-output
 
- # Guarantee clean environment
+  # Guarantee clean environment
   compose down -v
 
   # Ensure container images are up to date

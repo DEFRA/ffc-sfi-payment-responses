@@ -11,7 +11,7 @@ const processAcknowledgement = async (filename) => {
   try {
     messages = await parseAcknowledgementFile(content)
   } catch (err) {
-    await quarantineFile(filename)
+    await quarantineFile(filename, err)
   }
   if (messages?.length) {
     await sendAcknowledgementMessages(messages)
