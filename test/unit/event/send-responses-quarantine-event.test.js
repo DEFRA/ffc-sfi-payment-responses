@@ -36,7 +36,7 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
-describe('V1 ack event', () => {
+describe('V1 quarantine ack event', () => {
   test('should send V1 event if V1 events enabled', async () => {
     config.useV1Events = true
     await sendResponsesQuarantineEvent(filename, error)
@@ -85,7 +85,7 @@ describe('V1 ack event', () => {
   })
 })
 
-describe('V2 ack event', () => {
+describe('V2 quarantine ack event', () => {
   test('should send V2 event if V2 events enabled', async () => {
     config.useV2Events = true
     await sendResponsesQuarantineEvent(filename, error)
