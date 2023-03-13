@@ -22,10 +22,8 @@ const { RESPONSE_REJECTED } = require('../../../app/constants/events')
 const { SOURCE } = require('../../../app/constants/source')
 const sendResponsesQuarantineEvent = require('../../../app/event/send-responses-quarantine-event')
 
-const filename = 'test.csv'
-const error = {
-  message: 'test error'
-}
+const filename = require('../../mocks/filename')
+const error = require('../../mocks/error')
 
 beforeEach(() => {
   config.useV1Events = true
