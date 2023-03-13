@@ -2,6 +2,8 @@ const { v4: uuidv4 } = require('uuid')
 const raiseEvent = require('./raise-event')
 const config = require('../config')
 const { EventPublisher } = require('ffc-pay-event-publisher')
+const { RESPONSE_REJECTED } = require('../constants/events')
+const { SOURCE } = require('../constants/source')
 
 const sendResponsesQuarantineEvent = async (filename, error) => {
   if (config.useV1Events) {
@@ -27,8 +29,8 @@ const sendV1ResponsesQuarantineEvent = async (filename) => {
 
 const sendV2ResponsesQuarantineEvent = async (filename, error) => {
   const event = {
-    source: 'ffc-pay-responses',
-    type: 'uk.gov.defra.ffc.pay.warning.response.rejected',
+    source: SOURCE,
+    type: RESPONSE_REJECTED,
     subject: filename,
     data: {
       message: error.message,
