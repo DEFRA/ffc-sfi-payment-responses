@@ -6,7 +6,6 @@ const storageConfig = require('./storage-config')
 const schema = Joi.object({
   env: Joi.string().valid('development', 'test', 'production').default('development'),
   processingInterval: Joi.number().default(10000),
-  useV1Events: Joi.boolean().default(true),
   useV2Events: Joi.boolean().default(true)
 })
 
@@ -14,7 +13,6 @@ const schema = Joi.object({
 const config = {
   env: process.env.NODE_ENV,
   processingInterval: process.env.PROCESSING_INTERVAL,
-  useV1Events: process.env.USE_V1_EVENTS,
   useV2Events: process.env.USE_V2_EVENTS
 }
 

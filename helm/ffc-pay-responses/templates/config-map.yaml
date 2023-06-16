@@ -23,6 +23,5 @@ data:
   AZURE_STORAGE_INBOUND: {{ quote .Values.container.inboundFolder }}
   AZURE_STORAGE_ARCHIVE: {{ quote .Values.container.archiveFolder }}
   AZURE_STORAGE_QUARANTINE: {{ quote .Values.container.quarantineFolder }}
-  USE_V1_EVENTS: {{ quote .Values.container.useV1Events }}
   USE_V2_EVENTS: {{ quote .Values.container.useV2Events }}
 {{- end -}}
