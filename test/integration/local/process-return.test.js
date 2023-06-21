@@ -1,6 +1,7 @@
 jest.useFakeTimers()
 
 const mockSendBatchMessages = jest.fn()
+
 jest.mock('ffc-messaging', () => {
   return {
     MessageBatchSender: jest.fn().mockImplementation(() => {
@@ -12,17 +13,13 @@ jest.mock('ffc-messaging', () => {
   }
 })
 
-const mockSendEvent = jest.fn()
+const mockPublishEvent = jest.fn()
+
 jest.mock('ffc-pay-event-publisher', () => {
   return {
-    PublishEvent: jest.fn().mockImplementation(() => {
-      return {
-        sendEvent: mockSendEvent
-      }
-    }),
     EventPublisher: jest.fn().mockImplementation(() => {
       return {
-        publishEvent: jest.fn()
+        publishEvent: mockPublishEvent
       }
     })
   }
@@ -34,14 +31,17 @@ const path = require('path')
 const config = require('../../../app/config')
 const processing = require('../../../app/processing')
 
-let blobServiceClient
-let container
-
 const TEST_FILE = path.resolve(__dirname, '../../files/return.csv')
 const TEST_INVALID_FILE = path.resolve(__dirname, '../../files/broken-return.csv')
 
+const { RESPONSE_REJECTED } = require('../../../app/constants/events')
+const { SOURCE } = require('../../../app/constants/source')
+
 const VALID_FILENAME = 'mock Return File.csv'
 const INVALID_FILENAME = 'ignore me.csv'
+
+let blobServiceClient
+let container
 
 describe('process acknowledgement', () => {
   beforeEach(async () => {
@@ -124,31 +124,39 @@ describe('process acknowledgement', () => {
       expect(fileList.filter(x => x === `${config.storageConfig.quarantineFolder}/${VALID_FILENAME}`).length).toBe(1)
     })
 
-    test('calls PublishEvent.sendEvent once', async () => {
+    test('calls mockPublishEvent once', async () => {
       const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
       await blockBlobClient.uploadFile(TEST_INVALID_FILE)
 
       await processing.start()
 
-      expect(mockSendEvent.mock.calls.length).toBe(1)
+      expect(mockPublishEvent.mock.calls.length).toBe(1)
     })
 
-    test('calls PublishEvent.sendEvent with event.name "responses-processing-quarantine-error"', async () => {
+    test('calls mockPublishEvent with event.type RESPONSE_REJECTED', async () => {
       const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
       await blockBlobClient.uploadFile(TEST_INVALID_FILE)
 
       await processing.start()
-
-      expect(mockSendEvent.mock.calls[0][0].name).toBe('responses-processing-quarantine-error')
+      expect(mockPublishEvent.mock.calls[0][0].type).toBe(RESPONSE_REJECTED)
     })
 
-    test('calls PublishEvent.sendEvent with event.properties.status "error"', async () => {
+    test('calls mockPublishEvent.sendEvent with source of SOURCE', async () => {
       const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
       await blockBlobClient.uploadFile(TEST_INVALID_FILE)
 
       await processing.start()
 
-      expect(mockSendEvent.mock.calls[0][0].properties.status).toBe('error')
+      expect(mockPublishEvent.mock.calls[0][0].source).toBe(SOURCE)
+    })
+
+    test('calls mockPublishEvent.sendEvent with subject of VALID_FILENAME', async () => {
+      const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
+      await blockBlobClient.uploadFile(TEST_INVALID_FILE)
+
+      await processing.start()
+
+      expect(mockPublishEvent.mock.calls[0][0].subject).toBe(VALID_FILENAME)
     })
   })
 })
