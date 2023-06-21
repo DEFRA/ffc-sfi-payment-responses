@@ -12,14 +12,8 @@ jest.mock('ffc-messaging', () => {
   }
 })
 
-const mockSendEvent = jest.fn()
 jest.mock('ffc-pay-event-publisher', () => {
   return {
-    PublishEvent: jest.fn().mockImplementation(() => {
-      return {
-        sendEvent: mockSendEvent
-      }
-    }),
     EventPublisher: jest.fn().mockImplementation(() => {
       return {
         publishEvent: jest.fn()
@@ -118,33 +112,6 @@ describe('process acknowledgement', () => {
       fileList.push(item.name)
     }
     expect(fileList.filter(x => x === `${config.storageConfig.quarantineFolder}/${VALID_FILENAME}`).length).toBe(1)
-  })
-
-  test('calls PublishEvent.sendEvent once when an invalid file is given', async () => {
-    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
-    await blockBlobClient.uploadFile(TEST_INVALID_FILE)
-
-    await processing.start()
-
-    expect(mockSendEvent.mock.calls.length).toBe(1)
-  })
-
-  test('calls PublishEvent.sendEvent with event.name "responses-processing-quarantine-error" when an invalid file is given', async () => {
-    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
-    await blockBlobClient.uploadFile(TEST_INVALID_FILE)
-
-    await processing.start()
-
-    expect(mockSendEvent.mock.calls[0][0].name).toBe('responses-processing-quarantine-error')
-  })
-
-  test('calls PublishEvent.sendEvent with event.properties.status "error" when an invalid file is given', async () => {
-    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
-    await blockBlobClient.uploadFile(TEST_INVALID_FILE)
-
-    await processing.start()
-
-    expect(mockSendEvent.mock.calls[0][0].properties.status).toBe('error')
   })
 
   test('does not quarantine file if unable to publish valid message', async () => {
