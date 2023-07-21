@@ -31,11 +31,11 @@ const path = require('path')
 const config = require('../../../app/config')
 const processing = require('../../../app/processing')
 
-const TEST_FILE = path.resolve(__dirname, '../../files/return.csv')
-const TEST_INVALID_FILE = path.resolve(__dirname, '../../files/broken-return.csv')
-
 const { RESPONSE_REJECTED } = require('../../../app/constants/events')
 const { SOURCE } = require('../../../app/constants/source')
+
+const TEST_FILE = path.resolve(__dirname, '../../files/return.csv')
+const TEST_INVALID_FILE = path.resolve(__dirname, '../../files/broken-return.csv')
 
 const VALID_FILENAME = 'mock Return File.csv'
 const INVALID_FILENAME = 'ignore me.csv'
@@ -56,6 +56,7 @@ describe('process acknowledgement', () => {
   afterEach(async () => {
     jest.clearAllMocks()
   })
+
   describe('for valid files', () => {
     test('sends all returns', async () => {
       await processing.start()

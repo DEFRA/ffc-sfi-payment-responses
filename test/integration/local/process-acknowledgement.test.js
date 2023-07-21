@@ -28,14 +28,14 @@ const path = require('path')
 const config = require('../../../app/config')
 const processing = require('../../../app/processing')
 
-let blobServiceClient
-let container
-
 const TEST_FILE = path.resolve(__dirname, '../../files/acknowledgement.xml')
 const TEST_INVALID_FILE = path.resolve(__dirname, '../../files/broken-acknowledgement.xml')
 
 const VALID_FILENAME = 'mock_0001_Ack.xml'
 const INVALID_FILENAME = 'ignore me.xml'
+
+let blobServiceClient
+let container
 
 describe('process acknowledgement', () => {
   beforeEach(async () => {
