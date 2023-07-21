@@ -83,6 +83,11 @@ describe('process acknowledgement', () => {
     expect(mockSendBatchMessages.mock.calls[0][0][2].body.message).toBe('Journal JN12345678 has been created Validation failed Line : 21.')
   })
 
+  test('sends filename if file valid', async () => {
+    await processing.start()
+    expect(mockSendBatchMessages.mock.calls[0][0][0].body.filename).toBe(VALID_FILENAME)
+  })
+
   test('archives file on success if file valid', async () => {
     await processing.start()
     const fileList = []

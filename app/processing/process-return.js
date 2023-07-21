@@ -9,7 +9,7 @@ const processReturn = async (filename) => {
   const content = await blobStorage.downloadFile(filename)
   let messages
   try {
-    messages = await parseReturnFile(content)
+    messages = await parseReturnFile(content, filename)
   } catch (err) {
     await quarantineFile(filename, err)
   }

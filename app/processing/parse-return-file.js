@@ -1,7 +1,7 @@
 const { convertToPence } = require('../currency-convert')
 const moment = require('moment')
 
-const parseReturnFile = async (content) => {
+const parseReturnFile = async (content, filename) => {
   const csv = content.trim().split(/\r?\n/)
   return csv.map(x => {
     const row = x.split(',')
@@ -14,7 +14,8 @@ const parseReturnFile = async (content) => {
       settlementDate: row[7] !== '' ? moment(row[7], ['YYYY-MM-DD', 'DD/MM/YYYY']).toISOString() : undefined,
       reference: row[8],
       settled: row[9] === 'D' || (row[9] === 'E' && row[8] !== ''),
-      detail: row[10]
+      detail: row[10],
+      filename
     }
   })
 }

@@ -82,6 +82,11 @@ describe('process acknowledgement', () => {
       expect(mockSendBatchMessages.mock.calls[0][0][5].body.settled).toBe(false)
     })
 
+    test('sends filename', async () => {
+      await processing.start()
+      expect(mockSendBatchMessages.mock.calls[0][0][0].body.filename).toBe(VALID_FILENAME)
+    })
+
     test('archives file on success', async () => {
       await processing.start()
       const fileList = []
@@ -90,6 +95,7 @@ describe('process acknowledgement', () => {
       }
       expect(fileList.filter(x => x === `${config.storageConfig.archiveFolder}/${VALID_FILENAME}`).length).toBe(1)
     })
+
     test('does not quarantine file if unable to publish message', async () => {
       mockSendBatchMessages.mockImplementation(() => { throw new Error('Unable to publish message') })
       await processing.start()

@@ -1,3 +1,5 @@
+jest.useFakeTimers()
+
 jest.mock('ffc-pay-event-publisher')
 const path = require('path')
 const processing = require('../../../app/processing')
