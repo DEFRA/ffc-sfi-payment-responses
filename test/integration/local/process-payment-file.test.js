@@ -126,7 +126,7 @@ describe('process payment files', () => {
     expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/FFC mock Payment File.csv`).length).toBe(0)
   })
 
-  test('Should remove all payment files contained within the blob storage container when there are ackowledgement files in the container.', async () => {
+  test('Should remove all payment files contained within the blob storage container when there are acknowledgement files in the container.', async () => {
     await batchFileUploader(mockPaymentFileNames, TEST_FILE)
     await batchFileUploader(mockAcknowledgementFileNames, ACK_TEST_FILE)
     await processing.start()
