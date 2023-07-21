@@ -1,6 +1,6 @@
 const xml2js = require('xml2js')
 
-const parseAcknowledgementFile = async (xml) => {
+const parseAcknowledgementFile = async (xml, filename) => {
   const parser = new xml2js.Parser()
   const acknowledgementData = await parser.parseStringPromise(xml)
   return acknowledgementData.Envelope.Lines[0].Line.map(x => ({
@@ -8,7 +8,8 @@ const parseAcknowledgementFile = async (xml) => {
     frn: Number(x.SupplierID[0]),
     success: x.Success[0].toLowerCase() === 'true',
     acknowledged: new Date(),
-    message: x.Log ? parseLog(x.Log[0]) : undefined
+    message: x.Log ? parseLog(x.Log[0]) : undefined,
+    filename
   }))
 }
 

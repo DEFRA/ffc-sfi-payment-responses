@@ -28,14 +28,14 @@ const path = require('path')
 const config = require('../../../app/config')
 const processing = require('../../../app/processing')
 
-let blobServiceClient
-let container
-
 const TEST_FILE = path.resolve(__dirname, '../../files/acknowledgement.xml')
 const TEST_INVALID_FILE = path.resolve(__dirname, '../../files/broken-acknowledgement.xml')
 
 const VALID_FILENAME = 'mock_0001_Ack.xml'
 const INVALID_FILENAME = 'ignore me.xml'
+
+let blobServiceClient
+let container
 
 describe('process acknowledgement', () => {
   beforeEach(async () => {
@@ -81,6 +81,11 @@ describe('process acknowledgement', () => {
     await processing.start()
     expect(mockSendBatchMessages.mock.calls[0][0][2].body.success).toBe(false)
     expect(mockSendBatchMessages.mock.calls[0][0][2].body.message).toBe('Journal JN12345678 has been created Validation failed Line : 21.')
+  })
+
+  test('sends filename if file valid', async () => {
+    await processing.start()
+    expect(mockSendBatchMessages.mock.calls[0][0][0].body.filename).toBe(VALID_FILENAME)
   })
 
   test('archives file on success if file valid', async () => {

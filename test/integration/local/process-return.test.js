@@ -31,11 +31,11 @@ const path = require('path')
 const config = require('../../../app/config')
 const processing = require('../../../app/processing')
 
-const TEST_FILE = path.resolve(__dirname, '../../files/return.csv')
-const TEST_INVALID_FILE = path.resolve(__dirname, '../../files/broken-return.csv')
-
 const { RESPONSE_REJECTED } = require('../../../app/constants/events')
 const { SOURCE } = require('../../../app/constants/source')
+
+const TEST_FILE = path.resolve(__dirname, '../../files/return.csv')
+const TEST_INVALID_FILE = path.resolve(__dirname, '../../files/broken-return.csv')
 
 const VALID_FILENAME = 'mock Return File.csv'
 const INVALID_FILENAME = 'ignore me.csv'
@@ -56,30 +56,36 @@ describe('process acknowledgement', () => {
   afterEach(async () => {
     jest.clearAllMocks()
   })
+
   describe('for valid files', () => {
     test('sends all returns', async () => {
       await processing.start()
       expect(mockSendBatchMessages.mock.calls[0][0].length).toBe(6)
     })
 
-    test('sends invoice number', async () => {
+    test('sends invoice number if file valid', async () => {
       await processing.start()
       expect(mockSendBatchMessages.mock.calls[0][0][0].body.invoiceNumber).toBe('S123456789A123456V001')
     })
 
-    test('sends settled if D', async () => {
+    test('sends settled if D if file valid', async () => {
       await processing.start()
       expect(mockSendBatchMessages.mock.calls[0][0][0].body.settled).toBe(true)
     })
 
-    test('sends settled if E with reference', async () => {
+    test('sends settled if E with reference if file valid', async () => {
       await processing.start()
       expect(mockSendBatchMessages.mock.calls[0][0][4].body.settled).toBe(true)
     })
 
-    test('sends unsettled if E without reference', async () => {
+    test('sends unsettled if E without reference if file valid', async () => {
       await processing.start()
       expect(mockSendBatchMessages.mock.calls[0][0][5].body.settled).toBe(false)
+    })
+
+    test('sends filename if file valid', async () => {
+      await processing.start()
+      expect(mockSendBatchMessages.mock.calls[0][0][0].body.filename).toBe(VALID_FILENAME)
     })
 
     test('archives file on success', async () => {
@@ -90,6 +96,7 @@ describe('process acknowledgement', () => {
       }
       expect(fileList.filter(x => x === `${config.storageConfig.archiveFolder}/${VALID_FILENAME}`).length).toBe(1)
     })
+
     test('does not quarantine file if unable to publish message', async () => {
       mockSendBatchMessages.mockImplementation(() => { throw new Error('Unable to publish message') })
       await processing.start()
