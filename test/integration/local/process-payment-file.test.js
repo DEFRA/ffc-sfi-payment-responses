@@ -49,11 +49,6 @@ describe('process payment files', () => {
     await batchFileUploader(mockReturnFileNames, RETURN_TEST_FILE)
     await processing.start()
 
-    const inboundFileList = []
-    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.inboundFolder })) {
-      inboundFileList.push(item.name)
-    }
-
     const archiveFileList = []
     for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.archiveFolder })) {
       archiveFileList.push(item.name)
@@ -63,14 +58,9 @@ describe('process payment files', () => {
     expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/mock Return File2.csv`).length).toBe(1)
   })
 
-  test('Should archive ackowledgement files when there are no payment files.', async () => {
+  test('Should archive acknowledgement files when there are no payment files.', async () => {
     await batchFileUploader(mockAcknowledgementFileNames, ACK_TEST_FILE)
     await processing.start()
-
-    const inboundFileList = []
-    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.inboundFolder })) {
-      inboundFileList.push(item.name)
-    }
 
     const archiveFileList = []
     for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.archiveFolder })) {
@@ -155,7 +145,7 @@ describe('process payment files', () => {
     expect(archiveFileList.filter(x => x === `${config.storageConfig.archiveFolder}/FFC mock Payment File.csv`).length).toBe(0)
   })
 
-  test('Should remove all payment files contained within the blob storage container when there are ackowledgement and return files in the container.', async () => {
+  test('Should remove all payment files contained within the blob storage container when there are acknowledgement and return files in the container.', async () => {
     await batchFileUploader(mockPaymentFileNames, TEST_FILE)
     await batchFileUploader(mockAcknowledgementFileNames, ACK_TEST_FILE)
     await batchFileUploader(mockReturnFileNames, RETURN_TEST_FILE)
