@@ -1,8 +1,8 @@
-const { sendReturnMessages } = require('../messaging')
+const util = require('util')
 const blobStorage = require('../storage')
+const { sendReturnMessages } = require('../messaging')
 const parseReturnFile = require('./parse-return-file')
 const quarantineFile = require('./quarantine-file')
-const util = require('util')
 
 const processReturn = async (filename) => {
   console.info(`Processing ${filename}`)
