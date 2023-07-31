@@ -12,10 +12,10 @@ const parseReturnFile = require('../../../app/processing/parse-return-file')
 const genesisFilename = require('../../mocks/filenames').GENESIS
 const glosFilename = require('../../mocks/filenames').GLOS
 const impsFilename = require('../../mocks/filenames').IMPS
-const filename = require('../../mocks/filenames').DEFAULT
+// const filename = require('../../mocks/filenames').DEFAULT
 
 let content
-let mappedContent
+// let mappedContent
 
 describe('parse return file', () => {
   test('Should call parseGenesisReturnFile when filename contains GENESISPayConf', async () => {
