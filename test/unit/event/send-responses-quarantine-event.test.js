@@ -20,7 +20,7 @@ const { SOURCE } = require('../../../app/constants/source')
 
 const sendResponsesQuarantineEvent = require('../../../app/event/send-responses-quarantine-event')
 
-const filename = require('../../mocks/filename')
+const filename = require('../../mocks/filenames').TEST
 const error = require('../../mocks/error')
 
 describe('V2 quarantine ack event', () => {
