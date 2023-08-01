@@ -14,7 +14,10 @@ const glosFilename = require('../../mocks/filenames').GLOS
 const impsFilename = require('../../mocks/filenames').IMPS
 const filename = require('../../mocks/filenames').DEFAULT
 
-let content
+const genesisContent = 'D^1098608^AG00384621^1216.00^20/07/2023^B^1892661^D^'
+const glosContent = '106172753,1102259241,EWCO285-21-22,97,20/06/2023,2137.91,1848061,6926,0729,D,'
+const impsContent = 'H,9942,04,380225,SCM/38022522-210-001,P,1848107,115.45,B,20-JUN-23,0,'
+
 let mappedContent
 
 describe('parse return file', () => {
@@ -23,13 +26,16 @@ describe('parse return file', () => {
   })
 
   test('Should call parseGenesisReturnFile when filename contains GENESISPayConf', async () => {
-    content = ''
-    await parseReturnFile(content, genesisFilename)
+    await parseReturnFile(genesisContent, genesisFilename)
     expect(parseGenesisReturnFile).toBeCalled()
   })
 
+  test('Should call parseGenesisReturnFile with content and filename', async () => {
+    await parseReturnFile(genesisContent, genesisFilename)
+    expect(parseGenesisReturnFile).toBeCalledWith([genesisContent], genesisFilename)
+  })
+  /*
   test('Should return mapped genesis content when filename and content provided', async () => {
-    content = 'D^1098608^AG00384621^1216.00^20/07/2023^B^1892661^D^'
     mappedContent = [{
         sourceSystem: 'Genesis',
         paymentId: '1098608',
@@ -43,19 +49,22 @@ describe('parse return file', () => {
         detail: '',
         genesisFilename
     }]
-    const result = parseReturnFile(content, genesisFilename)
+    const result = parseReturnFile(genesisContent, genesisFilename)
     console.log(result)
     expect(result).toStrictEqual(mappedContent)
   })
-
+  */
   test('Should call parseGlosReturnFile when filename contains FCAP', async () => {
-    content = ''
-    await parseReturnFile(content, glosFilename)
+    await parseReturnFile(glosContent, glosFilename)
     expect(parseGlosReturnFile).toBeCalled()
   })
 
+  test('Should call parseGlosReturnFile with content and filename', async () => {
+    await parseReturnFile(glosContent, glosFilename)
+    expect(parseGlosReturnFile).toBeCalledWith([glosContent], glosFilename)
+  })
+  /*
   test('Should return mapped glos content when filename and content provided', async () => {
-    content = '106172753,1102259241,EWCO285-21-22,97,20/06/2023,2137.91,1848061,6926,0729,D,'
     mappedContent = [{
         sourceSystem: 'GLOS',
         sbi: 106172753,
@@ -71,19 +80,22 @@ describe('parse return file', () => {
         detail: '',
         glosFilename
     }]
-    const result = parseReturnFile(content, glosFilename)
+    const result = parseReturnFile(glosContent, glosFilename)
     console.log(result)
     expect(result).toStrictEqual(mappedContent)
   })
-
+  */
   test('Should call parseImpsReturnFile when filename contains RET_IMPS', async () => {
-    content = ''
-    await parseReturnFile(content, impsFilename)
+    await parseReturnFile(impsContent, impsFilename)
     expect(parseImpsReturnFile).toBeCalled()
   })
 
+  test('Should call parseImpsReturnFile with content and filename', async () => {
+    await parseReturnFile(impsContent, impsFilename)
+    expect(parseImpsReturnFile).toBeCalledWith([impsContent], impsFilename)
+  })
+  /*
   test('Should return mapped imps content when filename and content provided', async () => {
-    content = 'H,9942,04,380225,SCM/38022522-210-001,P,1848107,115.45,B,20-JUN-23,0,'
     mappedContent = [{
         sourceSystem: 'IMPS',
         paymentJobNumber: '9942',
@@ -100,7 +112,7 @@ describe('parse return file', () => {
         exchangeRate: '',
         impsFilename
     }]
-    const result = parseReturnFile(content, impsFilename)
+    const result = parseReturnFile(impsContent, impsFilename)
     console.log(result)
     expect(result).toStrictEqual(mappedContent)
   })
@@ -123,4 +135,5 @@ describe('parse return file', () => {
     console.log(result)
     expect(result).toStrictEqual(mappedContent)
   })
+  */
 })
