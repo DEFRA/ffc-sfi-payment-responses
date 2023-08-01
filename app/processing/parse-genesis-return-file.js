@@ -16,7 +16,7 @@ const parseGenesisReturnFile = async (csv, filename) => {
         settlementDate: row[4] !== '' ? moment(row[4], ['YYYY-MM-DD', 'DD/MM/YYYY']).toISOString() : undefined, // or date
         paymentType: row[5],
         reference: row[6], // or paymentReference
-        settled: row[7] === 'D', //or status
+        settled: row[7] === 'D', // or status
         detail: row[8], // or reason
         // ledger: 'AP',
         filename

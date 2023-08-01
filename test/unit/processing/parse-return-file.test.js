@@ -12,13 +12,13 @@ const parseReturnFile = require('../../../app/processing/parse-return-file')
 const genesisFilename = require('../../mocks/filenames').GENESIS
 const glosFilename = require('../../mocks/filenames').GLOS
 const impsFilename = require('../../mocks/filenames').IMPS
-const filename = require('../../mocks/filenames').DEFAULT
+// const filename = require('../../mocks/filenames').DEFAULT
 
 const genesisContent = 'D^1098608^AG00384621^1216.00^20/07/2023^B^1892661^D^'
 const glosContent = '106172753,1102259241,EWCO285-21-22,97,20/06/2023,2137.91,1848061,6926,0729,D,'
 const impsContent = 'H,9942,04,380225,SCM/38022522-210-001,P,1848107,115.45,B,20-JUN-23,0,'
 
-let mappedContent
+// let mappedContent
 
 describe('parse return file', () => {
   beforeEach(async () => {
