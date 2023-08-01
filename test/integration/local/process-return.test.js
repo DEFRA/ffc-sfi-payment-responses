@@ -43,7 +43,7 @@ const INVALID_FILENAME = 'ignore me.csv'
 let blobServiceClient
 let container
 
-describe('process acknowledgement', () => {
+describe('process return', () => {
   beforeEach(async () => {
     blobServiceClient = BlobServiceClient.fromConnectionString(config.storageConfig.connectionStr)
     container = blobServiceClient.getContainerClient(config.storageConfig.container)

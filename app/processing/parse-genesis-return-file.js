@@ -4,21 +4,24 @@ const { convertToPence } = require('../currency-convert')
 const parseGenesisReturnFile = async (csv, filename) => {
   return csv.map(x => {
     const row = x.split('^')
-    // if (row[0] === 'D') {
-    return {
-      // Record type, payment id, transaction number, value, date, payment type, payment reference, status, reason
-      sourceSystem: row[0],
-      invoiceNumber: row[1],
-      frn: Number(row[2]),
-      currency: row[5] === 'S' ? 'GBP' : row[5],
-      value: convertToPence(row[6]),
-      settlementDate: row[7] !== '' ? moment(row[7], ['YYYY-MM-DD', 'DD/MM/YYYY']).toISOString() : undefined,
-      reference: row[8],
-      settled: row[9] === 'D' || (row[9] === 'E' && row[8] !== ''),
-      detail: row[10],
-      filename
+    if (row[0] === 'D') {
+      return {
+        // Record type, payment id, transaction number, value, date, payment type, payment reference, status, reason
+        // D^1098608^AG00384621^1216.00^20/07/2023^B^1892661^D^
+        sourceSystem: 'Genesis',
+        paymentId: row[1],
+        transactionNumber: row[2],
+        invoiceNumber: 'I(' + row[1] + ')' + row[2],
+        value: convertToPence(row[3]),
+        settlementDate: row[4] !== '' ? moment(row[4], ['YYYY-MM-DD', 'DD/MM/YYYY']).toISOString() : undefined, // or date
+        paymentType: row[5],
+        reference: row[6], // or paymentReference
+        settled: row[7] === 'D', //or status
+        detail: row[8], // or reason
+        // ledger: 'AP',
+        filename
+      }
     }
-    // }
   })
 }
 

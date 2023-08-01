@@ -5,11 +5,12 @@ const parseGlosReturnFile = require('../../app/processing/parse-glos-return-file
 const parseImpsReturnFile = require('../../app/processing/parse-imps-return-file')
 
 const parseReturnFile = async (content, filename) => {
+  // console.log(content)
   const csv = content.trim().split(/\r?\n/)
   if (filename.includes('GENESISPayConf')) {
     return parseGenesisReturnFile(csv, filename)
   }
-  if (filename.includes('FC')) {
+  if (filename.includes('FCAP')) {
     return parseGlosReturnFile(csv, filename)
   }
   if (filename.includes('RET_IMPS')) {

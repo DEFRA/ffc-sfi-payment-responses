@@ -5,7 +5,7 @@ const isReturnFile = (filename) => {
   if (/^GENESISPayConf.*\.gni$/.test(filename)) {
     return true
   }
-  if (/^FC.*RPA.*\.dat$/.test(filename)) {
+  if (/^FCAP.*RPA.*\.dat$/.test(filename)) {
     return true
   }
   if (/^RET_IMPS.*\.INT$/.test(filename)) {
