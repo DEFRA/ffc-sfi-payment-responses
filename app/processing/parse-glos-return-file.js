@@ -24,8 +24,10 @@ const parseGlosReturnFile = async (csv, filename) => {
         // ledger: 'AP',
         filename
       }
+    } else {
+      return ''
     }
-  })
+  }).filter(x => x !== '')
 }
 
 module.exports = parseGlosReturnFile
