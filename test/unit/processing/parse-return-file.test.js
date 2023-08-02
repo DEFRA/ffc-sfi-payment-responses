@@ -22,8 +22,6 @@ const glosContent = '106172753,1102259241,EWCO285-21-22,97,20/06/2023,2137.91,18
 const impsContent = 'H,9942,04,380225,SCM/38022522-210-001,P,1848107,115.45,B,20-JUN-23,0,'
 const content = 'SITIAgri,S123456789A123456V001,1234567890,legacy,04-MAY-21,S,406.35,2021-08-27,PY1234567,D,'
 
-let mappedContent
-
 describe('parse return file', () => {
   beforeEach(async () => {
     jest.resetAllMocks()

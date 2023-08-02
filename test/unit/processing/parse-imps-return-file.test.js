@@ -10,7 +10,7 @@ describe('parse return file', () => {
   beforeEach(async () => {
     jest.resetAllMocks()
   })
-  
+
   test('Should return mapped imps content when filename and content provided', async () => {
     mappedContent = [{
       sourceSystem: 'IMPS',
