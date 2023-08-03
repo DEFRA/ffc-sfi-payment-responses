@@ -34,7 +34,7 @@ const processing = require('../../../app/processing')
 const { RESPONSE_REJECTED } = require('../../../app/constants/events')
 const { SOURCE } = require('../../../app/constants/source')
 
-const TEST_FILE = path.resolve(__dirname, '../../files/return.csv')
+const TEST_FILE = path.resolve(__dirname, '../../files/Return File.csv')
 const TEST_INVALID_FILE = path.resolve(__dirname, '../../files/broken-return.csv')
 
 const VALID_FILENAME = 'mock Return File.csv'
@@ -43,7 +43,7 @@ const INVALID_FILENAME = 'ignore me.csv'
 let blobServiceClient
 let container
 
-describe('process acknowledgement', () => {
+describe('process return', () => {
   beforeEach(async () => {
     blobServiceClient = BlobServiceClient.fromConnectionString(config.storageConfig.connectionStr)
     container = blobServiceClient.getContainerClient(config.storageConfig.container)

@@ -1,11 +1,11 @@
 const blobStorage = require('../storage')
-const isAcknowledgementFile = require('./is-acknowledgement-file')
-const isReturnFile = require('./is-return-file')
-const isPaymentFile = require('./is-payment-file')
-const processAcknowledgement = require('./process-acknowledgement')
-const processReturn = require('./process-return')
-const processPaymentFile = require('./process-payment-file')
 const config = require('../config')
+const isAcknowledgementFile = require('./is-acknowledgement-file')
+const processAcknowledgement = require('./process-acknowledgement')
+const isReturnFile = require('./is-return-file')
+const processReturn = require('./process-return')
+const isPaymentFile = require('./is-payment-file')
+const processPaymentFile = require('./process-payment-file')
 
 const start = async () => {
   try {

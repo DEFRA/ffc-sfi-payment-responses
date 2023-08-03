@@ -6,7 +6,7 @@ const sendResponsesQuarantineEvent = require('../../../app/event/send-responses-
 
 const quarantineFile = require('../../../app/processing/quarantine-file')
 
-const filename = require('../../mocks/filename')
+const filename = require('../../mocks/filenames').TEST
 const error = require('../../mocks/error')
 
 describe('quarantine file', () => {

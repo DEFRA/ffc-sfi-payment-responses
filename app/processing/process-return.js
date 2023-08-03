@@ -1,15 +1,15 @@
-const { sendReturnMessages } = require('../messaging')
+const util = require('util')
 const blobStorage = require('../storage')
+const { sendReturnMessages } = require('../messaging')
 const parseReturnFile = require('./parse-return-file')
 const quarantineFile = require('./quarantine-file')
-const util = require('util')
 
 const processReturn = async (filename) => {
   console.info(`Processing ${filename}`)
   const content = await blobStorage.downloadFile(filename)
   let messages
   try {
-    messages = await parseReturnFile(content, filename)
+    messages = parseReturnFile(content, filename)
   } catch (err) {
     await quarantineFile(filename, err)
   }

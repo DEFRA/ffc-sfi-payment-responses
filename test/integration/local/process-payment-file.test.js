@@ -17,11 +17,12 @@ jest.mock('ffc-messaging', () => {
 
 const path = require('path')
 const { BlobServiceClient } = require('@azure/storage-blob')
+
 const processing = require('../../../app/processing')
 const config = require('../../../app/config')
 
 const TEST_FILE = path.resolve(__dirname, '../../files/payment-file.csv')
-const RETURN_TEST_FILE = path.resolve(__dirname, '../../files/return.csv')
+const RETURN_TEST_FILE = path.resolve(__dirname, '../../files/Return File.csv')
 const ACK_TEST_FILE = path.resolve(__dirname, '../../files/acknowledgement.xml')
 
 const mockReturnFileNames = ['mock Return File1.csv', 'mock Return File2.csv']
