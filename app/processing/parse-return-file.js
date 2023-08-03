@@ -13,9 +13,8 @@ const parseReturnFile = (content, filename) => {
   }
   if (filename.includes('RET_IMPS')) {
     return parseImpsReturnFile(csv, filename)
-  } else {
-    return parseDefaultReturnFile(csv, filename)
   }
+  return parseDefaultReturnFile(csv, filename)
 }
 
 module.exports = parseReturnFile

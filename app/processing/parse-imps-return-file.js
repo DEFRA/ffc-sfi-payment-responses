@@ -6,7 +6,6 @@ const parseImpsReturnFile = (csv, filename) => {
     const row = x.split(',')
     if (row[0] === 'H') {
       return {
-        // Record type, payment job number, fes code, trader number, transaction number, status, payment reference, gbp value, payment type, date, eur value, exchange rate
         sourceSystem: 'IMPS',
         paymentJobNumber: row[1],
         fesCode: row[2],
@@ -14,7 +13,7 @@ const parseImpsReturnFile = (csv, filename) => {
         transactionNumber: row[4],
         settled: row[5] === 'P',
         reference: row[6],
-        valueGBP: convertToPence(row[7]),
+        value: convertToPence(row[7]),
         paymentType: row[8],
         settlementDate: row[9] !== '' ? moment(row[9], ['YYYY-MM-DD', 'DD/MM/YYYY', 'DD-MMM-YY']).toISOString() : undefined,
         valueEUR: convertToPence(row[10]),

@@ -6,7 +6,6 @@ const parseGenesisReturnFile = (csv, filename) => {
     const row = x.split('^')
     if (row[0] === 'D') {
       return {
-        // Record type, payment id, transaction number, value, date, payment type, payment reference, status, reason
         sourceSystem: 'Genesis',
         paymentId: row[1],
         transactionNumber: row[2],

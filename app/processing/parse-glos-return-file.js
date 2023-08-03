@@ -6,7 +6,6 @@ const parseGlosReturnFile = (csv, filename) => {
     if (x.includes(',')) {
       const row = x.split(',')
       return {
-        // SBI, FRN, Agreement number, claim number, date, value, payment reference, bank account, batch number, status, reason
         sourceSystem: 'GLOS',
         sbi: Number(row[0]),
         frn: Number(row[1]),
