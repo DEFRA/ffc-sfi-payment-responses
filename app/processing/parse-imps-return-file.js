@@ -1,7 +1,7 @@
 const moment = require('moment')
 const { convertToPence } = require('../currency-convert')
 
-const parseImpsReturnFile = async (csv, filename) => {
+const parseImpsReturnFile = (csv, filename) => {
   return csv.map(x => {
     const row = x.split(',')
     if (row[0] === 'H') {
@@ -19,7 +19,7 @@ const parseImpsReturnFile = async (csv, filename) => {
         valueGBP: convertToPence(row[7]),
         paymentType: row[8],
         settlementDate: row[9] !== '' ? moment(row[9], ['YYYY-MM-DD', 'DD/MM/YYYY']).toISOString() : undefined, // or date
-        valueEUR: row[10],
+        valueEUR: Number(row[10]),
         exchangeRate: row[11],
         // ledger: 'AP',
         filename

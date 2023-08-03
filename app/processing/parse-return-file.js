@@ -3,7 +3,7 @@ const parseGlosReturnFile = require('../../app/processing/parse-glos-return-file
 const parseImpsReturnFile = require('../../app/processing/parse-imps-return-file')
 const parseDefaultReturnFile = require('../../app/processing/parse-default-return-file')
 
-const parseReturnFile = async (content, filename) => {
+const parseReturnFile = (content, filename) => {
   const csv = content.trim().split(/\r?\n/)
   if (filename.includes('GENESISPayConf')) {
     return parseGenesisReturnFile(csv, filename)

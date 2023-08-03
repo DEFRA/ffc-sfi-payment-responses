@@ -18,7 +18,7 @@ describe('parse return file', () => {
       frn: 1102259241,
       agreementNumber: 'EWCO285-21-22',
       claimNumber: '97',
-      settlementDate: '20/06/2023T00:00:00.000Z',
+      settlementDate: '2023-06-20T00:00:00.000Z',
       value: 213791,
       reference: '1848061',
       bankAccount: '6926',

@@ -18,7 +18,7 @@ describe('parse return file', () => {
       transactionNumber: 'AG00384621',
       invoiceNumber: 'I(1098608)AG00384621',
       value: 121600,
-      settlementDate: '20/07/2023T00:00:00.000Z',
+      settlementDate: '2023-07-20T00:00:00.000Z',
       paymentType: 'B',
       reference: '1892661',
       settled: true,

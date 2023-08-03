@@ -10,7 +10,6 @@ describe('parse return file', () => {
   beforeEach(async () => {
     jest.resetAllMocks()
   })
-
   test('Should return mapped imps content when filename and content provided', async () => {
     mappedContent = [{
       sourceSystem: 'IMPS',
@@ -20,10 +19,10 @@ describe('parse return file', () => {
       invoiceNumber: 'SCM/38022522-210-001',
       transactionNumber: 'SCM/38022522-210-001',
       settled: true,
-      reference: '1892661',
+      reference: '1848107',
       valueGBP: 11545,
       paymentType: 'B',
-      settlementDate: undefined,
+      settlementDate: null,
       valueEUR: 0,
       exchangeRate: '',
       filename: impsFilename
