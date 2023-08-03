@@ -7,21 +7,19 @@ const parseImpsReturnFile = (csv, filename) => {
     if (row[0] === 'H') {
       return {
         // Record type, payment job number, fes code, trader number, transaction number, status, payment reference, gbp value, payment type, date, eur value, exchange rate
-        // H,9942,04,380225,SCM/38022522-210-001,P,1848107,115.45,B,20-JUN-23,0,
         sourceSystem: 'IMPS',
         paymentJobNumber: row[1],
         fesCode: row[2],
         traderNumber: row[3],
-        invoiceNumber: row[4],
         transactionNumber: row[4],
-        settled: row[5] === 'P', // or status
-        reference: row[6], // or paymentReference
+        settled: row[5] === 'P',
+        reference: row[6],
         valueGBP: convertToPence(row[7]),
         paymentType: row[8],
-        settlementDate: row[9] !== '' ? moment(row[9], ['YYYY-MM-DD', 'DD/MM/YYYY']).toISOString() : undefined, // or date
-        valueEUR: Number(row[10]),
+        settlementDate: row[9] !== '' ? moment(row[9], ['YYYY-MM-DD', 'DD/MM/YYYY', 'DD-MMM-YY']).toISOString() : undefined,
+        valueEUR: convertToPence(row[10]),
         exchangeRate: row[11],
-        // ledger: 'AP',
+        ledger: 'AP',
         filename
       }
     } else {

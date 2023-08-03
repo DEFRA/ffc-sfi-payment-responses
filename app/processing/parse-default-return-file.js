@@ -14,6 +14,7 @@ const parseDefaultReturnFile = (csv, filename) => {
       reference: row[8],
       settled: row[9] === 'D' || (row[9] === 'E' && row[8] !== ''),
       detail: row[10],
+      ledger: 'AP',
       filename
     }
   })

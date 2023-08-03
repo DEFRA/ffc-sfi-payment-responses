@@ -7,21 +7,19 @@ const parseGlosReturnFile = (csv, filename) => {
       const row = x.split(',')
       return {
         // SBI, FRN, Agreement number, claim number, date, value, payment reference, bank account, batch number, status, reason
-        // 106172753,1102259241,EWCO285-21-22,97,20/06/2023,2137.91,1848061,6926,0729,D,
-        // 106833228,1102320358,2589,17,20/06/2023,720.00,1848074,5441,0729,D,
         sourceSystem: 'GLOS',
         sbi: Number(row[0]),
         frn: Number(row[1]),
         agreementNumber: row[2],
         claimNumber: row[3],
-        settlementDate: row[4] !== '' ? moment(row[4], ['YYYY-MM-DD', 'DD/MM/YYYY']).toISOString() : undefined, // or date
+        settlementDate: row[4] !== '' ? moment(row[4], ['YYYY-MM-DD', 'DD/MM/YYYY']).toISOString() : undefined,
         value: convertToPence(row[5]),
-        reference: row[6], // or paymentReference
+        reference: row[6],
         bankAccount: row[7],
         batchNumber: row[8],
-        settled: row[9] === 'D', // status
-        detail: row[10], // or reason
-        // ledger: 'AP',
+        settled: row[9] === 'D' || (row[9] === 'E' && row[6] !== ''),
+        detail: row[10],
+        ledger: 'AP',
         filename
       }
     } else {
