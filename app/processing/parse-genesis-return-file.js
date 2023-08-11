@@ -5,7 +5,7 @@ const { convertToPence } = require('../currency-convert')
 const parseGenesisReturnFile = (csv, filename) => {
   return csv.map(x => {
     const row = x.split('^')
-    const values = 'Genesis' + row[1] + row[2] + row[3] + row[4] + row[5] + row[6] + row[7] + row[8] + 'AP'
+    const values = 'Genesis' + row[1] + row[2] + row[3] + row[4] + row[5] + row[6] + row[7] + row[8] + 'AP' + filename
     const hasher = crypto.createHmac('md5', values)
     const hash = hasher.digest('hex')
     if (row[0] === 'D') {

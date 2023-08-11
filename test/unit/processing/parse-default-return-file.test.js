@@ -23,7 +23,7 @@ describe('parse return file', () => {
       settled: true,
       detail: '',
       ledger: 'AP',
-      referenceId: 'e5b9c22cebbec7d174408dea1d0fed0f',
+      referenceId: 'e2c759e70bf25e1ffe152c4b70bba9b6',
       filename: defaultFilename
     }]
     const result = parseDefaultReturnFile([content], defaultFilename)
@@ -43,7 +43,7 @@ describe('parse return file', () => {
       settled: true,
       detail: '',
       ledger: 'AP',
-      referenceId: '391dbbf0f3312417255bd887255b6712',
+      referenceId: 'e47d073218be28dfd7ecb0d0a177de60',
       filename: defaultFilename
     }]
     const result = parseDefaultReturnFile([content], defaultFilename)

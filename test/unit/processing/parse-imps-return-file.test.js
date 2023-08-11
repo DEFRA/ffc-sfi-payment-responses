@@ -26,7 +26,7 @@ describe('parse return file', () => {
       valueEUR: 0,
       exchangeRate: '',
       ledger: 'AP',
-      referenceId: 'd50844f21ae28abe9a1a4dbe81f5c7ec',
+      referenceId: 'c132264d0cbcf5aada6c3c5811407cca',
       filename: impsFilename
     }]
     const result = parseImpsReturnFile([impsContent], impsFilename)
@@ -49,7 +49,7 @@ describe('parse return file', () => {
       valueEUR: 0,
       exchangeRate: '',
       ledger: 'AP',
-      referenceId: '6e38c6cf6fa9a44e900447a322d7a503',
+      referenceId: '6b8bcae3a28ab464cbafbd380bf21fcf',
       filename: impsFilename
     }]
     const result = parseImpsReturnFile([impsContent], impsFilename)

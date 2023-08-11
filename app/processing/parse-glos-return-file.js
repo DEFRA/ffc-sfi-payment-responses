@@ -6,7 +6,7 @@ const parseGlosReturnFile = (csv, filename) => {
   return csv.map(x => {
     if (x.includes(',')) {
       const row = x.split(',')
-      const values = 'GLOS' + row[0] + row[1] + row[2] + row[3] + row[4] + row[5] + row[6] + row[7] + row[8] + row[9] + row[10] + 'AP'
+      const values = 'GLOS' + row[0] + row[1] + row[2] + row[3] + row[4] + row[5] + row[6] + row[7] + row[8] + row[9] + row[10] + 'AP' + filename
       const hasher = crypto.createHmac('md5', values)
       const hash = hasher.digest('hex')
       return {
