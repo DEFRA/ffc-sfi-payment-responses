@@ -2,7 +2,7 @@ const parseDefaultReturnFile = require('../../../app/processing/parse-default-re
 
 const defaultFilename = require('../../mocks/filenames').DEFAULT
 
-let content = 'SITIAgri,S123456789A123456V001,1234567890,legacy,04-MAY-21,S,406.35,2021-08-27,PY1234567,D,'
+let content = 'SITI_SFI,S000000200000002V001,1000000002,legacy,05-OCT-22,S,250.00,2022-11-09,PY1711007,D,'
 
 let mappedContent
 
@@ -13,16 +13,17 @@ describe('parse return file', () => {
 
   test('Should return mapped content when filename and content provided', async () => {
     mappedContent = [{
-      sourceSystem: 'SITIAgri',
-      invoiceNumber: 'S123456789A123456V001',
-      frn: 1234567890,
+      sourceSystem: 'SITI_SFI',
+      invoiceNumber: 'S000000200000002V001',
+      frn: 1000000002,
       currency: 'GBP',
-      value: 40635,
-      settlementDate: '2021-08-27T00:00:00.000Z',
-      reference: 'PY1234567',
+      value: 25000,
+      settlementDate: '2022-11-09T00:00:00.000Z',
+      reference: 'PY1711007',
       settled: true,
       detail: '',
       ledger: 'AP',
+      referenceId: 'e5b9c22cebbec7d174408dea1d0fed0f',
       filename: defaultFilename
     }]
     const result = parseDefaultReturnFile([content], defaultFilename)
@@ -30,18 +31,19 @@ describe('parse return file', () => {
   })
 
   test('Should return settlement date as undefined when filename and content with no settlement date provided', async () => {
-    content = 'SITIAgri,S123456789A123456V001,1234567890,legacy,04-MAY-21,S,406.35,,PY1234567,D,'
+    content = 'SITI_SFI,S000000200000002V001,1000000002,legacy,05-OCT-22,S,250.00,,PY1711007,D,'
     mappedContent = [{
-      sourceSystem: 'SITIAgri',
-      invoiceNumber: 'S123456789A123456V001',
-      frn: 1234567890,
+      sourceSystem: 'SITI_SFI',
+      invoiceNumber: 'S000000200000002V001',
+      frn: 1000000002,
       currency: 'GBP',
-      value: 40635,
+      value: 25000,
       settlementDate: undefined,
-      reference: 'PY1234567',
+      reference: 'PY1711007',
       settled: true,
       detail: '',
       ledger: 'AP',
+      referenceId: '391dbbf0f3312417255bd887255b6712',
       filename: defaultFilename
     }]
     const result = parseDefaultReturnFile([content], defaultFilename)

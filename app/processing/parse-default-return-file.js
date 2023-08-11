@@ -1,9 +1,13 @@
+const crypto = require('crypto')
 const moment = require('moment')
 const { convertToPence } = require('../currency-convert')
 
 const parseDefaultReturnFile = (csv, filename) => {
   return csv.map(x => {
     const row = x.split(',')
+    const values = row[0] + row[1] + row[2] + row[5] + row[6] + row[7] + row[8] + row[9] + row[10] + 'AP'
+    const hasher = crypto.createHmac('md5', values)
+    const hash = hasher.digest('hex')
     return {
       sourceSystem: row[0],
       invoiceNumber: row[1],
@@ -15,6 +19,7 @@ const parseDefaultReturnFile = (csv, filename) => {
       settled: row[9] === 'D' || (row[9] === 'E' && row[8] !== ''),
       detail: row[10],
       ledger: 'AP',
+      referenceId: hash,
       filename
     }
   })
