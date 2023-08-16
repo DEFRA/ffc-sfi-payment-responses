@@ -5,8 +5,8 @@ const { createHash } = require('../create-hash')
 const parseDefaultReturnFile = (csv, filename) => {
   return csv.map(x => {
     const row = x.split(',')
-    const values = `${row[0]}${row[1]}${row[2]}${row[5]}${row[6]}${row[7]}${row[8]}${row[9]}${row[10]}${'AP'}${filename}`
-    const hash = createHash(values)
+    const value = `${row[0]}${row[1]}${row[2]}${row[5]}${row[6]}${row[7]}${row[8]}${row[9]}${row[10]}AP${filename}`
+    const hash = createHash(value)
     return {
       sourceSystem: row[0],
       invoiceNumber: row[1],

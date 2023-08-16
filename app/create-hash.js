@@ -1,7 +1,7 @@
 const crypto = require('crypto')
 
-const createHash = (values) => {
-  const hasher = crypto.createHmac('md5', values)
+const createHash = (value) => {
+  const hasher = crypto.createHmac('md5', value)
   return hasher.digest('hex')
 }
 
