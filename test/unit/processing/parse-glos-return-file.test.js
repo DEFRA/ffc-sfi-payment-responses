@@ -26,6 +26,7 @@ describe('parse return file', () => {
       settled: true,
       detail: '',
       ledger: 'AP',
+      referenceId: '17663901d26a85a19de057e2d75253b3',
       filename: glosFilename
     }]
     const result = parseGlosReturnFile([glosContent], glosFilename)
@@ -48,6 +49,7 @@ describe('parse return file', () => {
       settled: true,
       detail: '',
       ledger: 'AP',
+      referenceId: '6fafa5c91314cc5214d269e8ef4bb3d9',
       filename: glosFilename
     }]
     const result = parseGlosReturnFile([glosContent], glosFilename)

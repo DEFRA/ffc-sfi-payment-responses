@@ -1,10 +1,13 @@
 const moment = require('moment')
 const { convertToPence } = require('../currency-convert')
+const { createHash } = require('../create-hash')
 
 const parseGlosReturnFile = (csv, filename) => {
   return csv.map(x => {
     if (x.includes(',')) {
       const row = x.split(',')
+      const value = `GLOS${row[0]}${row[1]}${row[2]}${row[3]}${row[4]}${row[5]}${row[6]}${row[7]}${row[8]}${row[9]}${row[10]}AP${filename}`
+      const hash = createHash(value)
       return {
         sourceSystem: 'GLOS',
         sbi: Number(row[0]),
@@ -19,6 +22,7 @@ const parseGlosReturnFile = (csv, filename) => {
         settled: row[9] === 'D' || (row[9] === 'E' && row[6] !== ''),
         detail: row[10],
         ledger: 'AP',
+        referenceId: hash,
         filename
       }
     } else {

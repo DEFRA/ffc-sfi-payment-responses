@@ -23,6 +23,7 @@ describe('parse return file', () => {
       settled: true,
       detail: '',
       ledger: 'AP',
+      referenceId: '32507ddd91b3f6a0ca49549e7de2bc11',
       filename: genesisFilename
     }]
     const result = parseGenesisReturnFile([genesisContent], genesisFilename)
@@ -42,6 +43,7 @@ describe('parse return file', () => {
       settled: true,
       detail: '',
       ledger: 'AP',
+      referenceId: 'deb03d156ec31d0b44b3d76b308cb825',
       filename: genesisFilename
     }]
     const result = parseGenesisReturnFile([genesisContent], genesisFilename)
