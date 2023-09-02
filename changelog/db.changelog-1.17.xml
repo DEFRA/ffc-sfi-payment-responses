@@ -1,0 +1,32 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+  <changeSet author="John Watson" id="1">
+    <tagDatabase tag="v1.17.0" />
+  </changeSet>
+  <changeSet author="John Watson" id="2">
+     <insert tableName="schemes">
+      <column name="schemeId" value="8" />
+      <column name="name" value="Manual" />
+    </insert>
+  </changeSet>
+  <changeSet author="John Watson" id="3">
+     <insert tableName="sequences">
+      <column name="schemeId" value="8" />
+      <column name="nextAP" value="1" />
+      <column name="nextAR" value="1" />
+    </insert>
+  </changeSet>
+  <changeSet author="John Watson" id="4">
+      <insert tableName="batchProperties">
+      <column name="schemeId" value="8" />
+      <column name="prefix" value="FFCManual" />
+      <column name="suffix" value=" (Manual)" />
+      <column name="source" value="M_TEMPLATE" />
+    </insert>
+  </changeSet>
+  <changeSet author="John Watson" id="5">
+    <addColumn tableName="paymentRequests" >
+      <column name="pillar" type="VARCHAR(10)"/>
+    </addColumn> 
+  </changeSet>
+</databaseChangeLog>

@@ -40,6 +40,13 @@ container:
   quarantineFolder: quarantine
   useV2Events: true
 
+postgresService:
+  postgresDb: ffc_pay_responses
+  postgresqlHost: ffc-pay-responses-postgres
+  postgresPort: 5432
+  postgresSchema: public
+  postgresUser: postgres
+
 aadPodIdentity: true
 
 azureIdentity:

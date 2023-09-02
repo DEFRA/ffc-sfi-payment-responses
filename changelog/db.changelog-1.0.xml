@@ -1,0 +1,100 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+  <changeSet author="John Watson" id="1">
+    <tagDatabase tag="v0.0.0" />
+  </changeSet>
+  <changeSet author="John Watson" id="2">
+    <tagDatabase tag="v1.0.0" />
+  </changeSet>
+  <changeSet author="John Watson" id="3">
+    <createTable tableName="schemes">
+      <column autoIncrement="true" name="schemeId" type="INTEGER">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="schemeId_pkey" />
+      </column>
+      <column name="name" type="VARCHAR(10)" />
+    </createTable>
+    <insert tableName="schemes">
+      <column name="schemeId" value="1" />
+      <column name="name" value="SFI" />
+    </insert>
+    <insert tableName="schemes">
+      <column name="schemeId" value="2" />
+      <column name="name" value="SFI Pilot" />
+    </insert>
+    <insert tableName="schemes">
+      <column name="schemeId" value="3" />
+      <column name="name" value="Lump Sums" />
+    </insert>
+    <insert tableName="schemes">
+      <column name="schemeId" value="4" />
+      <column name="name" value="Vet Visits" />
+    </insert>
+    <insert tableName="schemes">
+      <column name="schemeId" value="5" />
+      <column name="name" value="CS" />
+    </insert>
+    <insert tableName="schemes">
+      <column name="schemeId" value="6" />
+      <column name="name" value="BPS" />
+    </insert>
+    <insert tableName="schemes">
+      <column name="schemeId" value="7" />
+      <column name="name" value="FDMR" />
+    </insert>
+    <insert tableName="schemes">
+      <column name="schemeId" value="8" />
+      <column name="name" value="Manual" />
+    </insert>
+    <insert tableName="schemes">
+      <column name="schemeId" value="9" />
+      <column name="name" value="ES" />
+    </insert>
+    <insert tableName="schemes">
+      <column name="schemeId" value="10" />
+      <column name="name" value="FC" />
+    </insert>
+    <insert tableName="schemes">
+      <column name="schemeId" value="11" />
+      <column name="name" value="IMPS" />
+    </insert>
+    <insert tableName="schemes">
+      <column name="schemeId" value="12" />
+      <column name="name" value="SFI23" />
+    </insert>
+  </changeSet>
+  <changeSet author="John Watson" id="4">
+    <createTable tableName="sequences">
+      <column autoIncrement="false" name="schemeId" type="INTEGER">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="sequenceId_pkey" />
+      </column>
+      <column name="nextReturn" type="INTEGER" />
+    </createTable>
+    <insert tableName="sequences">
+      <column name="schemeId" value="9" />
+      <column name="nextReturn" value="1" />
+    </insert>
+    <insert tableName="sequences">
+      <column name="schemeId" value="10" />
+      <column name="nextReturn" value="1" />
+    </insert>
+    <insert tableName="sequences">
+      <column name="schemeId" value="11" />
+      <column name="nextReturn" value="1" />
+    </insert>
+  </changeSet>
+  <changeSet author="John Watson" id="5">
+    <addForeignKeyConstraint baseColumnNames="schemeId" baseTableName="sequences" constraintName="fk_sequences_schemeId" referencedColumnNames="schemeId" referencedTableName="schemes" />
+  </changeSet>
+  <changeSet author="John Watson" id="6">
+    <createTable tableName="lock">
+      <column name="lockId" type="INTEGER">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="lock_pkey"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="John Watson" id="7">
+    <insert tableName="lock">
+      <column name="lockId" value="1" />
+    </insert>
+  </changeSet>
+</databaseChangeLog>
