@@ -1,17 +1,12 @@
+const { isGenesisReturnFile } = require('./is-genesis-return-file')
+const { isGlosReturnFile } = require('./is-glos-return-file')
+const { isImpsReturnFile } = require('./is-imps-return-file')
+
 const isReturnFile = (filename) => {
-  if (/^.*Return File.*\.csv$/.test(filename)) {
-    return true
-  }
-  if (/^GENESISPayConf.*\.gni$/.test(filename)) {
-    return true
-  }
-  if (/^FCAP.*RPA.*\.dat$/.test(filename)) {
-    return true
-  }
-  if (/^RET_IMPS.*\.INT$/.test(filename)) {
-    return true
-  }
-  return false
+  return /^.*Return File.*\.csv$/.test(filename) ||
+  isGenesisReturnFile(filename) ||
+  isGlosReturnFile(filename) ||
+  isImpsReturnFile(filename)
 }
 
 module.exports = isReturnFile

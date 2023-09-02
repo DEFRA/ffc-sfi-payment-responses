@@ -82,11 +82,16 @@ const deleteFile = async (filename) => {
   await sourceBlob.delete()
 }
 
+const getReturnBlobClient = async (filename) => {
+  return getBlob(`${config.returnFolder}/${filename}`)
+}
+
 module.exports = {
   getInboundFileList,
   downloadFile,
   archiveFile,
   quarantineFile,
   deleteFile,
+  getReturnBlobClient,
   blobServiceClient
 }
