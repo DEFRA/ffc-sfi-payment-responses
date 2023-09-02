@@ -38,6 +38,7 @@ container:
   inboundFolder: inbound
   archiveFolder: archive
   quarantineFolder: quarantine
+  returnFolder: return
   useV2Events: true
 
 postgresService:
