@@ -7,8 +7,9 @@ const createGenesisResponseFile = async (content, filename, transaction) => {
   const sequence = await getAndIncrementSequence(ES, transaction)
   const sequenceString = sequence.toString().padStart(4, '0')
   const date = moment()
-  const returnFilename = `GENESISPayConf_${date.format('YYYY-MM-DD')}_${sequenceString}.gni`
+  const returnFilename = `GENESISPayConf_${date.format('YYYYMMDD')}_${sequenceString}.gni`
   const controlFilename = returnFilename.replace('.gni', '.ctl')
+  console.log(content)
   const responseContent = content.map(x => {
     const row = x.split('^')
     switch (row[0]) {

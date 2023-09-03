@@ -83,7 +83,7 @@ const deleteFile = async (filename) => {
 }
 
 const getReturnBlobClient = async (filename) => {
-  return getBlob(`${config.returnFolder}/${filename}`)
+  return getBlob(config.returnFolder, filename)
 }
 
 module.exports = {

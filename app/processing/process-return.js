@@ -7,7 +7,8 @@ const { sendReturnMessages } = require('../messaging')
 
 const processReturn = async (filename, transaction) => {
   console.info(`Processing ${filename}`)
-  const content = await blobStorage.downloadFile(filename)
+  const data = await blobStorage.downloadFile(filename)
+  const content = data.trim().split(/\r?\n/)
   let messages
   try {
     messages = parseReturnFile(content, filename)
