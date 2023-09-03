@@ -9,7 +9,6 @@ const createGenesisResponseFile = async (content, filename, transaction) => {
   const date = moment()
   const returnFilename = `GENESISPayConf_${date.format('YYYYMMDD')}_${sequenceString}.gni`
   const controlFilename = returnFilename.replace('.gni', '.ctl')
-  console.log(content)
   const responseContent = content.map(x => {
     const row = x.split('^')
     switch (row[0]) {
@@ -18,7 +17,7 @@ const createGenesisResponseFile = async (content, filename, transaction) => {
       case 'D':
         return row.join('^')
       case 'T':
-        return [row[0], date.format('DD/MM/YYYY'), date.format('hh:mm:ss')].join('^')
+        return [row[0], date.format('DD/MM/YYYY'), date.format('HH:mm:ss')].join('^')
       default:
         return ''
     }
