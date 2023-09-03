@@ -20,7 +20,7 @@ const start = async () => {
         if (isAcknowledgementFile(filename)) {
           await processAcknowledgement(filename)
         } else if (isReturnFile(filename)) {
-          await processReturn(filename)
+          await processReturn(filename, transaction)
         } else if (isPaymentFile(filename)) {
           await processPaymentFile(filename)
         }

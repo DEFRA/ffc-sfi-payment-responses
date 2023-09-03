@@ -5,7 +5,7 @@ const quarantineFile = require('./quarantine-file')
 const { createResponseFile } = require('./create-response-file')
 const { sendReturnMessages } = require('../messaging')
 
-const processReturn = async (filename) => {
+const processReturn = async (filename, transaction) => {
   console.info(`Processing ${filename}`)
   const content = await blobStorage.downloadFile(filename)
   let messages
@@ -15,8 +15,8 @@ const processReturn = async (filename) => {
     await quarantineFile(filename, err)
   }
   if (messages?.length) {
-    await createResponseFile(content, filename)
     await sendReturnMessages(messages)
+    await createResponseFile(content, filename, transaction)
     console.log('Returns published:', util.inspect(messages, false, null, true))
     await blobStorage.archiveFile(filename, filename)
   }
