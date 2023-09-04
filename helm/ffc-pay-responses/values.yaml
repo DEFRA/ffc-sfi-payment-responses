@@ -30,6 +30,8 @@ container:
   returnTopicAddress: ffc-pay-return
   eventTopicAddress: ffc-pay-event
   eventsTopicAddress: ffc-pay-events
+  paymentSubmitTopicAddress: ffc-pay-submit
+  paymentSubmitSubscriptionAddress: ffc-pay-responses
   azureStorageAccountName: ffcpay
   azureStorageConnectionString: dummy
   azureStorageUseConnectionString: false  

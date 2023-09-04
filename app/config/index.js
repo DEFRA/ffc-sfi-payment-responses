@@ -28,6 +28,7 @@ const value = result.value
 value.isDev = value.env === 'development'
 value.isTest = value.env === 'test'
 value.isProd = value.env === 'production'
+value.submitSubscription = mqConfig.submitSubscription
 value.acknowledgementTopic = mqConfig.acknowledgementTopic
 value.returnTopic = mqConfig.returnTopic
 value.eventTopic = mqConfig.eventTopic

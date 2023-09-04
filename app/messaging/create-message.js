@@ -1,8 +1,10 @@
+const { SOURCE } = require('../constants/source')
+
 function createMessage (body, type) {
   return {
     body,
     type,
-    source: 'ffc-pay-responses'
+    source: SOURCE
   }
 }
 
