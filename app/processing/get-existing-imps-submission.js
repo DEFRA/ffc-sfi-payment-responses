@@ -1,7 +1,7 @@
 const db = require('../data')
 
 const getExistingImpsSubmission = async (invoiceNumber, frn, batch, transaction) => {
-  return db.imps.findOne({
+  return db.impsBatchNumber.findOne({
     transaction,
     lock: true,
     where: {

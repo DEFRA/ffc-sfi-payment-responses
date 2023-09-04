@@ -98,14 +98,30 @@
     </insert>
   </changeSet>
   <changeSet author="John Watson" id="8">
-    <createTable tableName="imps">
-      <column autoIncrement="true" name="impsId" type="INTEGER">
-        <constraints nullable="false" primaryKey="true" primaryKeyName="impsId_pkey" />
+    <createTable tableName="impsBatchNumbers">
+      <column autoIncrement="true" name="impsBatchNumberId" type="INTEGER">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="impsBatchNumbersId_pkey" />
       </column>
-      <column name="invoiceNumber" type="VARCHAR(30)" />
       <column name="frn" type="BIGINT" />
+      <column name="trader" type="VARCHAR(10)" />
+      <column name="invoiceNumber" type="VARCHAR(30)" />
       <column name="batch" type="VARCHAR(255)" />
       <column name="batchNumber" type="INTEGER" />
+    </createTable>
+  </changeSet>
+  <changeSet author="John Watson" id="9">
+    <createTable tableName="impsReturns">
+      <column autoIncrement="true" name="impsReturnId" type="INTEGER">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="impsReturnsId_pkey" />
+      </column>
+      <column name="trader" type="VARCHAR(10)" />
+      <column name="invoiceNumber" type="VARCHAR(30)" />
+      <column name="status" type="VARCHAR(1)" />
+      <column name="paymentReference" type="VARCHAR(20)" />
+      <column name="valueGBP" type="VARCHAR(20)" />
+      <column name="paymentType" type="VARCHAR(1)" />
+      <column name="dateSettled" type="VARCHAR(20)" />
+      <column name="valueEUR" type="VARCHAR(20)" />
     </createTable>
   </changeSet>
 </databaseChangeLog>

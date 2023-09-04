@@ -11,7 +11,7 @@ const saveImpsSubmission = async (paymentRequest) => {
       await transaction.rollback()
     } else {
       const batchNumber = getImpsBatchNumber(paymentRequest.batch)
-      await db.imps.create({ ...paymentRequest, batchNumber }, { transaction })
+      await db.impsBatchNumber.create({ ...paymentRequest, batchNumber }, { transaction })
       await transaction.commit()
     }
   } catch (error) {

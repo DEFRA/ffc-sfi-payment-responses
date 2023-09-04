@@ -19,7 +19,7 @@ services:
 
   ffc-pay-responses-postgres:
     ports:
-      - "5430:5432"
+      - "5420:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
