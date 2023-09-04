@@ -6,7 +6,7 @@ const processSubmitMessage = async (message, receiver) => {
   try {
     const paymentRequest = message.body
     if (paymentRequest.schemeId === IMPS) {
-      console.log(`Submitted IMPS payment request received: ${util.inspect(paymentRequest)}`)
+      console.log(`Submitted IMPS payment request received: ${util.inspect(paymentRequest, false, null, true)}`)
       await saveImpsSubmission(paymentRequest)
     }
     await receiver.completeMessage(message)

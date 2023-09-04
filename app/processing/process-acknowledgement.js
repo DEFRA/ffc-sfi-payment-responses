@@ -1,7 +1,7 @@
 const { sendAcknowledgementMessages } = require('../messaging')
 const blobStorage = require('../storage')
 const { createImpsResponseFile } = require('./create-imps-response-file')
-const { isImpsReturnFile } = require('./is-imps-return-file')
+const { isImpsAcknowledgementFile } = require('./is-imps-acknowledgement-file')
 const parseAcknowledgementFile = require('./parse-acknowledgement-file')
 const quarantineFile = require('./quarantine-file')
 const util = require('util')
@@ -17,8 +17,8 @@ const processAcknowledgement = async (filename, transaction) => {
   }
   if (messages?.length) {
     await sendAcknowledgementMessages(messages)
-    if (isImpsReturnFile(filename)) {
-      await createImpsResponseFile(content, filename, transaction)
+    if (isImpsAcknowledgementFile(filename)) {
+      await createImpsResponseFile(messages, filename, transaction)
     }
     console.log('Acknowledgements published:', util.inspect(messages, false, null, true))
     await blobStorage.archiveFile(filename, filename)
