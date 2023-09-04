@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     trader: DataTypes.STRING,
     frn: DataTypes.BIGINT,
     batch: DataTypes.STRING,
-    batchNumber: DataTypes.INTEGER
+    batchNumber: DataTypes.STRING
   },
   {
     tableName: 'impsBatchNumbers',

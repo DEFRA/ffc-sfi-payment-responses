@@ -5,10 +5,12 @@ module.exports = (sequelize, DataTypes) => {
     invoiceNumber: DataTypes.STRING,
     status: DataTypes.STRING,
     paymentReference: DataTypes.STRING,
-    valueGBP: DataTypes.STRING,
+    valueGBP: DataTypes.INTEGER,
     paymentType: DataTypes.STRING,
     dateSettled: DataTypes.STRING,
-    valueEUR: DataTypes.STRING
+    valueEUR: DataTypes.STRING,
+    sequence: DataTypes.INTEGER,
+    exported: DataTypes.DATE
   },
   {
     tableName: 'impsReturns',

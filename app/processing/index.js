@@ -18,7 +18,7 @@ const start = async () => {
     if (filenameList.length > 0) {
       for (const filename of filenameList) {
         if (isAcknowledgementFile(filename)) {
-          await processAcknowledgement(filename)
+          await processAcknowledgement(filename, transaction)
         } else if (isReturnFile(filename)) {
           await processReturn(filename, transaction)
         } else if (isPaymentFile(filename)) {

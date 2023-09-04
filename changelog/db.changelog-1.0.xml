@@ -106,7 +106,7 @@
       <column name="trader" type="VARCHAR(10)" />
       <column name="invoiceNumber" type="VARCHAR(30)" />
       <column name="batch" type="VARCHAR(255)" />
-      <column name="batchNumber" type="INTEGER" />
+      <column name="batchNumber" type="VARCHAR(6)" />
     </createTable>
   </changeSet>
   <changeSet author="John Watson" id="9">
@@ -118,10 +118,12 @@
       <column name="invoiceNumber" type="VARCHAR(30)" />
       <column name="status" type="VARCHAR(1)" />
       <column name="paymentReference" type="VARCHAR(20)" />
-      <column name="valueGBP" type="VARCHAR(20)" />
+      <column name="valueGBP" type="INTEGER" />
       <column name="paymentType" type="VARCHAR(1)" />
       <column name="dateSettled" type="VARCHAR(20)" />
       <column name="valueEUR" type="VARCHAR(20)" />
+      <column name="sequence" type="INTEGER" />
+      <column name="exported" type="TIMESTAMP" />
     </createTable>
   </changeSet>
 </databaseChangeLog>
