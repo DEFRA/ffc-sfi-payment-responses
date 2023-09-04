@@ -97,4 +97,15 @@
       <column name="lockId" value="1" />
     </insert>
   </changeSet>
+  <changeSet author="John Watson" id="8">
+    <createTable tableName="imps">
+      <column autoIncrement="true" name="impsId" type="INTEGER">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="impsId_pkey" />
+      </column>
+      <column name="invoiceNumber" type="VARCHAR(30)" />
+      <column name="frn" type="BIGINT" />
+      <column name="batch" type="VARCHAR(255)" />
+      <column name="batchNumber" type="INTEGER" />
+    </createTable>
+  </changeSet>
 </databaseChangeLog>
