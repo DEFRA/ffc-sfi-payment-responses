@@ -1,6 +1,6 @@
 const { SOURCE } = require('../constants/source')
 
-function createMessage (body, type) {
+const createMessage = (body, type) => {
   return {
     body,
     type,
@@ -8,4 +8,6 @@ function createMessage (body, type) {
   }
 }
 
-module.exports = createMessage
+module.exports = {
+  createMessage
+}

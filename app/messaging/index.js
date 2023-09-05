@@ -1,7 +1,8 @@
 const { MessageReceiver } = require('ffc-messaging')
-const sendBatchMessage = require('./send-batch-message')
+const { sendBatchMessage } = require('./send-batch-message')
 const { processSubmitMessage } = require('./process-submit-message')
 const config = require('../config/mq-config')
+const { ACKNOWLEDGEMENT, RETURN } = require('../constants/messages')
 const paymentReceivers = []
 
 const start = async () => {
@@ -22,11 +23,11 @@ const stop = async () => {
 }
 
 const sendAcknowledgementMessages = async (payload) => {
-  await sendBatchMessage(payload, 'uk.gov.defra.ffc.pay.acknowledgement', config.acknowledgementTopic)
+  await sendBatchMessage(payload, ACKNOWLEDGEMENT, config.acknowledgementTopic)
 }
 
 const sendReturnMessages = async (payload) => {
-  await sendBatchMessage(payload, 'uk.gov.defra.ffc.pay.return', config.returnTopic)
+  await sendBatchMessage(payload, RETURN, config.returnTopic)
 }
 
 module.exports = {
