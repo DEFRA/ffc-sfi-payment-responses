@@ -2,9 +2,10 @@ const Joi = require('joi')
 const mqConfig = require('./mq-config')
 const storageConfig = require('./storage-config')
 const dbConfig = require('./db-config')
+const { DEVELOPMENT, TEST, PRODUCTION } = require('../constants/environments')
 
 const schema = Joi.object({
-  env: Joi.string().valid('development', 'test', 'production').default('development'),
+  env: Joi.string().valid(DEVELOPMENT, TEST, PRODUCTION).default(DEVELOPMENT),
   processingInterval: Joi.number().default(10000),
   useV2Events: Joi.boolean().default(true)
 })
@@ -25,9 +26,9 @@ if (result.error) {
 
 const value = result.value
 
-value.isDev = value.env === 'development'
-value.isTest = value.env === 'test'
-value.isProd = value.env === 'production'
+value.isDev = value.env === DEVELOPMENT
+value.isTest = value.env === TEST
+value.isProd = value.env === PRODUCTION
 value.submitSubscription = mqConfig.submitSubscription
 value.acknowledgementTopic = mqConfig.acknowledgementTopic
 value.returnTopic = mqConfig.returnTopic
