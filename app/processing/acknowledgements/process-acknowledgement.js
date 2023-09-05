@@ -1,9 +1,9 @@
-const { sendAcknowledgementMessages } = require('../messaging')
-const blobStorage = require('../storage')
-const { createImpsResponseFile } = require('./create-imps-response-file')
-const { isImpsAcknowledgementFile } = require('./acknowledgements/is-imps-acknowledgement-file')
-const parseAcknowledgementFile = require('./parse-acknowledgement-file')
-const quarantineFile = require('./quarantine-file')
+const { sendAcknowledgementMessages } = require('../../messaging')
+const blobStorage = require('../../storage')
+const { createImpsResponseFile } = require('../create-imps-response-file')
+const { isImpsAcknowledgementFile } = require('./is-imps-acknowledgement-file')
+const parseAcknowledgementFile = require('../parse-acknowledgement-file')
+const quarantineFile = require('../quarantine-file')
 const util = require('util')
 
 const processAcknowledgement = async (filename, transaction) => {

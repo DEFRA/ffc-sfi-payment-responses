@@ -1,11 +1,11 @@
 const util = require('util')
-const blobStorage = require('../storage')
-const parseReturnFile = require('./parse-return-file')
-const quarantineFile = require('./quarantine-file')
-const { createResponseFile } = require('./create-response-file')
-const { sendReturnMessages } = require('../messaging')
-const { isImpsReturnFile } = require('./returns/is-imps-return-file')
-const { saveImpsReturns } = require('./save-imps-returns')
+const blobStorage = require('../../storage')
+const parseReturnFile = require('../parse-return-file')
+const quarantineFile = require('../quarantine-file')
+const { createResponseFile } = require('../create-response-file')
+const { sendReturnMessages } = require('../../messaging')
+const { isImpsReturnFile } = require('./is-imps-return-file')
+const { saveImpsReturns } = require('../save-imps-returns')
 
 const processReturn = async (filename, transaction) => {
   console.info(`Processing ${filename}`)

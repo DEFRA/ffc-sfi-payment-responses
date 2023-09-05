@@ -1,10 +1,8 @@
 const db = require('../data')
 const config = require('../config')
 const { getInboundFileList } = require('../storage')
-const { isAcknowledgementFile } = require('./acknowledgements')
-const { processAcknowledgement } = require('./process-acknowledgement')
-const { isReturnFile } = require('./returns')
-const { processReturn } = require('./process-return')
+const { isAcknowledgementFile, processAcknowledgement } = require('./acknowledgements')
+const { isReturnFile, processReturn } = require('./returns')
 const { isPaymentFile, processPaymentFile } = require('./payments')
 
 const start = async () => {
@@ -12,10 +10,10 @@ const start = async () => {
   try {
     await db.lock.findByPk(1, { transaction, lock: true })
 
-    const filenameList = await getInboundFileList()
+    const filenames = await getInboundFileList()
 
-    if (filenameList.length > 0) {
-      for (const filename of filenameList) {
+    if (filenames.length > 0) {
+      for (const filename of filenames) {
         if (isAcknowledgementFile(filename)) {
           await processAcknowledgement(filename, transaction)
         } else if (isReturnFile(filename)) {
