@@ -1,7 +1,8 @@
 const blobStorage = require('../storage')
 
 const processPaymentFile = async (filename) => {
-  // Delete payment file sent from DAX. A copy of the file already exists in the payment service.
+  // DAX always returns submitted payment files.
+  // No need to keep these as they are already archived.
   console.info(`Processing ${filename}`)
   try {
     await blobStorage.deleteFile(filename)
@@ -11,4 +12,6 @@ const processPaymentFile = async (filename) => {
   }
 }
 
-module.exports = processPaymentFile
+module.exports = {
+  processPaymentFile
+}
