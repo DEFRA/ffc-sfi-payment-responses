@@ -9,4 +9,6 @@ const isReturnFile = (filename) => {
   isImpsReturnFile(filename)
 }
 
-module.exports = isReturnFile
+module.exports = {
+  isReturnFile
+}
