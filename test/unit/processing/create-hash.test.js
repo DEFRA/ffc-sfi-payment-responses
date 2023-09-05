@@ -1,4 +1,4 @@
-const { createHash } = require('../../app/processing/returns/create-hash')
+const { createHash } = require('../../../app/processing/returns/create-hash')
 
 let value
 
