@@ -3,7 +3,7 @@ jest.mock('../../../app/storage')
 const blobStorage = require('../../../app/storage')
 const { deleteFile } = require('../../../app/storage')
 
-const processPaymentFile = require('../../../app/processing/process-payment-file')
+const processPaymentFile = require('../../../app/processing/payments/process-payment-file')
 
 const filename = 'FFCSFIP_0001_AP_20220329120821 (SITISFI).csv'
 const errorMessage = 'Error when calling blobStorage.delete'

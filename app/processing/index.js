@@ -1,12 +1,11 @@
 const db = require('../data')
 const config = require('../config')
 const { getInboundFileList } = require('../storage')
-const { isAcknowledgementFile } = require('./is-acknowledgement-file')
+const { isAcknowledgementFile } = require('./acknowledgements')
 const { processAcknowledgement } = require('./process-acknowledgement')
-const { isReturnFile } = require('./is-return-file')
+const { isReturnFile } = require('./returns')
 const { processReturn } = require('./process-return')
-const { isPaymentFile } = require('./is-payment-file')
-const { processPaymentFile } = require('./process-payment-file')
+const { isPaymentFile, processPaymentFile } = require('./payments')
 
 const start = async () => {
   const transaction = await db.sequelize.transaction()

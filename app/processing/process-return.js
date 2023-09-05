@@ -4,7 +4,7 @@ const parseReturnFile = require('./parse-return-file')
 const quarantineFile = require('./quarantine-file')
 const { createResponseFile } = require('./create-response-file')
 const { sendReturnMessages } = require('../messaging')
-const { isImpsReturnFile } = require('./is-imps-return-file')
+const { isImpsReturnFile } = require('./returns/is-imps-return-file')
 const { saveImpsReturns } = require('./save-imps-returns')
 
 const processReturn = async (filename, transaction) => {

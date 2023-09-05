@@ -1,5 +1,5 @@
-const { isGenesisReturnFile } = require('./is-genesis-return-file')
-const { isGlosReturnFile } = require('./is-glos-return-file')
+const { isGenesisReturnFile } = require('./returns/is-genesis-return-file')
+const { isGlosReturnFile } = require('./returns/is-glos-return-file')
 const { createGenesisResponseFile } = require('./create-genesis-response-file')
 const { createGlosResponseFile } = require('./create-glos-response-file')
 

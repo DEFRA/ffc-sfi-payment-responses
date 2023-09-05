@@ -1,4 +1,4 @@
-const blobStorage = require('../storage')
+const blobStorage = require('../../storage')
 
 const processPaymentFile = async (filename) => {
   // DAX always returns submitted payment files.
