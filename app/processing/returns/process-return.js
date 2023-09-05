@@ -36,4 +36,6 @@ const processReturn = async (filename, transaction) => {
   }
 }
 
-module.exports = processReturn
+module.exports = {
+  processReturn
+}
