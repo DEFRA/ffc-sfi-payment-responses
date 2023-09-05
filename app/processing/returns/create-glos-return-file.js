@@ -1,9 +1,9 @@
 const moment = require('moment')
-const { FC } = require('../constants/schemes')
-const { getAndIncrementSequence } = require('./get-and-increment-sequence')
-const { getReturnBlobClient } = require('../storage')
+const { FC } = require('../../constants/schemes')
+const { getAndIncrementSequence } = require('../get-and-increment-sequence')
+const { getReturnBlobClient } = require('../../storage')
 
-const createGlosResponseFile = async (content, filename, transaction) => {
+const createGlosReturnFile = async (content, filename, transaction) => {
   const sequence = await getAndIncrementSequence(FC, transaction)
   const sequenceString = sequence.toString().padStart(4, '0')
   const date = moment()
@@ -22,5 +22,5 @@ const createGlosResponseFile = async (content, filename, transaction) => {
 }
 
 module.exports = {
-  createGlosResponseFile
+  createGlosReturnFile
 }

@@ -1,10 +1,10 @@
-const db = require('../data')
-const { IMPS } = require('../constants/schemes')
-const { convertToPounds } = require('../currency-convert')
-const { getAndIncrementSequence } = require('./get-and-increment-sequence')
-const { getReturnBlobClient } = require('../storage')
+const db = require('../../data')
+const { IMPS } = require('../../constants/schemes')
+const { convertToPounds } = require('../../currency-convert')
+const { getAndIncrementSequence } = require('../get-and-increment-sequence')
+const { getReturnBlobClient } = require('../../storage')
 
-const createImpsResponseFile = async (acknowledgements, filename, transaction) => {
+const createImpsReturnFile = async (acknowledgements, filename, transaction) => {
   const sequence = await getAndIncrementSequence(IMPS, transaction)
   const sequenceString = sequence.toString().padStart(4, '0')
 
@@ -46,5 +46,5 @@ const createImpsResponseFile = async (acknowledgements, filename, transaction) =
 }
 
 module.exports = {
-  createImpsResponseFile
+  createImpsReturnFile
 }

@@ -1,9 +1,9 @@
 const moment = require('moment')
-const { ES } = require('../constants/schemes')
-const { getAndIncrementSequence } = require('./get-and-increment-sequence')
-const { getReturnBlobClient } = require('../storage')
+const { ES } = require('../../constants/schemes')
+const { getAndIncrementSequence } = require('../get-and-increment-sequence')
+const { getReturnBlobClient } = require('../../storage')
 
-const createGenesisResponseFile = async (content, filename, transaction) => {
+const createGenesisReturnFile = async (content, filename, transaction) => {
   const sequence = await getAndIncrementSequence(ES, transaction)
   const sequenceString = sequence.toString().padStart(4, '0')
   const date = moment()
@@ -33,5 +33,5 @@ const createGenesisResponseFile = async (content, filename, transaction) => {
 }
 
 module.exports = {
-  createGenesisResponseFile
+  createGenesisReturnFile
 }
