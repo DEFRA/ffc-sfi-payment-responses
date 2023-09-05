@@ -15,6 +15,7 @@ const parseImpsReturnFile = (csv, filename) => {
         paymentJobNumber: row[1],
         fesCode: row[2],
         traderNumber: row[3],
+        invoiceNumber: row[4],
         transactionNumber: row[4],
         settled: row[5] === 'P',
         reference: row[6],
