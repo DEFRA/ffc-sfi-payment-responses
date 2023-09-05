@@ -1,6 +1,6 @@
 const util = require('util')
 const { IMPS } = require('../constants/schemes')
-const { saveImpsSubmission } = require('../processing/save-imps-submission')
+const { saveImpsSubmission } = require('./save-imps-submission')
 
 const processSubmitMessage = async (message, receiver) => {
   try {

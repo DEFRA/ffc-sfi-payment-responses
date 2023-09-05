@@ -8,7 +8,7 @@ jest.mock('../../../app/processing/parse-imps-return-file')
 const parseImpsReturnFile = require('../../../app/processing/parse-imps-return-file')
 
 jest.mock('../../../app/processing/parse-default-return-file')
-const parseDefaultReturnFile = require('../../../app/processing/parse-default-return-file')
+const parseDefaultReturnFile = require('../../../app/processing/returns/parse-default-return-file')
 
 const parseReturnFile = require('../../../app/processing/parse-return-file')
 

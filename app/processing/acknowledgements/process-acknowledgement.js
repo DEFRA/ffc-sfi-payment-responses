@@ -1,14 +1,14 @@
 const { sendAcknowledgementMessages } = require('../../messaging')
-const blobStorage = require('../../storage')
-const { createImpsReturnFile } = require('../returns/create-imps-return-file')
+const { downloadFile, archiveFile } = require('../../storage')
+const { createImpsReturnFile } = require('../returns')
 const { isImpsAcknowledgementFile } = require('./is-imps-acknowledgement-file')
-const parseAcknowledgementFile = require('../parse-acknowledgement-file')
-const quarantineFile = require('../quarantine-file')
+const { parseAcknowledgementFile } = require('./parse-acknowledgement-file')
+const { quarantineFile } = require('../quarantine-file')
 const util = require('util')
 
 const processAcknowledgement = async (filename, transaction) => {
   console.info(`Processing acknowledgement: ${filename}`)
-  const content = await blobStorage.downloadFile(filename)
+  const content = await downloadFile(filename)
   let messages
   try {
     messages = await parseAcknowledgementFile(content, filename)
@@ -21,8 +21,10 @@ const processAcknowledgement = async (filename, transaction) => {
       await createImpsReturnFile(messages, filename, transaction)
     }
     console.log('Acknowledgements published:', util.inspect(messages, false, null, true))
-    await blobStorage.archiveFile(filename, filename)
+    await archiveFile(filename, filename)
   }
 }
 
-module.exports = processAcknowledgement
+module.exports = {
+  processAcknowledgement
+}

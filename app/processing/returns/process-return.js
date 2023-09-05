@@ -1,6 +1,6 @@
 const util = require('util')
 const { downloadFile, archiveFile } = require('../../storage')
-const { parseReturnFile } = require('../parse-return-file')
+const { parseReturnFile } = require('./parse-return-file')
 const { quarantineFile } = require('../quarantine-file')
 const { sendReturnMessages } = require('../../messaging')
 const { isImpsReturnFile } = require('./is-imps-return-file')

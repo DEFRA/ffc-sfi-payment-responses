@@ -1,4 +1,4 @@
-const parseDefaultReturnFile = require('../../../app/processing/parse-default-return-file')
+const parseDefaultReturnFile = require('../../../app/processing/returns/parse-default-return-file')
 
 const defaultFilename = require('../../mocks/filenames').DEFAULT
 
