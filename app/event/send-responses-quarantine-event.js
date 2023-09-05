@@ -23,4 +23,6 @@ const sendV2ResponsesQuarantineEvent = async (filename, error) => {
   await eventPublisher.publishEvent(event)
 }
 
-module.exports = sendResponsesQuarantineEvent
+module.exports = {
+  sendResponsesQuarantineEvent
+}

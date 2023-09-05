@@ -24,4 +24,6 @@ const parseDefaultReturnFile = (csv, filename) => {
   })
 }
 
-module.exports = parseDefaultReturnFile
+module.exports = {
+  parseDefaultReturnFile
+}

@@ -28,4 +28,6 @@ const parseGenesisReturnFile = (csv, filename) => {
   }).filter(x => x !== '')
 }
 
-module.exports = parseGenesisReturnFile
+module.exports = {
+  parseGenesisReturnFile
+}

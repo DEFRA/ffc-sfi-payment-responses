@@ -31,4 +31,6 @@ const parseGlosReturnFile = (csv, filename) => {
   }).filter(x => x !== '')
 }
 
-module.exports = parseGlosReturnFile
+module.exports = {
+  parseGlosReturnFile
+}

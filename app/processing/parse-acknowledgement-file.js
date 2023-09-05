@@ -20,4 +20,6 @@ const parseLog = (log = '') => {
   return log.replace(/\r\n|\n/g, ' ').trim()
 }
 
-module.exports = parseAcknowledgementFile
+module.exports = {
+  parseAcknowledgementFile
+}

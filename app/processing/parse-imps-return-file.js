@@ -31,4 +31,6 @@ const parseImpsReturnFile = (csv, filename) => {
   }).filter(x => x !== '')
 }
 
-module.exports = parseImpsReturnFile
+module.exports = {
+  parseImpsReturnFile
+}
