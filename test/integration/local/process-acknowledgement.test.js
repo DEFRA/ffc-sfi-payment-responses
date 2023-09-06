@@ -34,6 +34,8 @@ const TEST_INVALID_FILE = path.resolve(__dirname, '../../files/broken-acknowledg
 const VALID_FILENAME = 'mock_0001_Ack.xml'
 const INVALID_FILENAME = 'ignore me.xml'
 
+const IMPS_FILENAME = 'mock_IMPS_0001_Ack.xml'
+
 let blobServiceClient
 let container
 
@@ -117,6 +119,28 @@ describe('process acknowledgement', () => {
       fileList.push(item.name)
     }
     expect(fileList.filter(x => x === `${config.storageConfig.quarantineFolder}/${VALID_FILENAME}`).length).toBe(1)
+  })
+
+  test('does not create IMPS return file if acknowledgement is not IMPS', async () => {
+    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
+    await blockBlobClient.uploadFile(TEST_FILE)
+    await processing.start()
+    const fileList = []
+    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.returnFolder })) {
+      fileList.push(item.name)
+    }
+    expect(fileList.filter(x => x.startsWith(`${config.storageConfig.returnFolder}/RET_IMPS`)).length).toBe(0)
+  })
+
+  test('creates IMPS return file if acknowledgement is IMPS', async () => {
+    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${IMPS_FILENAME}`)
+    await blockBlobClient.uploadFile(TEST_FILE)
+    await processing.start()
+    const fileList = []
+    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.returnFolder })) {
+      fileList.push(item.name)
+    }
+    expect(fileList.filter(x => x.startsWith(`${config.storageConfig.returnFolder}/RET_IMPS`)).length).toBe(1)
   })
 
   test('does not quarantine file if unable to publish valid message', async () => {
