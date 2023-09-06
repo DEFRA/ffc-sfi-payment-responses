@@ -1,6 +1,6 @@
-const parseDefaultReturnFile = require('../../../app/processing/returns/parse-default-return-file')
+const { parseDefaultReturnFile } = require('../../../../app/processing/returns/parse-default-return-file')
 
-const defaultFilename = require('../../mocks/filenames').DEFAULT
+const defaultFilename = require('../../../mocks/filenames').DEFAULT
 
 let content = 'SITI_SFI,S000000200000002V001,1000000002,legacy,05-OCT-22,S,250.00,2022-11-09,PY1711007,D,'
 

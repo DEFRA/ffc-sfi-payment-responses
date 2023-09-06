@@ -1,6 +1,6 @@
-const parseGlosReturnFile = require('../../../app/processing/parse-glos-return-file')
+const { parseGlosReturnFile } = require('../../../../app/processing/returns/parse-glos-return-file')
 
-const glosFilename = require('../../mocks/filenames').GLOS
+const glosFilename = require('../../../mocks/filenames').GLOS
 
 let glosContent = '106172753,1102259241,EWCO285-21-22,97,20/06/2023,2137.91,1848061,6926,0729,D,'
 

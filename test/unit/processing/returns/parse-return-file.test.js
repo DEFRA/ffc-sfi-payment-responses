@@ -1,16 +1,16 @@
-jest.mock('../../../app/processing/parse-genesis-return-file')
-const parseGenesisReturnFile = require('../../../app/processing/parse-genesis-return-file')
+jest.mock('../../../../app/processing/returns/parse-genesis-return-file')
+const { parseGenesisReturnFile } = require('../../../../app/processing/returns/parse-genesis-return-file')
 
-jest.mock('../../../app/processing/parse-glos-return-file')
-const parseGlosReturnFile = require('../../../app/processing/parse-glos-return-file')
+jest.mock('../../../../app/processing/returns/parse-glos-return-file')
+const { parseGlosReturnFile } = require('../../../../app/processing/returns/parse-glos-return-file')
 
-jest.mock('../../../app/processing/parse-imps-return-file')
-const parseImpsReturnFile = require('../../../app/processing/parse-imps-return-file')
+jest.mock('../../../../app/processing/returns/parse-imps-return-file')
+const { parseImpsReturnFile } = require('../../../../app/processing/returns/parse-imps-return-file')
 
-jest.mock('../../../app/processing/parse-default-return-file')
-const parseDefaultReturnFile = require('../../../../app/processing/returns/parse-default-return-file')
+jest.mock('../../../../app/processing/returns/parse-default-return-file')
+const { parseDefaultReturnFile } = require('../../../../app/processing/returns/parse-default-return-file')
 
-const parseReturnFile = require('../../../app/processing/parse-return-file')
+const { parseReturnFile } = require('../../../../app/processing/returns/parse-return-file')
 
 const genesisFilename = require('../../../mocks/filenames').GENESIS
 const glosFilename = require('../../../mocks/filenames').GLOS
@@ -34,7 +34,7 @@ describe('parse return file', () => {
 
   test('Should call parseGenesisReturnFile with content and filename', async () => {
     await parseReturnFile(genesisContent, genesisFilename)
-    expect(parseGenesisReturnFile).toBeCalledWith([genesisContent], genesisFilename)
+    expect(parseGenesisReturnFile).toBeCalledWith(genesisContent, genesisFilename)
   })
 
   test('Should call parseGlosReturnFile when filename contains FCAP', async () => {
@@ -44,7 +44,7 @@ describe('parse return file', () => {
 
   test('Should call parseGlosReturnFile with content and filename', async () => {
     await parseReturnFile(glosContent, glosFilename)
-    expect(parseGlosReturnFile).toBeCalledWith([glosContent], glosFilename)
+    expect(parseGlosReturnFile).toBeCalledWith(glosContent, glosFilename)
   })
 
   test('Should call parseImpsReturnFile when filename contains RET_IMPS', async () => {
@@ -54,7 +54,7 @@ describe('parse return file', () => {
 
   test('Should call parseImpsReturnFile with content and filename', async () => {
     await parseReturnFile(impsContent, impsFilename)
-    expect(parseImpsReturnFile).toBeCalledWith([impsContent], impsFilename)
+    expect(parseImpsReturnFile).toBeCalledWith(impsContent, impsFilename)
   })
 
   test('Should call parseDefaultReturnFile when filename contains anything else', async () => {
@@ -64,6 +64,6 @@ describe('parse return file', () => {
 
   test('Should call parseDefaultReturnFile with content and filename', async () => {
     await parseReturnFile(content, filename)
-    expect(parseDefaultReturnFile).toBeCalledWith([content], filename)
+    expect(parseDefaultReturnFile).toBeCalledWith(content, filename)
   })
 })

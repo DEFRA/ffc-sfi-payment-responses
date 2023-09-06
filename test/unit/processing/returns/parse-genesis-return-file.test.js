@@ -1,6 +1,6 @@
-const parseGenesisReturnFile = require('../../../app/processing/parse-genesis-return-file')
+const { parseGenesisReturnFile } = require('../../../../app/processing/returns/parse-genesis-return-file')
 
-const genesisFilename = require('../../mocks/filenames').GENESIS
+const genesisFilename = require('../../../mocks/filenames').GENESIS
 
 let genesisContent = 'D^1098608^AG00384621^1216.00^20/07/2023^B^1892661^D^'
 
