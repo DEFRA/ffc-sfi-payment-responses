@@ -8,14 +8,14 @@ jest.mock('../../../app/processing/parse-imps-return-file')
 const parseImpsReturnFile = require('../../../app/processing/parse-imps-return-file')
 
 jest.mock('../../../app/processing/parse-default-return-file')
-const parseDefaultReturnFile = require('../../../app/processing/returns/parse-default-return-file')
+const parseDefaultReturnFile = require('../../../../app/processing/returns/parse-default-return-file')
 
 const parseReturnFile = require('../../../app/processing/parse-return-file')
 
-const genesisFilename = require('../../mocks/filenames').GENESIS
-const glosFilename = require('../../mocks/filenames').GLOS
-const impsFilename = require('../../mocks/filenames').IMPS
-const filename = require('../../mocks/filenames').DEFAULT
+const genesisFilename = require('../../../mocks/filenames').GENESIS
+const glosFilename = require('../../../mocks/filenames').GLOS
+const impsFilename = require('../../../mocks/filenames').IMPS
+const filename = require('../../../mocks/filenames').DEFAULT
 
 const genesisContent = 'D^1098608^AG00384621^1216.00^20/07/2023^B^1892661^D^'
 const glosContent = '106172753,1102259241,EWCO285-21-22,97,20/06/2023,2137.91,1848061,6926,0729,D,'
