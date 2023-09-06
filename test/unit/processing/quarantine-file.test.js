@@ -2,9 +2,9 @@ jest.mock('../../../app/storage')
 const blobStorage = require('../../../app/storage')
 
 jest.mock('../../../app/event/send-responses-quarantine-event')
-const sendResponsesQuarantineEvent = require('../../../app/event/send-responses-quarantine-event')
+const { sendResponsesQuarantineEvent } = require('../../../app/event/send-responses-quarantine-event')
 
-const quarantineFile = require('../../../app/processing/quarantine-file')
+const { quarantineFile } = require('../../../app/processing/quarantine-file')
 
 const filename = require('../../mocks/filenames').TEST
 const error = require('../../mocks/error')
