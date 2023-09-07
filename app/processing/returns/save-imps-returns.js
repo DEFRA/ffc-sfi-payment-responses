@@ -21,6 +21,8 @@ const saveImpsReturns = async (content, transaction) => {
   }).filter(line => line !== undefined)
 
   await db.impsReturn.bulkCreate(returns, { transaction })
+
+  console.log(`Saved ${returns.length} IMPS returns ready for next acknowledgement response`)
 }
 
 module.exports = {
