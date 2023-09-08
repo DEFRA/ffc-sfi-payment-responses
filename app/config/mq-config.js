@@ -1,26 +1,33 @@
-const joi = require('joi')
+const Joi = require('joi')
+const { PRODUCTION } = require('../constants/environments')
 
-const mqSchema = joi.object({
+const mqSchema = Joi.object({
   messageQueue: {
-    host: joi.string(),
-    username: joi.string(),
-    password: joi.string(),
-    useCredentialChain: joi.bool().default(false),
-    appInsights: joi.object()
+    host: Joi.string(),
+    username: Joi.string(),
+    password: Joi.string(),
+    useCredentialChain: Joi.bool().default(false),
+    appInsights: Joi.object()
+  },
+  submitSubscription: {
+    address: Joi.string(),
+    topic: Joi.string(),
+    numberOfReceivers: Joi.number().default(1),
+    type: Joi.string().default('subscription')
   },
   acknowledgementTopic: {
-    name: joi.string(),
-    address: joi.string()
+    name: Joi.string(),
+    address: Joi.string()
   },
   returnTopic: {
-    name: joi.string(),
-    address: joi.string()
+    name: Joi.string(),
+    address: Joi.string()
   },
   eventTopic: {
-    address: joi.string()
+    address: Joi.string()
   },
   eventsTopic: {
-    address: joi.string()
+    address: Joi.string()
   }
 })
 const mqConfig = {
@@ -28,8 +35,14 @@ const mqConfig = {
     host: process.env.MESSAGE_QUEUE_HOST,
     username: process.env.MESSAGE_QUEUE_USER,
     password: process.env.MESSAGE_QUEUE_PASSWORD,
-    useCredentialChain: process.env.NODE_ENV === 'production',
-    appInsights: process.env.NODE_ENV === 'production' ? require('applicationinsights') : undefined
+    useCredentialChain: process.env.NODE_ENV === PRODUCTION,
+    appInsights: process.env.NODE_ENV === PRODUCTION ? require('applicationinsights') : undefined
+  },
+  submitSubscription: {
+    address: process.env.PAYMENTSUBMIT_SUBSCRIPTION_ADDRESS,
+    topic: process.env.PAYMENTSUBMIT_TOPIC_ADDRESS,
+    numberOfReceivers: process.env.PAYMENTSUBMIT_SUBSCRIPTION_RECEIVERS,
+    type: 'subscription'
   },
   acknowledgementTopic: {
     name: process.env.ACKNOWLEDGEMENT_TOPIC_NAME,
@@ -56,12 +69,14 @@ if (mqResult.error) {
   throw new Error(`The message queue config is invalid. ${mqResult.error.message}`)
 }
 
+const submitSubscription = { ...mqResult.value.messageQueue, ...mqResult.value.submitSubscription }
 const acknowledgementTopic = { ...mqResult.value.messageQueue, ...mqResult.value.acknowledgementTopic }
 const returnTopic = { ...mqResult.value.messageQueue, ...mqResult.value.returnTopic }
 const eventTopic = { ...mqResult.value.messageQueue, ...mqResult.value.eventTopic }
 const eventsTopic = { ...mqResult.value.messageQueue, ...mqResult.value.eventsTopic }
 
 module.exports = {
+  submitSubscription,
   acknowledgementTopic,
   returnTopic,
   eventTopic,

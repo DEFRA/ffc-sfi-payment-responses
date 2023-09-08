@@ -1,29 +1,32 @@
-const blobStorage = require('../storage')
+const db = require('../data')
 const config = require('../config')
-const isAcknowledgementFile = require('./is-acknowledgement-file')
-const processAcknowledgement = require('./process-acknowledgement')
-const isReturnFile = require('./is-return-file')
-const processReturn = require('./process-return')
-const isPaymentFile = require('./is-payment-file')
-const processPaymentFile = require('./process-payment-file')
+const { getInboundFileList } = require('../storage')
+const { isAcknowledgementFile, processAcknowledgement } = require('./acknowledgements')
+const { isReturnFile, processReturn } = require('./returns')
+const { isPaymentFile, processPaymentFile } = require('./payments')
 
 const start = async () => {
+  const transaction = await db.sequelize.transaction()
   try {
-    const filenameList = await blobStorage.getInboundFileList()
+    await db.lock.findByPk(1, { transaction, lock: true })
 
-    if (filenameList.length > 0) {
-      for (const filename of filenameList) {
+    const filenames = await getInboundFileList()
+
+    if (filenames.length > 0) {
+      for (const filename of filenames) {
         if (isAcknowledgementFile(filename)) {
-          await processAcknowledgement(filename)
+          await processAcknowledgement(filename, transaction)
         } else if (isReturnFile(filename)) {
-          await processReturn(filename)
+          await processReturn(filename, transaction)
         } else if (isPaymentFile(filename)) {
           await processPaymentFile(filename)
         }
       }
     }
+    await transaction.commit()
   } catch (err) {
     console.error(err)
+    await transaction.rollback()
   } finally {
     setTimeout(start, config.processingInterval)
   }

@@ -18,7 +18,7 @@ const config = require('../../../app/config')
 const { RESPONSE_REJECTED } = require('../../../app/constants/events')
 const { SOURCE } = require('../../../app/constants/source')
 
-const sendResponsesQuarantineEvent = require('../../../app/event/send-responses-quarantine-event')
+const { sendResponsesQuarantineEvent } = require('../../../app/event/send-responses-quarantine-event')
 
 const filename = require('../../mocks/filenames').TEST
 const error = require('../../mocks/error')
