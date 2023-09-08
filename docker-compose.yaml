@@ -8,7 +8,7 @@ services:
     image: ffc-pay-responses
     container_name: ffc-pay-responses
     depends_on:
-      - ffc-pay-responses-azurite
+      - ffc-pay-dax-azurite
     environment:
       APPINSIGHTS_CLOUDROLE: ffc-pay-responses-local
       APPINSIGHTS_INSTRUMENTATIONKEY: ${APPINSIGHTS_INSTRUMENTATIONKEY}
@@ -38,6 +38,8 @@ services:
       POSTGRES_PASSWORD: ppp
       POSTGRES_USERNAME: postgres
 
-  ffc-pay-responses-azurite:
-    image: mcr.microsoft.com/azure-storage/azurite:3.17.1
+  ffc-pay-dax-azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:3.23.0
     command: "azurite-blob --skipApiVersionCheck --loose --blobHost 0.0.0.0"
+    labels:
+      com.docker.compose.pay.role: ffc-pay-dax-azurite

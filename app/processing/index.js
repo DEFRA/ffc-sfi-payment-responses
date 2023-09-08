@@ -6,7 +6,6 @@ const { isReturnFile, processReturn } = require('./returns')
 const { isPaymentFile, processPaymentFile } = require('./payments')
 
 const start = async () => {
-  console.log('Processing inbound files')
   const transaction = await db.sequelize.transaction()
   try {
     await db.lock.findByPk(1, { transaction, lock: true })
