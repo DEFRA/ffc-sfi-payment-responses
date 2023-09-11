@@ -1,7 +1,7 @@
 const { DefaultAzureCredential } = require('@azure/identity')
 const { PRODUCTION } = require('../constants/environments')
 
-function isProd () {
+const isProd = () => {
   return process.env.NODE_ENV === PRODUCTION
 }
 
