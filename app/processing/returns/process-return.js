@@ -32,7 +32,7 @@ const processReturn = async (filename, transaction) => {
     if (isGlosReturnFile(filename)) {
       await createGlosReturnFile(content, filename, transaction)
     }
-    await archiveFile(filename, filename)
+    await archiveFile(filename)
   }
 }
 

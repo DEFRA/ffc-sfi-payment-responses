@@ -56,9 +56,9 @@ const downloadFile = async (filename) => {
 }
 
 // Copies blob from one folder to another folder and deletes blob from original folder
-const moveFile = async (sourceFolder, destinationFolder, sourceFilename, destinationFilename) => {
-  const sourceBlob = await getBlob(sourceFolder, sourceFilename)
-  const destinationBlob = await getBlob(destinationFolder, destinationFilename)
+const moveFile = async (sourceFolder, destinationFolder, filename) => {
+  const sourceBlob = await getBlob(sourceFolder, filename)
+  const destinationBlob = await getBlob(destinationFolder, filename)
   const copyResult = await (await destinationBlob.beginCopyFromURL(sourceBlob.url)).pollUntilDone()
 
   if (copyResult.copyStatus === 'success') {
@@ -69,12 +69,12 @@ const moveFile = async (sourceFolder, destinationFolder, sourceFilename, destina
   return false
 }
 
-const archiveFile = (filename, archiveFilename) => {
-  return moveFile(config.inboundFolder, config.archiveFolder, filename, archiveFilename)
+const archiveFile = (filename) => {
+  return moveFile(config.inboundFolder, config.archiveFolder, filename)
 }
 
-const quarantineFile = (filename, quarantineFilename) => {
-  return moveFile(config.inboundFolder, config.quarantineFolder, filename, quarantineFilename)
+const quarantineFile = (filename) => {
+  return moveFile(config.inboundFolder, config.quarantineFolder, filename)
 }
 
 const deleteFile = async (filename) => {

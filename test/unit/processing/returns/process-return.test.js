@@ -88,6 +88,6 @@ describe('process return', () => {
 
   test('should archive file', async () => {
     await processReturn(filename, transaction)
-    expect(archiveFile).toHaveBeenCalledWith(filename, filename)
+    expect(archiveFile).toHaveBeenCalledWith(filename)
   })
 })

@@ -88,6 +88,6 @@ describe('process acknowledgement', () => {
 
   test('archives file if acknowledgements in file', async () => {
     await processAcknowledgement(filename, transaction)
-    expect(archiveFile).toHaveBeenCalledWith(filename, filename)
+    expect(archiveFile).toHaveBeenCalledWith(filename)
   })
 })
