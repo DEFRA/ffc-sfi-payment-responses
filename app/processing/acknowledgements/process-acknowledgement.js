@@ -21,7 +21,7 @@ const processAcknowledgement = async (filename, transaction) => {
       await createImpsReturnFile(messages, filename, transaction)
     }
     console.log('Acknowledgements published:', util.inspect(messages, false, null, true))
-    await archiveFile(filename, filename)
+    await archiveFile(filename)
   }
 }
 
