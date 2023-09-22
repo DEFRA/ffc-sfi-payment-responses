@@ -73,7 +73,7 @@ or Helm [values file](./helm/ffc-pay-responses/values.yaml) if running Kubernete
 | Name | Description |
 | ---| --- |
 | `APPINSIGHTS_CLOUDROLE` | Azure App Insights cloud role |
-| `APPINSIGHTS_INSTRUMENTATIONKEY` | Azure App Insights instrumentation key |
+| `APPINSIGHTS_CONNECTIONSTRING` | Azure App Insights connection string |
 | `PROCESSING_INTERVAL` | File polling interval in milliseconds, e.g. `5000` |
 
 ### Docker
