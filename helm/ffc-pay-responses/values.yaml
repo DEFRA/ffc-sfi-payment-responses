@@ -23,8 +23,8 @@ deployment: {}
 container:
   requestMemory: 10Mi
   requestCpu: 10m
-  limitMemory: 180Mi
-  limitCpu: 120m
+  limitMemory: 250Mi
+  limitCpu: 250m
   messageQueueHost: namespace.servicebus.windows.net
   acknowledgementTopicAddress: ffc-pay-acknowledgement
   returnTopicAddress: ffc-pay-return
