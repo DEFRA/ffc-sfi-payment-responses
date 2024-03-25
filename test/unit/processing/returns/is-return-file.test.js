@@ -38,19 +38,19 @@ describe('is return file', () => {
   })
 
   test('Should return true when filename is a gni return file', async () => {
-    filename = 'GENESISPayConf_23071 21211_SF01-012825.gni'
+    filename = 'FFCGENESISPayConf_23071 21211_SF01-012825.gni'
     const result = isReturnFile(filename)
     expect(result).toBe(true)
   })
 
   test('Should return true when filename is a dat return file', async () => {
-    filename = 'FCAP_sequence_RPA_20230621 21008.dat'
+    filename = 'FFCFCAP_sequence_RPA_20230621 21008.dat'
     const result = isReturnFile(filename)
     expect(result).toBe(true)
   })
 
   test('Should return true when filename is a INT return file', async () => {
-    filename = 'RET_IMPS_AP_SF01-012674_GBP.INT'
+    filename = 'FFCRET_IMPS_AP_SF01-012674_GBP.INT'
     const result = isReturnFile(filename)
     expect(result).toBe(true)
   })
