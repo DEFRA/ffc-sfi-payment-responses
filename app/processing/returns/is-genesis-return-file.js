@@ -1,5 +1,5 @@
 const isGenesisReturnFile = (filename) => {
-  return /^GENESISPayConf.*\.gni$/.test(filename)
+  return /^.*GENESISPayConf.*\.gni$/.test(filename)
 }
 
 module.exports = {
