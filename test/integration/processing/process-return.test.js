@@ -196,7 +196,7 @@ describe('process return', () => {
     }
     expect(fileList.filter(x =>
       x.startsWith(`${config.storageConfig.returnFolder}/GENESISPayConf`) &&
-        x.endsWith('.gniq.ctl')
+        x.endsWith('.gni.ctl')
     ).length).toBe(1)
   })
 
