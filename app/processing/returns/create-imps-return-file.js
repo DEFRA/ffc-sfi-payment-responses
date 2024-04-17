@@ -15,10 +15,10 @@ const createImpsReturnFile = async (acknowledgements, filename, transaction) => 
 
   const responseData = []
 
-  const acknowledgementLines = await getImpsAcknowledgementLines(acknowledgements, transaction, responseData)
+  const { acknowledgementLines, batchNumbers } = await getImpsAcknowledgementLines(acknowledgements, transaction, responseData)
   responseData.push(...acknowledgementLines)
 
-  const pendingReturns = await getImpsPendingReturns(transaction)
+  const pendingReturns = await getImpsPendingReturns(batchNumbers, transaction)
   const pendingReturnLines = await getImpsPendingReturnLines(pendingReturns, transaction)
   responseData.push(...pendingReturnLines)
 
