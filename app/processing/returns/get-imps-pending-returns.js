@@ -1,12 +1,8 @@
 const db = require('../../../app/data')
 
-const getImpsPendingReturns = async (batchNumbers, transaction) => {
-  const where = { exported: null }
-  if (batchNumbers.length) {
-    where.batchNumber = { [db.Sequelize.Op.not.in]: batchNumbers }
-  }
+const getImpsPendingReturns = async (transaction) => {
   return db.impsReturn.findAll({
-    where,
+    where: { exported: null },
     transaction,
     lock: true,
     skipLocked: true

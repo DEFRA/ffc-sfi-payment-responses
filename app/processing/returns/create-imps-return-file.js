@@ -18,8 +18,8 @@ const createImpsReturnFile = async (acknowledgements, filename, transaction) => 
   const { acknowledgementLines, batchNumbers } = await getImpsAcknowledgementLines(acknowledgements, transaction, responseData)
   responseData.push(...acknowledgementLines)
 
-  const pendingReturns = await getImpsPendingReturns(batchNumbers, transaction)
-  const pendingReturnLines = await getImpsPendingReturnLines(pendingReturns, transaction)
+  const pendingReturns = await getImpsPendingReturns(transaction)
+  const pendingReturnLines = await getImpsPendingReturnLines(pendingReturns, batchNumbers, transaction)
   responseData.push(...pendingReturnLines)
 
   const totalValue = getImpsTotalValue(pendingReturns)
