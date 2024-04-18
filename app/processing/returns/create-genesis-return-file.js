@@ -8,7 +8,7 @@ const createGenesisReturnFile = async (content, filename, transaction) => {
   const currentDate = moment()
 
   const returnFilename = `GENESISPayConf_${currentDate.format('YYYYMMDD')}_${sequenceString}.gni`
-  const controlFilename = returnFilename.replace('.gni', '.ctl')
+  const controlFilename = returnFilename.replace('.gni', '.gni.ctl')
   const returnFileContent = content.map(x => {
     const row = x.split('^')
     switch (row[0]) {
