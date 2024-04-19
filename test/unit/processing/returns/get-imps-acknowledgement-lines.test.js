@@ -37,7 +37,7 @@ describe('get IMPS acknowledgement lines', () => {
     expect(result.acknowledgementLines).toEqual(expectedLines)
   })
 
-  test('should return R if acknowledgement not successful', async () => {
+  test('should return R in acknowledgement lines if acknowledgement not successful', async () => {
     acknowledgements[0].success = false
     const expectedLines = ['H,Trader1,BAT001,INV001,R,,,,,,']
     const result = await getImpsAcknowledgementLines(acknowledgements)
