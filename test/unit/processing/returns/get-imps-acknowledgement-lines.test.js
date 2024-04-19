@@ -31,11 +31,22 @@ describe('get IMPS acknowledgement lines', () => {
     await db.sequelize.close()
   })
 
-  test('should return correct acknowledgement lines and batch numbers based on database values', async () => {
+  test('should return correct acknowledgement lines (H for header, trader number, batch number, invoice number, I if success) based on acknowledged data', async () => {
     const expectedLines = ['H,Trader1,BAT001,INV001,I,,,,,,']
+    const result = await getImpsAcknowledgementLines(acknowledgements)
+    expect(result.acknowledgementLines).toEqual(expectedLines)
+  })
+
+  test('should return R if acknowledgement not successful', async () => {
+    acknowledgements[0].success = false
+    const expectedLines = ['H,Trader1,BAT001,INV001,R,,,,,,']
+    const result = await getImpsAcknowledgementLines(acknowledgements)
+    expect(result.acknowledgementLines).toEqual(expectedLines)
+  })
+
+  test('should return correct list of batch numbers based on the acknowledged data', async () => {
     const expectedBatchNumbers = ['BAT001']
-    const { acknowledgementLines, batchNumbers } = await getImpsAcknowledgementLines(acknowledgements)
-    expect(acknowledgementLines).toEqual(expectedLines)
-    expect(batchNumbers).toEqual(expectedBatchNumbers)
+    const result = await getImpsAcknowledgementLines(acknowledgements)
+    expect(result.batchNumbers).toEqual(expectedBatchNumbers)
   })
 })
