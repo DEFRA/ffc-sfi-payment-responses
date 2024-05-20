@@ -32,14 +32,14 @@ describe('get IMPS acknowledgement lines', () => {
   })
 
   test('should return correct acknowledgement lines (H for header, trader number, batch number, invoice number, I if success) based on acknowledged data', async () => {
-    const expectedLines = ['H,Trader1,BAT001,INV001,I,,,,,,']
+    const expectedLines = ['H,BAT001,04,Trader1,INV001,I,,,,,,']
     const result = await getImpsAcknowledgementLines(acknowledgements)
     expect(result.acknowledgementLines).toEqual(expectedLines)
   })
 
   test('should return R in acknowledgement lines if acknowledgement not successful', async () => {
     acknowledgements[0].success = false
-    const expectedLines = ['H,Trader1,BAT001,INV001,R,,,,,,']
+    const expectedLines = ['H,BAT001,04,Trader1,INV001,R,,,,,,']
     const result = await getImpsAcknowledgementLines(acknowledgements)
     expect(result.acknowledgementLines).toEqual(expectedLines)
   })
