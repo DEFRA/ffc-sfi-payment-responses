@@ -53,7 +53,7 @@ describe('get IMPS pending return lines', () => {
   })
 
   test('should return correct return lines based on database values if no acknowledged batches', async () => {
-    const expectedLines = ['H,Trader1,BAT001,INV001,S,Ref001,1.23,T,2024-04-19,321.00,']
+    const expectedLines = ['H,BAT001,04,Trader1,INV001,S,Ref001,1.23,T,2024-04-19,321.00,']
     const result = await getImpsPendingReturnLines(pendingReturns, acknowledgedBatchNumbers)
     expect(result).toEqual(expectedLines)
   })
@@ -65,7 +65,7 @@ describe('get IMPS pending return lines', () => {
 
   test('should return correct return lines based on database values if different batch', async () => {
     acknowledgedBatchNumbers.push('BAT002')
-    const expectedLines = ['H,Trader1,BAT001,INV001,S,Ref001,1.23,T,2024-04-19,321.00,']
+    const expectedLines = ['H,BAT001,04,Trader1,INV001,S,Ref001,1.23,T,2024-04-19,321.00,']
     const result = await getImpsPendingReturnLines(pendingReturns, acknowledgedBatchNumbers)
     expect(result).toEqual(expectedLines)
   })

@@ -23,7 +23,7 @@ const createImpsReturnFile = async (acknowledgements, filename, transaction) => 
   responseData.push(...pendingReturnLines)
 
   const totalValue = getImpsTotalValue(pendingReturns)
-  responseData.unshift(`B,04,${sequenceString},${convertToPounds(totalValue)},${responseData.length},S,`)
+  responseData.unshift(`B,04,${sequenceString},${responseData.length},${convertToPounds(totalValue)},S`)
 
   const returnFileContent = responseData.join('\r\n')
 
