@@ -27,7 +27,7 @@ const createImpsReturnFile = async (acknowledgements, filename, transaction) => 
 
   const returnFileContent = responseData.join('\r\n')
 
-  await publishReturnFile(returnFilename, returnFileContent, controlFilename)
+  await publishReturnFile(returnFilename, returnFileContent, controlFilename, null)
 }
 
 module.exports = {
