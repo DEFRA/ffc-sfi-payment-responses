@@ -23,7 +23,7 @@ const createGenesisReturnFile = async (content, filename, transaction) => {
     }
   }).filter(x => x !== '').join('\r\n')
 
-  await publishReturnFile(returnFilename, returnFileContent, controlFilename)
+  await publishReturnFile(returnFilename, returnFileContent, controlFilename, null)
 }
 
 module.exports = {
