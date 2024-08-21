@@ -1,16 +1,22 @@
 const db = require('../../../app/data')
 const { convertToPounds } = require('../../../app/currency-convert')
+const moment = require('moment')
 
 const getImpsPendingReturnLines = async (pendingReturns, acknowledgedBatchNumbers, transaction) => {
-  const lines = []
+  const pendingReturnLines = []
+  let totalValue = 0
   for (const pendingReturn of pendingReturns) {
     const batchNumber = await db.impsBatchNumber.findOne({ where: { invoiceNumber: pendingReturn.invoiceNumber, trader: pendingReturn.trader }, attributes: ['batchNumber'], transaction })
     if (batchNumber && !acknowledgedBatchNumbers.includes(batchNumber.batchNumber)) {
-      lines.push(`H,${batchNumber.batchNumber},04,${pendingReturn.trader},${pendingReturn.invoiceNumber},${pendingReturn.status},${pendingReturn.paymentReference},${convertToPounds(pendingReturn.valueGBP)},${pendingReturn.paymentType},${pendingReturn.dateSettled},${pendingReturn.valueEUR},`)
-      await pendingReturn.update({ exported: true }, { transaction })
+      pendingReturnLines.push(`H,${batchNumber.batchNumber},04,${pendingReturn.trader},${pendingReturn.invoiceNumber},${pendingReturn.status},${pendingReturn.paymentReference},${convertToPounds(pendingReturn.valueGBP)},${pendingReturn.paymentType},${pendingReturn.dateSettled},${pendingReturn.valueEUR},`)
+      totalValue += pendingReturn.valueGBP
+      await pendingReturn.update({ exported: moment() }, { transaction })
     }
   }
-  return lines
+  return {
+    pendingReturnLines,
+    totalValue
+  }
 }
 
 module.exports = {
