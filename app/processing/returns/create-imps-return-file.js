@@ -5,7 +5,6 @@ const { publishReturnFile } = require('./publish-return-file')
 const { getImpsAcknowledgementLines } = require('./get-imps-acknowledgement-lines')
 const { getImpsPendingReturns } = require('./get-imps-pending-returns')
 const { getImpsPendingReturnLines } = require('./get-imps-pending-return-lines')
-const { getImpsTotalValue } = require('./get-imps-total-value')
 
 const createImpsReturnFile = async (acknowledgements, filename, transaction) => {
   const { sequenceString } = await getAndIncrementSequence(IMPS, transaction)
@@ -19,10 +18,9 @@ const createImpsReturnFile = async (acknowledgements, filename, transaction) => 
   responseData.push(...acknowledgementLines)
 
   const pendingReturns = await getImpsPendingReturns(transaction)
-  const pendingReturnLines = await getImpsPendingReturnLines(pendingReturns, batchNumbers, transaction)
+  const { pendingReturnLines, totalValue } = await getImpsPendingReturnLines(pendingReturns, batchNumbers, transaction)
   responseData.push(...pendingReturnLines)
 
-  const totalValue = getImpsTotalValue(pendingReturns)
   responseData.unshift(`B,04,${sequenceString},${responseData.length},${convertToPounds(totalValue)},S`)
 
   const returnFileContent = responseData.join('\r\n')

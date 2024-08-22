@@ -52,10 +52,14 @@ describe('get IMPS pending return lines', () => {
     await db.sequelize.close()
   })
 
-  test('should return correct return lines based on database values if no acknowledged batches', async () => {
+  test('should return correct return lines and total value based on database values if no acknowledged batches', async () => {
     const expectedLines = ['H,BAT001,04,Trader1,INV001,S,Ref001,1.23,T,2024-04-19,321.00,']
+    const expectedTotalValue = 123
     const result = await getImpsPendingReturnLines(pendingReturns, acknowledgedBatchNumbers)
-    expect(result).toEqual(expectedLines)
+    expect(result).toEqual({
+      pendingReturnLines: expectedLines,
+      totalValue: expectedTotalValue
+    })
   })
 
   test('should call update on any pendingReturns', async () => {
@@ -63,16 +67,23 @@ describe('get IMPS pending return lines', () => {
     expect(pendingReturns[0].update).toHaveBeenCalled()
   })
 
-  test('should return correct return lines based on database values if different batch', async () => {
+  test('should return correct return lines and total value based on database values if different batch', async () => {
     acknowledgedBatchNumbers.push('BAT002')
     const expectedLines = ['H,BAT001,04,Trader1,INV001,S,Ref001,1.23,T,2024-04-19,321.00,']
+    const expectedTotalValue = 123
     const result = await getImpsPendingReturnLines(pendingReturns, acknowledgedBatchNumbers)
-    expect(result).toEqual(expectedLines)
+    expect(result).toEqual({
+      pendingReturnLines: expectedLines,
+      totalValue: expectedTotalValue
+    })
   })
 
-  test('should not include return lines if batch has been acknowledged', async () => {
+  test('should not include return lines and total value if batch has been acknowledged', async () => {
     acknowledgedBatchNumbers.push('BAT001')
     const result = await getImpsPendingReturnLines(pendingReturns, acknowledgedBatchNumbers)
-    expect(result).toEqual([])
+    expect(result).toEqual({
+      pendingReturnLines: [],
+      totalValue: 0
+    })
   })
 })
