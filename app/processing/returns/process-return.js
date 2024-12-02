@@ -21,6 +21,7 @@ const processReturn = async (filename, transaction) => {
     await quarantineFile(filename, err)
   }
   if (messages?.length) {
+    // todo not do this if filename indicates not to
     await sendReturnMessages(messages)
     console.log('Returns published:', util.inspect(messages, false, null, true))
     if (isImpsReturnFile(filename)) {
