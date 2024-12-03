@@ -19,7 +19,8 @@
     "Steve Dickinson steve.dickinson@defra.gov.uk",
     "Marc Templeton m.templeton@kainos.com",
     "Kirsten Williamson kirsten.williamson@kainos.com",
-    "Sam Plackett samuel.plackett@eviden.com"
+    "Sam Plackett samuel.plackett@eviden.com",
+    "John Barnard john.barnard.external@eviden.com"
   ],
   "license": "OGL-UK-3.0",
   "dependencies": {
