@@ -9,7 +9,7 @@ const { isGenesisReturnFile } = require('./is-genesis-return-file')
 const { createGenesisReturnFile } = require('./create-genesis-return-file')
 const { isGlosReturnFile } = require('./is-glos-return-file')
 const { createGlosReturnFile } = require('./create-glos-return-file')
-const { canReturnFile } = require('./can-return-file')
+const { canReturnMessage } = require('./can-return-message')
 
 const processReturn = async (filename, transaction) => {
   console.info(`Processing return: ${filename}`)
@@ -22,7 +22,9 @@ const processReturn = async (filename, transaction) => {
     await quarantineFile(filename, err)
   }
   if (messages?.length) {
-    await sendReturnMessages(messages)
+    if(canReturnMessage){
+      await sendReturnMessages(messages)
+    }
     console.log('Returns published:', util.inspect(messages, false, null, true))
     if (isImpsReturnFile(filename)) {
       await saveImpsReturns(content, transaction)
@@ -30,7 +32,7 @@ const processReturn = async (filename, transaction) => {
     if (isGenesisReturnFile(filename)) {
       await createGenesisReturnFile(content, filename, transaction)
     }
-    if (isGlosReturnFile(filename) && canReturnFile(filename)) {
+    if (isGlosReturnFile(filename)) {
       await createGlosReturnFile(content, filename, transaction)
     }
     await archiveFile(filename)
