@@ -22,7 +22,7 @@ const processReturn = async (filename, transaction) => {
     await quarantineFile(filename, err)
   }
   if (messages?.length) {
-    if(canReturnMessage){
+    if (canReturnMessage) {
       await sendReturnMessages(messages)
     }
     console.log('Returns published:', util.inspect(messages, false, null, true))
