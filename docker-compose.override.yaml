@@ -14,7 +14,9 @@ services:
       - ./package.json:/home/node/package.json
     environment:
       AZURE_STORAGE_CONNECTION_STRING: DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://ffc-pay-responses-azurite:10000/devstoreaccount1;
-
+    depends_on:
+      - ffc-pay-responses-azurite
+      
   ffc-pay-responses-postgres:
     ports:
       - "5420:5432"
