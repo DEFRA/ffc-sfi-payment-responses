@@ -1,5 +1,5 @@
 const getImpsBatchNumber = (batch) => {
-  return Number(batch.substr(12, 4))
+  return Number(batch.substring(batch.lastIndexOf('_') + 1, batch.lastIndexOf('.')))
 }
 
 module.exports = {
