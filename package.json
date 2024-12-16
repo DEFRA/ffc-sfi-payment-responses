@@ -1,6 +1,6 @@
 {
   "name": "ffc-pay-responses",
-  "version": "1.10.9",
+  "version": "1.10.10",
   "description": "FFC payment response processing",
   "homepage": "https://github.com/DEFRA/ffc-pay-responses",
   "main": "app/index.js",
@@ -20,7 +20,8 @@
     "Marc Templeton m.templeton@kainos.com",
     "Kirsten Williamson kirsten.williamson@kainos.com",
     "Sam Plackett samuel.plackett@eviden.com",
-    "John Barnard john.barnard.external@eviden.com"
+    "John Barnard john.barnard.external@eviden.com",
+    "Leigh Godson leigh.godson.external@eviden.com"
   ],
   "license": "OGL-UK-3.0",
   "dependencies": {

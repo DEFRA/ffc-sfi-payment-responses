@@ -1,4 +1,4 @@
-const MAX_BATCH_SEQUENCE = 9999
+const MAX_BATCH_SEQUENCE = Number.MAX_SAFE_INTEGER
 
 const incrementSequence = (currentSequence) => {
   // if sequence is already at maximum, then restart from 1
