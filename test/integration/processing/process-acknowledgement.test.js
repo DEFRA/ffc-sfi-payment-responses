@@ -1,4 +1,3 @@
-const db = require('../../../app/data')
 jest.useFakeTimers()
 
 const mockSendBatchMessages = jest.fn()
