@@ -61,4 +61,27 @@ describe('parse return file', () => {
     const result = parseGlosReturnFile([glosContent], glosFilename)
     expect(result).toStrictEqual([])
   })
+
+  test('Should correctly parse CSV line with quoted value containing commas', async () => {
+    glosContent = '106172753,1102259241,"EWCO,285-21-22",97,20/06/2023,2137.91,1848061,6926,0729,D,'
+    mappedContent = [{
+      sourceSystem: 'GLOS',
+      sbi: 106172753,
+      frn: 1102259241,
+      agreementNumber: 'EWCO,285-21-22',
+      claimNumber: '97',
+      settlementDate: '2023-06-20T00:00:00.000Z',
+      value: 213791,
+      reference: '1848061',
+      bankAccount: '6926',
+      batchNumber: '0729',
+      settled: true,
+      detail: '',
+      ledger: 'AP',
+      referenceId: 'a92283e0c15a6ae2f0b8852283b74d2c',
+      filename: glosFilename
+    }]
+    const result = parseGlosReturnFile([glosContent], glosFilename)
+    expect(result).toStrictEqual(mappedContent)
+  })
 })
