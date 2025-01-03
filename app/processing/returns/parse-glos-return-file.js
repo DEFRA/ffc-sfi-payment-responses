@@ -5,9 +5,9 @@ const { AP } = require('../../constants/ledgers')
 const { GLOS } = require('../../constants/source-systems')
 
 const parseGlosReturnFile = (csv, filename) => {
-  return csv.map(x => {
-    if (x.includes(',')) {
-      const row = x.split(',')
+  return csv.map(line => {
+    const row = parseCsvLine(line)
+    if (row.length >= 11) {
       const value = `${GLOS}${row[0]}${row[1]}${row[2]}${row[3]}${row[4]}${row[5]}${row[6]}${row[7]}${row[8]}${row[9]}${row[10]}AP${filename}`
       const hash = createHash(value)
       return {
@@ -30,7 +30,18 @@ const parseGlosReturnFile = (csv, filename) => {
     } else {
       return undefined
     }
-  }).filter(x => x !== undefined)
+  }).filter(record => record !== undefined)
+}
+
+// Helper function to handle quoted CSV fields
+const parseCsvLine = (line) => {
+  const regex = /(?:^|,)(?:"([^"]*)"|([^",]*))/g
+  const result = []
+  let match
+  while ((match = regex.exec(line)) !== null) {
+    result.push(match[1] || match[2])
+  }
+  return result
 }
 
 module.exports = {
