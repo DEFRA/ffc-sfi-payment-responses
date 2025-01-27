@@ -4,26 +4,38 @@ const { createHash } = require('../create-hash')
 const { AP } = require('../../../constants/ledgers')
 const { IMPS } = require('../../../constants/source-systems')
 
+const paymentJobNumberIndex = 1
+const fesCodeIndex = 2
+const traderNumberIndex = 3
+const invoiceNumberIndex = 4
+const settledIndex = 5
+const referenceIndex = 6
+const valueIndex = 7
+const paymentTypeIndex = 8
+const settlementDateIndex = 9
+const valueEURIndex = 10
+const exchangeRateIndex = 11
+
 const parseImpsReturnFile = (csv, filename) => {
   return csv.map(x => {
     const row = x.split(',')
-    const value = `${IMPS}${row[1]}${row[2]}${row[3]}${row[4]}${row[5]}${row[6]}${row[7]}${row[8]}${row[9]}${row[10]}${row[11]}AP${filename}`
+    const value = `${IMPS}${row[paymentJobNumberIndex]}${row[fesCodeIndex]}${row[traderNumberIndex]}${row[invoiceNumberIndex]}${row[settledIndex]}${row[referenceIndex]}${row[valueIndex]}${row[paymentTypeIndex]}${row[settlementDateIndex]}${row[valueEURIndex]}${row[exchangeRateIndex]}AP${filename}`
     const hash = createHash(value)
     if (row[0] === 'H') {
       return {
         sourceSystem: IMPS,
-        paymentJobNumber: row[1],
-        fesCode: row[2],
-        traderNumber: row[3],
-        invoiceNumber: row[4],
-        transactionNumber: row[4],
-        settled: row[5] === 'P',
-        reference: row[6],
-        value: convertToPence(row[7]),
-        paymentType: row[8],
-        settlementDate: row[9] !== '' ? moment(row[9], ['YYYY-MM-DD', 'DD/MM/YYYY', 'DD-MMM-YY']).toISOString() : undefined,
-        valueEUR: convertToPence(row[10]),
-        exchangeRate: row[11],
+        paymentJobNumber: row[paymentJobNumberIndex],
+        fesCode: row[fesCodeIndex],
+        traderNumber: row[traderNumberIndex],
+        invoiceNumber: row[invoiceNumberIndex],
+        transactionNumber: row[invoiceNumberIndex],
+        settled: row[settledIndex] === 'P',
+        reference: row[referenceIndex],
+        value: convertToPence(row[valueIndex]),
+        paymentType: row[paymentTypeIndex],
+        settlementDate: row[settlementDateIndex] !== '' ? moment(row[settlementDateIndex], ['YYYY-MM-DD', 'DD/MM/YYYY', 'DD-MMM-YY']).toISOString() : undefined,
+        valueEUR: convertToPence(row[valueEURIndex]),
+        exchangeRate: row[exchangeRateIndex],
         ledger: AP,
         referenceId: hash,
         filename
