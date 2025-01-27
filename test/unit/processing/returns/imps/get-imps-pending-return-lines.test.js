@@ -1,5 +1,5 @@
-const db = require('../../../../app/data')
-const { getImpsPendingReturnLines } = require('../../../../app/processing/returns/get-imps-pending-return-lines')
+const db = require('../../../../../app/data')
+const { getImpsPendingReturnLines } = require('../../../../../app/processing/returns/imps/get-imps-pending-return-lines')
 
 const pendingReturns = [{
   impsReturnId: '1',

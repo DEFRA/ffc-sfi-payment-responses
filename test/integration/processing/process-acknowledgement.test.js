@@ -1,3 +1,4 @@
+const db = require('../../../app/data')
 jest.useFakeTimers()
 
 const mockSendBatchMessages = jest.fn()
@@ -27,6 +28,7 @@ const path = require('path')
 
 const config = require('../../../app/config')
 const processing = require('../../../app/processing')
+const { IMPS, ES, FC } = require('../../../app/constants/schemes')
 
 const TEST_FILE = path.resolve(__dirname, '../../files/acknowledgement.xml')
 const TEST_INVALID_FILE = path.resolve(__dirname, '../../files/broken-acknowledgement.xml')
@@ -47,10 +49,61 @@ describe('process acknowledgement', () => {
     await container.createIfNotExists()
     const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${VALID_FILENAME}`)
     await blockBlobClient.uploadFile(TEST_FILE)
+
+    const existingSchemes = await db.scheme.findAll({
+      where: {
+        schemeId: [ES, FC, IMPS]
+      }
+    })
+    if (existingSchemes.length === 0) {
+      await db.scheme.bulkCreate([
+        { schemeId: ES, name: 'ES' },
+        { schemeId: FC, name: 'FC' },
+        { schemeId: IMPS, name: 'IMPS' }
+      ])
+      await db.sequence.bulkCreate([
+        { schemeId: ES, nextReturn: 1 },
+        { schemeId: FC, nextReturn: 1 },
+        { schemeId: IMPS, nextReturn: 1 }
+      ])
+    }
+    await db.impsBatchNumber.bulkCreate([
+      { batchNumber: '1', invoiceNumber: 'S123456789A123456V001', frn: 1234567890 },
+      { batchNumber: '1', invoiceNumber: 'S123456789B123456V001', frn: 1234567891 },
+      { batchNumber: '1', invoiceNumber: 'S123456789C123456V001', frn: 1234567892 },
+      { batchNumber: '1', invoiceNumber: 'S123456789D123456V001', frn: 1234567893 }
+    ])
   })
 
   afterEach(async () => {
     jest.clearAllMocks()
+    await db.impsBatchNumber.destroy({ where: { invoiceNumber: 'S123456789E123456V001' }, truncate: true })
+    await db.impsAcknowledgement.destroy({ where: { }, truncate: true })
+  })
+
+  test('does not create IMPS return file if all acknowledgements are not received', async () => {
+    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${IMPS_FILENAME}`)
+    await blockBlobClient.uploadFile(TEST_FILE)
+    await db.impsBatchNumber.create(
+      { batchNumber: 1, invoiceNumber: 'S123456789E123456V001', frn: 1234567894 }
+    )
+    await processing.start()
+    const fileList = []
+    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.returnFolder })) {
+      fileList.push(item.name)
+    }
+    expect(fileList.filter(x => x.startsWith(`${config.storageConfig.returnFolder}/RET_IMPS`)).length).toBe(0)
+  })
+
+  test('creates IMPS return file if all acknowledgements are received', async () => {
+    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${IMPS_FILENAME}`)
+    await blockBlobClient.uploadFile(TEST_FILE)
+    await processing.start()
+    const fileList = []
+    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.returnFolder })) {
+      fileList.push(item.name)
+    }
+    expect(fileList.filter(x => x.startsWith(`${config.storageConfig.returnFolder}/RET_IMPS`)).length).toBe(1)
   })
 
   test('sends all acknowledgements if file valid', async () => {
@@ -130,17 +183,6 @@ describe('process acknowledgement', () => {
       fileList.push(item.name)
     }
     expect(fileList.filter(x => x.startsWith(`${config.storageConfig.returnFolder}/RET_IMPS`)).length).toBe(0)
-  })
-
-  test('creates IMPS return file if acknowledgement is IMPS', async () => {
-    const blockBlobClient = container.getBlockBlobClient(`${config.storageConfig.inboundFolder}/${IMPS_FILENAME}`)
-    await blockBlobClient.uploadFile(TEST_FILE)
-    await processing.start()
-    const fileList = []
-    for await (const item of container.listBlobsFlat({ prefix: config.storageConfig.returnFolder })) {
-      fileList.push(item.name)
-    }
-    expect(fileList.filter(x => x.startsWith(`${config.storageConfig.returnFolder}/RET_IMPS`)).length).toBe(1)
   })
 
   test('does not quarantine file if unable to publish valid message', async () => {

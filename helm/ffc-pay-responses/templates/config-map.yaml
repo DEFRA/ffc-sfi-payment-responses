@@ -6,18 +6,21 @@ data:
   MESSAGE_QUEUE_HOST: {{ quote .Values.container.messageQueueHost }}
   {{- if and (.Values.environmentCode) (not .Values.pr) }}
   PAYMENTSUBMIT_TOPIC_ADDRESS: {{ .Values.container.paymentSubmitTopicAddress }}-{{ .Values.environmentCode }}
+  COLLECTIONSIZE_TOPIC_ADDRESS: {{ .Values.container.collectionSizeTopicAddress }}-{{ .Values.environmentCode }}
   ACKNOWLEDGEMENT_TOPIC_ADDRESS: {{ .Values.container.acknowledgementTopicAddress }}-{{ .Values.environmentCode }}
   RETURN_TOPIC_ADDRESS: {{ .Values.container.returnTopicAddress }}-{{ .Values.environmentCode }}
   EVENT_TOPIC_ADDRESS: {{ .Values.container.eventTopicAddress }}-{{ .Values.environmentCode }}
   EVENTS_TOPIC_ADDRESS: {{ .Values.container.eventsTopicAddress }}-{{ .Values.environmentCode }}
   {{ else }}
   PAYMENTSUBMIT_TOPIC_ADDRESS: {{ quote .Values.container.paymentSubmitTopicAddress }}
+  COLLECTIONSIZE_TOPIC_ADDRESS: {{ .Values.container.collectionSizeTopicAddress }}
   ACKNOWLEDGEMENT_TOPIC_ADDRESS: {{ quote .Values.container.acknowledgementTopicAddress }}
   RETURN_TOPIC_ADDRESS: {{ quote .Values.container.returnTopicAddress }}
   EVENT_TOPIC_ADDRESS: {{ quote .Values.container.eventTopicAddress }}
   EVENTS_TOPIC_ADDRESS: {{ quote .Values.container.eventsTopicAddress }}
   {{- end }}
   PAYMENTSUBMIT_SUBSCRIPTION_ADDRESS: {{ quote .Values.container.paymentSubmitSubscriptionAddress }}
+  COLLECTIONSIZE_SUBSCRIPTION_ADDRESS: {{ quote .Values.container.collectionSizeSubscriptionAddress }}
   AZURE_STORAGE_ACCOUNT_NAME: {{ quote .Values.container.azureStorageAccountName }}
   AZURE_STORAGE_CONNECTION_STRING: {{ quote .Values.container.azureStorageConnectionString }}
   AZURE_STORAGE_USE_CONNECTION_STRING: {{ quote .Values.container.azureStorageUseConnectionString }}

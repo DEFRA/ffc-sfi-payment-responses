@@ -1,14 +1,14 @@
-const db = require('../../../../app/data')
-const { getImpsAcknowledgementLines } = require('../../../../app/processing/returns/get-imps-acknowledgement-lines')
+const db = require('../../../../../app/data')
+const { getImpsAcknowledgementLines } = require('../../../../../app/processing/returns/imps/get-imps-acknowledgement-lines')
 
 const acknowledgements = [{
   invoiceNumber: 'INV001',
   frn: 1234567890,
-  success: true
+  success: 'I'
 }, {
   invoiceNumber: 'INV002',
   frn: 9876543210,
-  success: true
+  success: 'I'
 }]
 
 const mockBatchNumber = {
@@ -38,7 +38,7 @@ describe('get IMPS acknowledgement lines', () => {
   })
 
   test('should return R in acknowledgement lines if acknowledgement not successful', async () => {
-    acknowledgements[0].success = false
+    acknowledgements[0].success = 'R'
     const expectedLines = ['H,BAT001,04,Trader1,INV001,R,,,,,,']
     const result = await getImpsAcknowledgementLines(acknowledgements)
     expect(result.acknowledgementLines).toEqual(expectedLines)

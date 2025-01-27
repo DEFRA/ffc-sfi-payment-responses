@@ -32,6 +32,8 @@ container:
   eventsTopicAddress: ffc-pay-events
   paymentSubmitTopicAddress: ffc-pay-submit
   paymentSubmitSubscriptionAddress: ffc-pay-responses
+  collectionSizeTopicAddress: ffc-pay-collection-size
+  collectionSizeSubscriptionAddress: ffc-pay-responses
   azureStorageAccountName: ffcpay
   azureStorageConnectionString: dummy
   azureStorageUseConnectionString: false  

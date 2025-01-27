@@ -1,6 +1,6 @@
-const { parseImpsReturnFile } = require('../../../../app/processing/returns/parse-imps-return-file')
+const { parseImpsReturnFile } = require('../../../../../app/processing/returns/imps/parse-imps-return-file')
 
-const impsFilename = require('../../../mocks/filenames').IMPS
+const impsFilename = require('../../../../mocks/filenames').IMPS
 
 let impsContent = 'H,9942,04,380225,SCM/38022522-210-001,P,1848107,115.45,B,20-JUN-23,0,'
 
