@@ -4,11 +4,14 @@ const { sendAcknowledgementMessages } = require('../../../../app/messaging')
 jest.mock('../../../../app/storage')
 const { downloadFile, archiveFile } = require('../../../../app/storage')
 
-jest.mock('../../../../app/processing/returns')
-const { createImpsReturnFile } = require('../../../../app/processing/returns')
+jest.mock('../../../../app/processing/returns/imps/create-imps-return-file')
+const { createImpsReturnFile } = require('../../../../app/processing/returns/imps/create-imps-return-file')
 
 jest.mock('../../../../app/processing/acknowledgements/is-imps-acknowledgement-file')
 const { isImpsAcknowledgementFile } = require('../../../../app/processing/acknowledgements/is-imps-acknowledgement-file')
+
+jest.mock('../../../../app/processing/acknowledgements/save-imps-acknowledgements')
+const { saveImpsAcknowledgements } = require('../../../../app/processing/acknowledgements/save-imps-acknowledgements')
 
 jest.mock('../../../../app/processing/acknowledgements/parse-acknowledgement-file')
 const { parseAcknowledgementFile } = require('../../../../app/processing/acknowledgements/parse-acknowledgement-file')
@@ -29,6 +32,7 @@ describe('process acknowledgement', () => {
     downloadFile.mockResolvedValue(fileContent)
     parseAcknowledgementFile.mockResolvedValue(messages)
     isImpsAcknowledgementFile.mockReturnValue(false)
+    saveImpsAcknowledgements.mockResolvedValue(true)
   })
 
   test('downloads file content', async () => {
@@ -71,7 +75,7 @@ describe('process acknowledgement', () => {
   test('creates IMPS return file if file is IMPS acknowledgement and acknowledgements in file', async () => {
     isImpsAcknowledgementFile.mockReturnValue(true)
     await processAcknowledgement(filename, transaction)
-    expect(createImpsReturnFile).toHaveBeenCalledWith(expect.anything(), filename, transaction)
+    expect(createImpsReturnFile).toHaveBeenCalledWith(transaction)
   })
 
   test('does not create IMPS return file if file is IMPS acknowledgement but no acknowledgements in file', async () => {

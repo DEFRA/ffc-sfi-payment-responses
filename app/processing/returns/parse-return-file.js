@@ -1,6 +1,6 @@
 const { parseGenesisReturnFile } = require('./parse-genesis-return-file')
 const { parseGlosReturnFile } = require('./parse-glos-return-file')
-const { parseImpsReturnFile } = require('./parse-imps-return-file')
+const { parseImpsReturnFile } = require('./imps/parse-imps-return-file')
 const { parseDefaultReturnFile } = require('./parse-default-return-file')
 
 const parseReturnFile = (content, filename) => {

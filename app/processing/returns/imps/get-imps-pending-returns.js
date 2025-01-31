@@ -1,4 +1,4 @@
-const db = require('../../../app/data')
+const db = require('../../../data')
 
 const getImpsPendingReturns = async (transaction) => {
   return db.impsReturn.findAll({

@@ -4,8 +4,8 @@ const { parseGenesisReturnFile } = require('../../../../app/processing/returns/p
 jest.mock('../../../../app/processing/returns/parse-glos-return-file')
 const { parseGlosReturnFile } = require('../../../../app/processing/returns/parse-glos-return-file')
 
-jest.mock('../../../../app/processing/returns/parse-imps-return-file')
-const { parseImpsReturnFile } = require('../../../../app/processing/returns/parse-imps-return-file')
+jest.mock('../../../../app/processing/returns/imps/parse-imps-return-file')
+const { parseImpsReturnFile } = require('../../../../app/processing/returns/imps/parse-imps-return-file')
 
 jest.mock('../../../../app/processing/returns/parse-default-return-file')
 const { parseDefaultReturnFile } = require('../../../../app/processing/returns/parse-default-return-file')

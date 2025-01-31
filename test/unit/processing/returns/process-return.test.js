@@ -10,11 +10,11 @@ const { quarantineFile } = require('../../../../app/processing/quarantine-file')
 jest.mock('../../../../app/messaging')
 const { sendReturnMessages } = require('../../../../app/messaging')
 
-jest.mock('../../../../app/processing/returns/is-imps-return-file')
-const { isImpsReturnFile } = require('../../../../app/processing/returns/is-imps-return-file')
+jest.mock('../../../../app/processing/returns/imps/is-imps-return-file')
+const { isImpsReturnFile } = require('../../../../app/processing/returns/imps/is-imps-return-file')
 
-jest.mock('../../../../app/processing/returns/save-imps-returns')
-const { saveImpsReturns } = require('../../../../app/processing/returns/save-imps-returns')
+jest.mock('../../../../app/processing/returns/imps/save-imps-returns')
+const { saveImpsReturns } = require('../../../../app/processing/returns/imps/save-imps-returns')
 
 jest.mock('../../../../app/processing/returns/is-genesis-return-file')
 const { isGenesisReturnFile } = require('../../../../app/processing/returns/is-genesis-return-file')
